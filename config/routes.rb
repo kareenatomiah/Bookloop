@@ -1,4 +1,24 @@
 Rails.application.routes.draw do
+  get 'reviews/index'
+  get 'reviews/create'
+  get 'reviews/destroy'
+  get 'bereads/index'
+  get 'bereads/create'
+  get 'bereads/destroy'
+  get 'libraries/create'
+  get 'libraries/destroy'
+  get 'categories/index'
+  get 'categories/show'
+  get 'books/index'
+  get 'books/show'
+  get 'books/create'
+  get 'books/update'
+  get 'books/destroy'
+  get 'users/index'
+  get 'users/show'
+  get 'users/create'
+  get 'users/update'
+  get 'users/destroy'
   devise_for :users
   root to: "pages#home"
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
