@@ -11,8 +11,8 @@
   </head>
 
   <body>
-    <% unless (devise_controller? && (controller_name == 'sessions' || controller_name == 'registrations' || controller_name == 'passwords')) || (controller_name == 'pages' && action_name == 'home') %>
-      <%= render "shared/navbar" %>
+    <% unless (devise_controller? && (controller_name == 'sessions' || controller_name == 'registrations' || controller_name == 'passwords')) || (controller_name == 'pages' && action_name == 'splash') %>
+    <%= render "shared/navbar" %>
     <% end %>
 
     <%= render "shared/flashes" %>
@@ -20,4 +20,3 @@
     <%= yield %>
   </body>
 </html>
-
