@@ -1,20 +1,33 @@
-<div class="splash-container">
+<div class="splash-container" id="splash-screen">
   <div class="content">
     <!-- Logo -->
-    <%= image_tag 'https://res.cloudinary.com/ds8cccxkn/image/upload/v1750153216/Bookloop_h9v0zf.png', alt: 'BookLoop Logo', class: 'logo-image' %>
+    <%= image_tag 'https://res.cloudinary.com/ds8cccxkn/image/upload/v1750153216/Bookloop_h9v0zf.png',
+                  alt: 'BookLoop Logo',
+                  class: 'logo-image' %>
 
     <!-- Tagline -->
     <p class="tagline">Your book journey starts here</p>
-    
+
     <!-- Girl -->
-    <%= image_tag 'https://res.cloudinary.com/ds8cccxkn/image/upload/v1750153271/Vector_rozaa2.png', alt: 'Girl Illustration', class: 'girl-image' %>
+    <%= image_tag 'https://res.cloudinary.com/ds8cccxkn/image/upload/v1750153271/Vector_rozaa2.png',
+                  alt: 'Girl Illustration',
+                  class: 'girl-image' %>
 
-
+    <!-- Tap Hint -->
+    <p class="tap-hint">Tap anywhere to continue</p>
   </div>
 </div>
 
 <script>
-  setTimeout(() => {
-    window.location.href = "<%= root_path %>";
-  }, 3000);
+  document.addEventListener("DOMContentLoaded", () => {
+    const splash = document.getElementById("splash-screen");
+    splash.addEventListener("click", () => {
+      splash.classList.add("fade-out");
+
+      setTimeout(() => {
+        window.location.href = "<%= new_user_session_path %>";
+      }, 700); // Match CSS transition duration
+    });
+  });
 </script>
+

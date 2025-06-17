@@ -1,20 +1,41 @@
-<h2>Log in</h2>
+<div class="login-container" style="max-width: 400px; margin: 60px auto; padding: 20px; font-family: 'Helvetica Neue', sans-serif;">
 
-<%= simple_form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-  <div class="form-inputs">
-    <%= f.input :email,
-                required: false,
-                autofocus: true,
-                input_html: { autocomplete: "email" } %>
-    <%= f.input :password,
-                required: false,
-                input_html: { autocomplete: "current-password" } %>
-    <%= f.input :remember_me, as: :boolean if devise_mapping.rememberable? %>
+  <!-- Logo -->
+  <div style="text-align: center; margin-bottom: 30px;">
+    <%= image_tag 'https://res.cloudinary.com/ds8cccxkn/image/upload/v1750153216/Bookloop_h9v0zf.png', alt: 'BookLoop Logo', style: 'height: 80px;' %>
   </div>
 
-  <div class="form-actions">
-    <%= f.button :submit, "Log in" %>
-  </div>
-<% end %>
+  <!-- Heading -->
+  <h2 style="text-align: center; font-size: 24px; font-weight: bold; margin-bottom: 10px;">Welcome Back</h2>
+  <p style="text-align: center; color: #777; margin-bottom: 30px;">Login to continue your book journey</p>
 
-<%= render "devise/shared/links" %>
+  <!-- Login Form -->
+  <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+    <div style="margin-bottom: 20px;">
+      <%= f.label :email, "Email", style: "display: block; margin-bottom: 5px;" %>
+      <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "form-control", style: "width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px;" %>
+    </div>
+
+    <div style="margin-bottom: 20px;">
+      <%= f.label :password, "Password", style: "display: block; margin-bottom: 5px;" %>
+      <%= f.password_field :password, autocomplete: "current-password", class: "form-control", style: "width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px;" %>
+    </div>
+
+    <div style="text-align: center; margin-top: 30px;">
+      <%= f.submit "Log in", class: "btn btn-dark", style: "padding: 10px 20px; background-color:rgb(67, 8, 8); color: white; border: none; border-radius: 5px; cursor: pointer;" %>
+    </div>
+
+    <div class="text-align: center; margin-top: 30px;">
+      <%= link_to "Forgot your password?", new_user_password_path, class: "text-black-600 hover:underline" %>
+    </div>
+
+  <% end %>
+
+  <!-- Sign Up Link -->
+  <div style="text-align: center; margin-top: 20px;">
+    <p style="color: #777;">Don't have an account?
+      <%= link_to "Sign up", new_user_registration_path, style: "color:rgb(91, 11, 11); text-decoration: none;" %>
+    </p>
+  </div>
+
+</div>
