@@ -19,6 +19,7 @@ Rails.application.routes.draw do
   get 'users/create'
   get 'users/update'
   get 'users/destroy'
+
   get 'splash', to: 'pages#splash'
 
     root to: 'pages#splash'

@@ -74,4 +74,8 @@ group :test do
   gem "selenium-webdriver"
 end
 
+gem 'devise'
+gem 'devise-i18n'
+gem 'devise-i18n-views'
+gem 'i18n', '~> 1.14'
 gem "cloudinary"

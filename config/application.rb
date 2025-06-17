@@ -29,5 +29,16 @@ module Bookloop
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
+    config.i18n.available_locales = [:en, :fr, :es, :de, :it]
+    config.i18n.default_locale = :en
+    config.i18n.fallbacks = true
+
+  def set_locale
+  I18n.locale = params[:locale] || I18n.default_locale
+  end
+
+  def default_url_options
+    { locale: I18n.locale }
+    end
   end
 end
