@@ -8,12 +8,10 @@
 
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
-    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
-
   </head>
 
   <body>
-    <% unless current_page?(root_path) %>
+    <% unless (devise_controller? && (controller_name == 'sessions' || controller_name == 'registrations' || controller_name == 'passwords')) || (controller_name == 'pages' && action_name == 'home') %>
       <%= render "shared/navbar" %>
     <% end %>
 
@@ -22,3 +20,4 @@
     <%= yield %>
   </body>
 </html>
+
