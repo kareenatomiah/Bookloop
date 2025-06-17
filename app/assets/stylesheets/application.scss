@@ -10,3 +10,79 @@
 // Your CSS partials
 @import "components/index";
 @import "pages/index";
+
+
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f9f9f9;
+}
+
+.login-box {
+  background-color: white;
+  padding: 40px 30px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+}
+
+.login-box h2 {
+  text-align: center;
+  margin-bottom: 25px;
+  color: #862221;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #862221;
+  border-radius: 5px;
+  outline: none;
+}
+
+.form-input:focus {
+  border-color: #5c171a;
+  box-shadow: 0 0 3px #86222155;
+}
+
+.forgot-password {
+  display: block;
+  text-align: right;
+  font-size: 0.9em;
+  color: #666;
+  text-decoration: none;
+}
+
+.btn-primary {
+  width: 100%;
+  background-color: #862221;
+  color: white;
+  padding: 12px;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn-primary:hover {
+  background-color: #6f1b1c;
+}
+
+.signup-link {
+  margin-top: 15px;
+  font-size: 0.95em;
+}
+
+.signup-link a {
+  color: #862221;
+  font-weight: bold;
+  text-decoration: none;
+}
