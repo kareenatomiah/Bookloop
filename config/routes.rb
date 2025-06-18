@@ -19,8 +19,8 @@ Rails.application.routes.draw do
   get 'users/create'
   get 'users/update'
   get 'users/destroy'
+  get 'dashboard', to: 'dashboard#index'
   get "books/search", to: "books#search"
-
   get 'splash', to: 'pages#splash'
   get "api/ratings/:work_key", to: "api/ratings#show"
   

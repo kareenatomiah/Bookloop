@@ -8,6 +8,7 @@
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
 
+
 puts "🔁 Resetting BookMetadata..."
 BookMetadatum.destroy_all
 
@@ -161,3 +162,4 @@ BookMetadatum.create!(
 )
 
 puts "✅ Seeds created!"
+# db/seeds.rb
