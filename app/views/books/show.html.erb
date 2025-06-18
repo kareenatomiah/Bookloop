@@ -1,6 +1,6 @@
 <div style="max-width: 500px; margin: 50px auto; font-family: 'Helvetica Neue', sans-serif; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.05); text-align: center;">
 
-  <%# 📘 Cover Image (medium size) %>
+  <%# 📘 Cover image (medium) %>
   <% if @work["covers"]&.any? %>
     <%= image_tag "https://covers.openlibrary.org/b/id/#{@work["covers"].first}-M.jpg",
                   alt: @work["title"],
@@ -27,16 +27,53 @@
     <%= @work["created"]&.dig("value")&.slice(0,10) || "Unknown" %>
   </p>
 
-  <%# 🏷️ Category / subject %>
+  <%# 🏷️ Category or subject %>
   <p style="color: #666; margin-bottom: 20px;">
     <strong>Category:</strong> <%= @local_metadata&.category || @work["subjects"]&.first || "Unknown" %>
   </p>
 
-  <%# 📝 Description locale si présente %>
+  <%# 📝 Local description if available %>
   <% if @local_metadata&.description.present? %>
     <p style="color: #555; font-size: 14px; line-height: 1.6; text-align: justify; white-space: pre-line; margin-top: 20px;">
       <%= @local_metadata.description %>
     </p>
+  <% end %>
+
+  <%# 🔴 Review button (opens popup) %>
+  <button onclick="document.getElementById('reviewModal').style.display='block'" class="btn-review" style="margin-top: 20px;">
+    Give Review
+  </button>
+
+  <%# 🔲 Review confirmation modal %>
+  <div id="reviewModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:999;">
+    <div style="background:white; max-width:400px; margin: 100px auto; padding: 20px; border-radius: 10px; text-align: center;">
+      <p>Are you sure you want to give a review to “<%= @work["title"] %>”?</p>
+      <div style="margin-top: 20px;">
+        <%= link_to "Yes", new_review_path(work_key: @work_key), class: "btn-review", style: "text-decoration: none;" %>
+        <button onclick="document.getElementById('reviewModal').style.display='none'" style="margin-left: 10px; padding: 10px 20px; border: 1px solid #ccc; border-radius: 5px; background: white; cursor: pointer;">No</button>
+      </div>
+    </div>
+  </div>
+
+  <%# ✅ Reviews list %>
+  <% if @reviews.any? %>
+    <hr style="margin: 40px 0 20px 0;">
+    <h2 style="text-align: left; color: #2c2c2c;">Reviews</h2>
+
+    <% @reviews.each do |review| %>
+      <div style="text-align: left; background: #f9f9f9; border-radius: 8px; padding: 15px; margin-top: 15px;">
+        <p style="margin: 0;"><strong>Rating:</strong> <span style="color: #862221;"><%= "★" * review.rating %><%= "☆" * (5 - review.rating) %></span></p>
+        <p style="margin-top: 8px;"><%= review.content %></p>
+        <% if user_signed_in? && review.user_id == current_user.id %>
+          <div style="margin-top: 10px;">
+            <%= link_to "✏️ Edit", edit_review_path(review), style: "margin-right: 10px; color: #007bff;" %>
+            <%= link_to "🗑️ Delete", review_path(review), method: :delete, data: { confirm: "Are you sure?" }, style: "color: red;" %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  <% else %>
+    <p style="margin-top: 30px; color: #888;">No reviews yet. Be the first to write one!</p>
   <% end %>
 
   <hr style="margin: 30px 0;">

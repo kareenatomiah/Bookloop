@@ -15,11 +15,16 @@
       <%= render "shared/navbar" %>
     <% end %>
 
-    <%= render "shared/flashes" %>
+    <%# 🔔 Flash personnalisé style BookLoop %>
+    <% if flash[:notice] %>
+      <div style="background-color: #fbeaea; color: #862221; padding: 15px 20px; margin: 20px auto; max-width: 600px; border-radius: 8px; font-family: 'Helvetica Neue', sans-serif; text-align: center; box-shadow: 0 2px 6px rgba(0,0,0,0.05);">
+        <%= flash[:notice] %>
+      </div>
+    <% end %>
 
+    <%= render "shared/flashes" %>
     <%= yield %>
 
-    <!-- ⚡ Stimulus app start -->
     <%= javascript_include_tag "controllers", type: "module" %>
   </body>
 </html>

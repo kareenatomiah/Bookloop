@@ -24,7 +24,9 @@ Rails.application.routes.draw do
   get "books/search", to: "books#index"
   get 'splash', to: 'pages#splash'
   get "api/ratings/:work_key", to: "api/ratings#show"
+
   get 'wishlist', to: 'wishlists#index', as: 'wishlist'
+
 
 
     root to: 'pages#splash'
@@ -39,6 +41,7 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   # root "posts#index"
   resources :books, only: [:index, :show]
+  resources :reviews, only: [:new, :create]
   resources :users, only: [:show]
 
 end

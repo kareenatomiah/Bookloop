@@ -1,0 +1,70 @@
+<div style="max-width: 600px; margin: 50px auto; padding: 30px; background: white; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.05); font-family: 'Helvetica Neue', sans-serif;">
+
+  <%# 📘 Cover Image + infos %>
+  <div style="text-align: center; margin-bottom: 30px;">
+    <% if @work["covers"]&.any? %>
+      <%= image_tag "https://covers.openlibrary.org/b/id/#{@work["covers"].first}-M.jpg",
+                    alt: @work["title"],
+                    style: "width: 160px; height: auto; border-radius: 10px; margin-bottom: 15px;" %>
+    <% else %>
+      <div style="width: 160px; height: 240px; background-color: #eee; margin: 0 auto 15px auto; display: flex; align-items: center; justify-content: center; color: #999; border-radius: 10px;">
+        No cover
+      </div>
+    <% end %>
+
+    <h1 style="font-size: 22px; margin-bottom: 5px;"><%= @work["title"] || "Untitled" %></h1>
+    <p style="margin: 0; color: #555;"><%= @full_author %></p>
+  </div>
+
+  <%# ✍️ Review form %>
+  <%= form_with model: @review, url: reviews_path, local: true do |form| %>
+    <%= form.hidden_field :work_key, value: @work_key %>
+
+    <div style="margin-bottom: 20px; text-align: center;">
+      <strong>Rating:</strong><br>
+      <div id="star-rating" style="margin-top: 8px;">
+        <% 1.upto(5) do |i| %>
+          <label style="font-size: 28px; cursor: pointer; color: #ccc;">
+            <input type="radio" name="review[rating]" value="<%= i %>" style="display:none;" />
+            <span class="star" data-index="<%= i %>">☆</span>
+          </label>
+        <% end %>
+      </div>
+    </div>
+
+    <div style="margin-bottom: 20px;">
+      <%= form.label :content, "Your Review", style: "display:block; font-weight:bold;" %>
+      <%= form.text_area :content, rows: 6, style: "width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px;" %>
+    </div>
+
+    <div style="text-align: center;">
+      <%= form.submit "Submit Review", class: "btn-review" %>
+    </div>
+  <% end %>
+
+  <div style="text-align: center; margin-top: 20px;">
+    <%= link_to "← Back", books_path, style: "text-decoration: underline; color: #007bff;" %>
+  </div>
+</div>
+
+<script>
+  const stars = document.querySelectorAll('.star');
+
+  stars.forEach((star, idx) => {
+    star.addEventListener('click', () => {
+      stars.forEach((s, i) => {
+        if (i < idx + 1) {
+          s.innerHTML = '★';
+          s.style.color = '#862221';
+        } else {
+          s.innerHTML = '☆';
+          s.style.color = '#ccc';
+        }
+      });
+
+      // Sélectionne le bon radio
+      const radio = document.querySelector(`input[name='review[rating]'][value='${idx + 1}']`);
+      if (radio) radio.checked = true;
+    });
+  });
+</script>
