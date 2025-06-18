@@ -13,8 +13,6 @@
 
     <% @books.each do |book| %>
       <% work_key = book["key"] %>
-      <% rating = book["average_rating"] %>
-      <% rating_count = book["ratings_count"] %>
 
       <%= link_to book_path(
         id: work_key,
@@ -37,12 +35,6 @@
               <p style="margin: 0; color: #555;">By <%= book["author_name"].join(", ") %></p>
             <% end %>
 
-            <% if rating %>
-              <p style="margin: 5px 0; color: #f39c12;">★ <%= rating.round(1) %> (<%= rating_count %> ratings)</p>
-            <% else %>
-              <p style="margin: 5px 0; color: #999;">No rating yet</p>
-            <% end %>
-
             <% if book["first_publish_year"] %>
               <p style="margin: 0; color: #777;">Published: <%= book["first_publish_year"] %></p>
             <% end %>
@@ -57,4 +49,3 @@
   <% end %>
 
 </div>
-

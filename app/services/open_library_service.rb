@@ -26,12 +26,12 @@ class OpenLibraryService
     response.parsed_response["summary"]
   end
 
-  def get_work_ratings(work_key)
-  # Ex: work_key = "/works/OL45804W"
-  res = self.class.get("#{work_key}/ratings.json")
-  res.success? ? res.parsed_response["summary"] : nil
-  end
-  
+  # def get_work_ratings(work_key)
+  # # Ex: work_key = "/works/OL45804W"
+  # res = self.class.get("#{work_key}/ratings.json")
+  # res.success? ? res.parsed_response["summary"] : nil
+  # end
+
   # 📖 4. Détails d'une édition précise
   # Exemple : /books/OL7353617M.json
   def get_edition_details(edition_key)
