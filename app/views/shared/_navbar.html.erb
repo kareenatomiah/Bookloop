@@ -1,15 +1,38 @@
 <nav class="bookloop-navbar">
   <div class="navbar-left">
-    <i class="fa fa-bars"></i>
+    <i class="fa fa-bars" id="menu-toggle"></i>
   </div>
 
   <div class="navbar-center">
-    <%= link_to root_path, class: "navbar-title" do %>
-      Bookloop
+    <%= link_to dashboard_path, class: "navbar-title" do %>
+      BookLoop
     <% end %>
   </div>
 
   <div class="navbar-right">
-    <i class="fa fa-search"></i>
+    <%= link_to books_path do %>
+      <i class="fa fa-search"></i>
+    <% end %>
   </div>
 </nav>
+
+<%= render "shared/sidebar" %>
+
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const sidebar = document.getElementById("sidebar");
+    const menuToggle = document.getElementById("menu-toggle");
+    const closeBtn = document.getElementById("close-sidebar");
+
+    if (menuToggle && sidebar && closeBtn) {
+      menuToggle.addEventListener("click", () => {
+        sidebar.classList.add("open");
+      });
+
+      closeBtn.addEventListener("click", () => {
+        sidebar.classList.remove("open");
+      });
+    }
+  });
+</script>
