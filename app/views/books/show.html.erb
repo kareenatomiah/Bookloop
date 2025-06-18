@@ -1,2 +1,36 @@
-<h1>Books#show</h1>
-<p>Find me in app/views/books/show.html.erb</p>
+<div style="max-width: 700px; margin: 40px auto;">
+  <%# Cover Image %>
+  <% if @work["covers"] %>
+    <%= image_tag "https://covers.openlibrary.org/b/id/#{@work['covers'].first}-L.jpg", style: "width:100%; height:auto; border-radius:5px; margin-bottom:20px;" %>
+  <% end %>
+
+  <h1 style="color:#862221;"><%= @work["title"] %></h1>
+  <p><strong>By:</strong> <%= @work["authors"]&.map { |a| a["name"] }&.join(", ") %></p>
+  <p><strong>Published:</strong> <%= @work["created"]&.[]("value")&.slice(0,10) %></p>
+
+  <% if @work["description"] %>
+    <p><%= @work["description"].is_a?(Hash) ? @work["description"]["value"] : @work["description"] %></p>
+  <% end %>
+
+  <% if @work["subjects"] %>
+    <p><strong>Subjects:</strong> <%= @work["subjects"].join(", ") %></p>
+  <% end %>
+
+  <hr style="margin:30px 0;">
+
+  <h2>Reviews</h2>
+  <% if @reviews.any? %>
+    <% @reviews.each do |r| %>
+      <div style="margin-bottom:20px;">
+        <p><strong><%= r.user.email %></strong>
+           <%= "★" * r.rating + "☆" * (5 - r.rating) %>
+           <em><%= r.created_at.strftime("%b %d, %Y") %></em></p>
+        <p><%= r.content %></p>
+      </div>
+    <% end %>
+  <% else %>
+    <p>No reviews yet. Be the first to review!</p>
+  <% end %>
+
+  <%= link_to "Leave a Review", new_review_path(work_key: @work["key"]), class: "btn", style: "background-color:#862221; color:white; padding:10px 20px; border-radius:5px; text-decoration:none;" %>
+</div>

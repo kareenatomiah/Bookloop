@@ -1,2 +1,60 @@
-<h1>Books#index</h1>
-<p>Find me in app/views/books/index.html.erb</p>
+<div style="max-width: 800px; margin: 40px auto; font-family: 'Helvetica Neue', sans-serif;">
+
+  <!-- Search form -->
+  <div style="text-align: center; margin-bottom: 40px;">
+    <%= form_tag books_path, method: :get do %>
+      <%= text_field_tag :query, params[:query], placeholder: "Search for a book...", style: "padding: 10px; width: 300px; border-radius: 5px; border: 1px solid #ccc;" %>
+      <%= submit_tag "Search", style: "padding: 10px 20px; background-color: rgb(67, 8, 8); color: white; border: none; border-radius: 5px; cursor: pointer;" %>
+    <% end %>
+  </div>
+
+  <% if @books.any? %>
+    <h2 style="text-align: center; margin-bottom: 30px;">Results for "<%= params[:query] %>"</h2>
+
+    <% @books.each do |book| %>
+      <% work_key = book["key"] %>
+      <% rating = book["average_rating"] %>
+      <% rating_count = book["ratings_count"] %>
+
+      <%= link_to book_path(
+        id: work_key,
+        title: book["title"],
+        author: book["author_name"]&.first,
+        year: book["first_publish_year"],
+        category: book["subject"]&.first
+      ), style: "text-decoration: none; color: inherit;" do %>
+
+        <div style="display: flex; align-items: center; margin-bottom: 30px; border-bottom: 1px solid #eee; padding-bottom: 15px;">
+          <% if book["cover_i"] %>
+            <%= image_tag OpenLibraryService.new.book_cover_url(book["cover_i"]), alt: book["title"], style: "height: 120px; margin-right: 20px;" %>
+          <% else %>
+            <div style="height: 120px; width: 80px; background-color: #f2f2f2; margin-right: 20px; display: flex; align-items: center; justify-content: center;">No cover</div>
+          <% end %>
+
+          <div>
+            <h4 style="margin: 0 0 5px 0;"><%= book["title"] %></h4>
+            <% if book["author_name"] %>
+              <p style="margin: 0; color: #555;">By <%= book["author_name"].join(", ") %></p>
+            <% end %>
+
+            <% if rating %>
+              <p style="margin: 5px 0; color: #f39c12;">★ <%= rating.round(1) %> (<%= rating_count %> ratings)</p>
+            <% else %>
+              <p style="margin: 5px 0; color: #999;">No rating yet</p>
+            <% end %>
+
+            <% if book["first_publish_year"] %>
+              <p style="margin: 0; color: #777;">Published: <%= book["first_publish_year"] %></p>
+            <% end %>
+          </div>
+        </div>
+
+      <% end %>
+    <% end %>
+
+  <% elsif params[:query].present? %>
+    <p style="text-align: center; color: #777;">No results found for "<%= params[:query] %>".</p>
+  <% end %>
+
+</div>
+
