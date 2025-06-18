@@ -23,7 +23,7 @@ Rails.application.routes.draw do
   get "books/search", to: "books#search"
   get 'splash', to: 'pages#splash'
   get "api/ratings/:work_key", to: "api/ratings#show"
-  
+
 
     root to: 'pages#splash'
     devise_for :users
@@ -37,4 +37,5 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   # root "posts#index"
   resources :books, only: [:index, :show]
+  resources :reviews, only: [:new, :create]
 end

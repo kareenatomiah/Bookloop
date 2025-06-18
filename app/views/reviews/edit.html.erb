@@ -1,0 +1,61 @@
+<div style="max-width: 600px; margin: 50px auto; padding: 30px; background: white; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.05); font-family: 'Helvetica Neue', sans-serif;">
+
+  <%# 📘 Cover + infos %>
+  <div style="text-align: center; margin-bottom: 30px;">
+    <% if @work["covers"]&.any? %>
+      <%= image_tag "https://covers.openlibrary.org/b/id/#{@work["covers"].first}-M.jpg",
+                    alt: @work["title"],
+                    style: "width: 160px; height: auto; border-radius: 10px; margin-bottom: 15px;" %>
+    <% else %>
+      <div style="width: 160px; height: 240px; background-color: #eee; margin: 0 auto 15px auto; display: flex; align-items: center; justify-content: center; color: #999; border-radius: 10px;">
+        No cover
+      </div>
+    <% end %>
+
+    <h1 style="font-size: 22px; margin-bottom: 5px;"><%= @work["title"] || "Untitled" %></h1>
+    <p style="margin: 0; color: #555;"><%= @full_author %></p>
+  </div>
+
+  <%# ✍️ Formulaire de modification %>
+  <%= form_with model: @review, local: true do |form| %>
+    <%= form.hidden_field :work_key, value: @review.work_key %>
+
+    <div style="margin-bottom: 20px; text-align: center;">
+      <strong>Update Rating:</strong><br>
+      <div id="star-rating" style="margin-top: 8px; color: #862221;">
+        <% 1.upto(5) do |i| %>
+          <label style="font-size: 28px; cursor: pointer;">
+            <input type="radio" name="review[rating]" value="<%= i %>" style="display:none;" <%= 'checked' if @review.rating == i %> />
+            <%= @review.rating.to_i >= i ? '★' : '☆' %>
+          </label>
+        <% end %>
+      </div>
+    </div>
+
+    <div style="margin-bottom: 20px;">
+      <%= form.label :content, "Update Your Review", style: "display:block; font-weight:bold;" %>
+      <%= form.text_area :content, rows: 6, style: "width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px;" %>
+    </div>
+
+    <div style="text-align: center;">
+      <%= form.submit "Submit Changes", class: "btn-review" %>
+    </div>
+  <% end %>
+
+  <div style="text-align: center; margin-top: 20px;">
+    <%= link_to "← Back", book_path(@review.work_key), style: "text-decoration: underline; color: #007bff;" %>
+  </div>
+</div>
+
+<script>
+  // JS pour étoiles rouges dynamiques
+  const stars = document.querySelectorAll('#star-rating label');
+  stars.forEach((star, idx) => {
+    star.addEventListener('click', () => {
+      stars.forEach((s, i) => {
+        s.innerHTML = i <= idx ? '★' : '☆';
+        s.style.color = i <= idx ? '#862221' : '#ccc';
+      });
+    });
+  });
+</script>
