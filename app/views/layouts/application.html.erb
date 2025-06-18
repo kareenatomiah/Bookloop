@@ -12,11 +12,15 @@
 
   <body>
     <% unless (devise_controller? && (controller_name == 'sessions' || controller_name == 'registrations' || controller_name == 'passwords')) || (controller_name == 'pages' && action_name == 'splash') %>
-    <%= render "shared/navbar" %>
+      <%= render "shared/navbar" %>
     <% end %>
 
     <%= render "shared/flashes" %>
 
     <%= yield %>
+
+    <!-- ⚡ Stimulus app start -->
+    <%= javascript_include_tag "controllers", type: "module" %>
   </body>
 </html>
+
