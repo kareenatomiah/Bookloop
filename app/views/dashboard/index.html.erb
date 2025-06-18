@@ -1,0 +1,82 @@
+<div class="dashboard">
+  <h1>📚 BookLoop Catalog</h1>
+
+  <!-- Recently Added -->
+  <section class="recent-books">
+    <h2>Recently Added</h2>
+    <div class="book-list">
+      <% @recent_books.each do |book| %>
+        <%= link_to book_path(book), class: "book-item" do %>
+          <div class="book-cover-wrapper">
+            <%= image_tag(book.cover_url, alt: book.title, class: "book-cover") if book.cover_url.present? %>
+          </div>
+          <div class="book-details">
+            <h3 class="book-title"><%= book.title %></h3>
+            <p class="book-author">by <%= book.author %></p>
+            <p class="book-category"><%= book.category.name if book.category %></p>
+            <% if book.description.present? %>
+              <p class="book-description"><%= truncate(book.description, length: 140) %></p>
+            <% end %>
+          </div>
+        <% end %>
+      <% end %>
+    </div>
+  </section>
+
+  <!-- My Books -->
+  <section class="my-books">
+    <h2>My Books (<%= @my_books.count %>)</h2>
+    <div class="book-list">
+      <% @my_books.each do |book| %>
+        <%= link_to book_path(book), class: "book-item" do %>
+          <div class="book-cover-wrapper">
+            <%= image_tag(book.cover_url, alt: book.title, class: "book-cover") if book.cover_url.present? %>
+          </div>
+          <div class="book-details">
+            <h3 class="book-title"><%= book.title %></h3>
+            <p class="book-author">by <%= book.author %></p>
+            <p class="book-category"><%= book.category.name if book.category %></p>
+            <% if book.description.present? %>
+              <p class="book-description"><%= truncate(book.description, length: 140) %></p>
+            <% end %>
+          </div>
+        <% end %>
+      <% end %>
+    </div>
+  </section>
+
+  <!-- Wishlist -->
+  <section class="wishlist">
+    <h2>Wishlist (<%= @wishlist ? @wishlist.count : 0 %>)</h2>
+    <div class="book-list">
+      <% (@wishlist || []).each do |book| %>
+        <%= link_to book_path(book), class: "book-item" do %>
+          <div class="book-cover-wrapper">
+            <%= image_tag(book.cover_url, alt: book.title, class: "book-cover") if book.cover_url.present? %>
+          </div>
+          <div class="book-details">
+            <h3 class="book-title"><%= book.title %></h3>
+            <p class="book-author">by <%= book.author %></p>
+            <p class="book-category"><%= book.category.name if book.category %></p>
+            <% if book.description.present? %>
+              <p class="book-description"><%= truncate(book.description, length: 140) %></p>
+            <% end %>
+          </div>
+        <% end %>
+      <% end %>
+    </div>
+  </section>
+
+  <!-- Categories -->
+  <section class="categories">
+    <h2>Categories</h2>
+    <div class="category-grid">
+      <% @categories.each do |category| %>
+        <%= link_to category_path(category), class: "category-tile" do %>
+          <%= category.name %>
+        <% end %>
+      <% end %>
+    </div>
+  </section>
+</div>
+
