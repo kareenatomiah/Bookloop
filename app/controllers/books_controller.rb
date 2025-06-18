@@ -34,17 +34,27 @@ def index
 end
 
 
-  def show
-    @work_key = params[:id] # ex: "/works/OL12345W"
-    @book = OpenLibraryService.new.get_work_details(@work_key)
+def show
+  @work_key = params[:id] # ex: /works/OL12345W
+  service = OpenLibraryService.new
+  @work = service.get_work_details(@work_key)
 
-    # Optionnel : on récupère une édition
-    editions = OpenLibraryService.new.get_editions_for_work(@work_key)
-    @first_edition = editions.first if editions.any?
+  # 🔍 On récupère les données locales si elles existent (auteur, description, catégorie)
+@local_metadata = BookMetadatum.find_by(work_key: @work_key)
 
-    # Optionnel : reviews locales associées au work_key
-    @reviews = Review.where(work_key: @work_key)
+
+  # ⚠️ Si l’API renvoie une liste de clés d’auteurs, on récupère leurs noms
+  if @work && @work["authors"]
+    authors = @work["authors"].map do |author_ref|
+      author_key = author_ref["author"]["key"]
+      details = service.get_author_details(author_key)
+      details["name"] if details
+    end.compact
+    @full_author = authors.join(", ")
+  else
+    @full_author = @local_metadata&.author || "Unknown"
   end
+end
 
   # def search
   #   if params[:query].present?

@@ -20,11 +20,10 @@ class OpenLibraryService
   # 📘 3. Détails d'un "work" (œuvre)
   # Exemple : /works/OL12345W.json
   # Donne : titre, description, sujets, etc.
-  def get_work_details(work_key)
-    response = self.class.get("#{work_key}/ratings.json")
-    return nil unless response.success?
-    response.parsed_response["summary"]
-  end
+def get_work_details(work_key)
+  response = self.class.get("#{work_key}.json")
+  response.success? ? response.parsed_response : nil
+end
 
   # def get_work_ratings(work_key)
   # # Ex: work_key = "/works/OL45804W"
