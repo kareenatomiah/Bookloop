@@ -1,0 +1,2 @@
+class BookMetadatum < ApplicationRecord
+end
