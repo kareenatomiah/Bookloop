@@ -25,10 +25,15 @@
           <% end %>
         </div>
       </header>
+      <%= render "shared/navbar" %>
     <% end %>
 
     <%= render "shared/flashes" %>
 
     <%= yield %>
+
+    <!-- ⚡ Stimulus app start -->
+    <%= javascript_include_tag "controllers", type: "module" %>
   </body>
 </html>
+
