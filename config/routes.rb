@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get 'wishlists/index'
   get 'reviews/index'
   get 'reviews/create'
   get 'reviews/destroy'
@@ -20,10 +21,11 @@ Rails.application.routes.draw do
   get 'users/update'
   get 'users/destroy'
   get 'dashboard', to: 'dashboard#index'
-  get "books/search", to: "books#search"
+  get "books/search", to: "books#index"
   get 'splash', to: 'pages#splash'
   get "api/ratings/:work_key", to: "api/ratings#show"
-  
+  get 'wishlist', to: 'wishlists#index', as: 'wishlist'
+
 
     root to: 'pages#splash'
     devise_for :users
