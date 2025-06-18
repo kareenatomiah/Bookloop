@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Bookloop</title>
+    <title>BookLoop</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
@@ -12,11 +12,28 @@
 
   <body>
     <% unless (devise_controller? && (controller_name == 'sessions' || controller_name == 'registrations' || controller_name == 'passwords')) || (controller_name == 'pages' && action_name == 'splash') %>
-    <%= render "shared/navbar" %>
+      <header class="navbar">
+        <div class="navbar-left">
+          <%= link_to 'BookLoop', dashboard_path, class: 'logo' %>
+        </div>
+        <div class="navbar-right">
+          <% if user_signed_in? %>
+            <span class="username">Hello, <%= current_user.name || current_user.email %></span>
+            <%= link_to 'Logout', destroy_user_session_path, method: :delete, class: 'logout-link' %>
+          <% else %>
+            <%= link_to 'Sign In', new_user_session_path %>
+          <% end %>
+        </div>
+      </header>
+      <%= render "shared/navbar" %>
     <% end %>
 
     <%= render "shared/flashes" %>
 
     <%= yield %>
+
+    <!-- ⚡ Stimulus app start -->
+    <%= javascript_include_tag "controllers", type: "module" %>
   </body>
 </html>
+
