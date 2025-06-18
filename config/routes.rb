@@ -19,6 +19,8 @@ Rails.application.routes.draw do
   get 'users/create'
   get 'users/update'
   get 'users/destroy'
+  get 'dashboard', to: 'dashboard#index'
+
 
   get 'splash', to: 'pages#splash'
 
