@@ -1,0 +1,15 @@
+<h1 style="text-align: center;">📚 My Books</h1>
+
+<% if @my_books.any? %>
+  <% @my_books.each do |library| %>
+    <%= render partial: "books/book_preview", locals: {
+      work_data: @book_data[library.work_key][:work_data],
+      full_author: @book_data[library.work_key][:full_author],
+      reviews: @book_data[library.work_key][:reviews],
+      local_metadata: @book_data[library.work_key][:local_metadata],
+      work_key: library.work_key
+    } %>
+  <% end %>
+<% else %>
+  <p style="text-align: center; color: #888;">Your library is empty.</p>
+<% end %>
