@@ -8,6 +8,13 @@
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
 
+puts "🔁 Resetting categories..."
+Category.destroy_all
+
+puts "📦 Creating categories..."
+["Fantasy", "Romance", "Sci-Fi", "Thriller", "Crime", "Young Adult", "Horror"].each do |cat|
+  Category.create!(name: cat)
+end
 
 puts "🔁 Resetting BookMetadata..."
 BookMetadatum.destroy_all
@@ -206,7 +213,7 @@ BookMetadatum.create!(
 BookMetadatum.create!(
   work_key: "/works/OL24731706W",
   author: "Emily St. John Mandel",
-  category: "Science Fiction",
+  category: "Sci-Fi",
   description: <<~DESC.strip
     Une forêt canadienne en 1912. Une station lunaire en 2203. Un musicien, un écrivain en tournée, une détective temporelle. Leurs vies n’auraient jamais dû se croiser — sauf qu’un phénomène étrange les relie tous : un battement, une faille, une boucle temporelle.
 
@@ -218,7 +225,7 @@ BookMetadatum.create!(
 BookMetadatum.create!(
   work_key: "/works/OL21745884W",
   author: "Andy Weir",
-  category: "Science Fiction",
+  category: "Sci-Fi",
   description: <<~DESC.strip
     Ryland Grace se réveille seul dans un vaisseau spatial, sans souvenir de sa mission ni de son identité. Ce qu’il découvre est terrifiant : il est la seule chance de sauver l’humanité.
 

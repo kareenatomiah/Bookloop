@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get 'categories/index'
+  get 'categories/show'
   # get 'wishlists/index'
   # get 'reviews/index'
   # get 'reviews/create'
@@ -43,4 +45,5 @@ Rails.application.routes.draw do
   # root "posts#index"
   resources :books, only: [:index, :show]
   resources :reviews, only: [:new, :create, :edit, :update, :destroy]
+  resources :categories, only: [:index, :show]
 end
