@@ -1,6 +1,6 @@
 <div style="max-width: 600px; margin: 50px auto; padding: 30px; background: white; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.05); font-family: 'Helvetica Neue', sans-serif;">
 
-  <%# 📘 Cover + infos %>
+  <%# 📘 Cover + Info %>
   <div style="text-align: center; margin-bottom: 30px;">
     <% if @work["covers"]&.any? %>
       <%= image_tag "https://covers.openlibrary.org/b/id/#{@work["covers"].first}-M.jpg",
@@ -16,17 +16,17 @@
     <p style="margin: 0; color: #555;"><%= @full_author %></p>
   </div>
 
-  <%# ✍️ Formulaire de modification %>
+  <%# ✍️ Edit Review Form %>
   <%= form_with model: @review, local: true do |form| %>
     <%= form.hidden_field :work_key, value: @review.work_key %>
 
     <div style="margin-bottom: 20px; text-align: center;">
       <strong>Update Rating:</strong><br>
-      <div id="star-rating" style="margin-top: 8px; color: #862221;">
+      <div id="star-rating" style="margin-top: 8px;">
         <% 1.upto(5) do |i| %>
-          <label style="font-size: 28px; cursor: pointer;">
+          <label style="font-size: 28px; cursor: pointer; color: <%= @review.rating.to_i >= i ? '#862221' : '#ccc' %>;">
             <input type="radio" name="review[rating]" value="<%= i %>" style="display:none;" <%= 'checked' if @review.rating == i %> />
-            <%= @review.rating.to_i >= i ? '★' : '☆' %>
+            <span class="star"><%= @review.rating.to_i >= i ? '★' : '☆' %></span>
           </label>
         <% end %>
       </div>
@@ -48,14 +48,8 @@
 </div>
 
 <script>
-  // JS pour étoiles rouges dynamiques
   const stars = document.querySelectorAll('#star-rating label');
   stars.forEach((star, idx) => {
     star.addEventListener('click', () => {
-      stars.forEach((s, i) => {
-        s.innerHTML = i <= idx ? '★' : '☆';
-        s.style.color = i <= idx ? '#862221' : '#ccc';
-      });
-    });
-  });
-</script>
+      stars.forEach((s, i) =>
+

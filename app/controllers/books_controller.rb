@@ -4,14 +4,12 @@ class BooksController < ApplicationController
       service = OpenLibraryService.new
       raw_results = service.search_books(params[:query])
 
-      # Étape 1 : filtrer les livres avec cover + mot-clé dans le titre
       @books = raw_results.select do |book|
         book["key"].present? &&
         book["cover_i"].present? &&
         book["title"].to_s.downcase.include?(params[:query].downcase)
       end
 
-      # Étape 2 : trouver l’auteur du premier livre qui match exactement
       main_book = raw_results.find { |book| book["title"].to_s.downcase == params[:query].downcase && book["author_name"].present? }
 
       if main_book
@@ -19,7 +17,7 @@ class BooksController < ApplicationController
         author_books = raw_results.select do |book|
           book["cover_i"].present? &&
           book["author_name"]&.include?(author_name) &&
-          book["title"].to_s.downcase != params[:query].downcase # éviter doublon
+          book["title"].to_s.downcase != params[:query].downcase
         end
         @books += author_books
       end
@@ -31,7 +29,8 @@ class BooksController < ApplicationController
   end
 
   def show
-    @work_key = params[:id] # ex: /works/OL12345W
+    # params[:id] is something like "OL29226517W"
+    @work_key = params[:id]
     service = OpenLibraryService.new
     @work = service.get_work_details(@work_key)
     @local_metadata = BookMetadatum.find_by(work_key: @work_key)
@@ -48,9 +47,4 @@ class BooksController < ApplicationController
       @full_author = @local_metadata&.author || "Unknown"
     end
   end
-
-  def create; end
-  def update; end
-  def destroy; end
 end
-

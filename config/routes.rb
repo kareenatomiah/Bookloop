@@ -29,6 +29,7 @@ Rails.application.routes.draw do
 
 
 
+
     root to: 'pages#splash'
     devise_for :users
 
@@ -40,9 +41,6 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "posts#index"
-  resources :books, only: [:index, :show] do
-    resources :reviews, only: [:new, :create]
-  end
-  resources :users, only: [:show]
-
+  resources :books, only: [:index, :show]
+  resources :reviews, only: [:new, :create, :edit, :update, :destroy]
 end
