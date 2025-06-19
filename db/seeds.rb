@@ -15,7 +15,7 @@ BookMetadatum.destroy_all
 puts "📚 Creating Fantasy books..."
 
 BookMetadatum.create!(
-  work_key: "/works/OL29226517W", 
+  work_key: "/works/OL29226517W",
   author: "Rebecca Yarros",
   category: "Fantasy",
   description: "In the brutal world of Navarre, twenty-year-old Violet Sorrengail never expected to be thrust into the elite Riders Quadrant at Basgiath War College.
@@ -29,7 +29,7 @@ BookMetadatum.create!(
 )
 
 BookMetadatum.create!(
-  work_key: "/works/OL999999W",
+  work_key: "/works/OL43523737W",
   author: "Rebecca Yarros",
   category: "Fantasy",
   description: <<~DESC.strip
@@ -41,10 +41,61 @@ BookMetadatum.create!(
   DESC
 )
 
+BookMetadatum.create!(
+  work_key: "/works/OL41943074W",
+  author: "Rebecca Yarros",
+  category: "Fantasy",
+  description: <<~DESC.strip
+    In the brutal world of Navarre, twenty-year-old Violet Sorrengail never expected to be thrust into the elite Riders Quadrant at Basgiath War College.
+
+    Frail and studious, she had trained her whole life for a quiet role in the Scribes Quadrant. But when her mother, the commanding general, forces her into the brutal world of dragon riders, Violet is thrown into a whirlwind of danger, betrayal, and secrets.
+
+    With dragons that don’t accept weakness, and deadly trials that eliminate the unworthy, she must prove she’s stronger than anyone imagined. And when secrets about the kingdom’s true history begin to unravel, Violet must decide who to trust—and whether survival is worth the cost of the truth.
+
+    Fourth Wing is a spellbinding tale of courage, romance, and rebellion in a world where nothing is as it seems.
+  DESC
+)
+
+
+BookMetadatum.create!(
+  work_key: "/works/OL5738147W",
+  author: "Brandon Sanderson",
+  category: "Fantasy",
+  description: <<~DESC.strip
+    Elantris was the city of the gods: radiant, powerful, and immortal. But every god was once a mortal, and Elantris has fallen.
+
+    Now, its citizens are cursed — living corpses caught in eternal pain and decay, cast out and forgotten.
+
+    Prince Raoden of Arelon wakes up one day transformed and thrown into Elantris. But instead of succumbing, he sets out to bring hope to the fallen.
+
+    Meanwhile, Princess Sarene arrives in Arelon only to find herself a widow before the wedding. Political intrigue, mystery, and revolution collide as Sarene and Raoden fight against a dark religious empire.
+
+    Elantris is a brilliant standalone epic of lost magic, political rebellion, and hope against all odds.
+  DESC
+)
+
+BookMetadatum.create!(
+  work_key: "/works/OL20157354W",
+  author: "Samantha Shannon",
+  category: "Fantasy",
+  description: <<~DESC.strip
+    A world divided. A queendom without an heir. An ancient enemy awakens.
+
+    The House of Berethnet has ruled Inys for a thousand years. Still unwed, Queen Sabran the Ninth must conceive a daughter to protect her realm from destruction — but assassins are getting closer to her door.
+
+    Ead Duryan is an outsider at court. Though she has risen to the position of lady-in-waiting, she is loyal to a hidden society of mages. She keeps a watchful eye on Sabran, secretly protecting her with forbidden magic.
+
+    Across the dark sea, Tané has trained all her life to be a dragonrider, but is forced to make a choice that could see her life unravel.
+
+    The Priory of the Orange Tree is a sweeping epic of queens, dragons, and destiny, perfect for fans of high fantasy and feminist storytelling.
+  DESC
+)
+
+
 puts "📚 Creating Romance books..."
 
 BookMetadatum.create!(
-  work_key: "/works/OL123456W",
+  work_key: "/works/OL24390422W",
   author: "Ana Huang",
   category: "Romance",
   description: <<~DESC.strip
@@ -57,7 +108,7 @@ BookMetadatum.create!(
 )
 
 BookMetadatum.create!(
-  work_key: "/works/OL234567W",
+  work_key: "/works/OL35677398W",
   author: "Chloe Walsh",
   category: "Romance",
   description: <<~DESC.strip
@@ -70,7 +121,7 @@ BookMetadatum.create!(
 )
 
 BookMetadatum.create!(
-  work_key: "/works/OL345678W",
+  work_key: "/works/OL27965945W",
   author: "Chloe Walsh",
   category: "Romance",
   description: <<~DESC.strip
@@ -82,10 +133,41 @@ BookMetadatum.create!(
   DESC
 )
 
+BookMetadatum.create!(
+  work_key: "/works/OL20248394W",
+  author: "Jojo Moyes",
+  category: "Romance",
+  description: <<~DESC.strip
+    Louisa Clark is an ordinary girl living an exceedingly ordinary life — steady boyfriend, close family — who has never been farther afield than their tiny village.
+
+    Will Traynor is a high-powered man of the world who loved risk, speed, and adventure... until a motorcycle accident left him paralyzed.
+
+    When Lou is hired to care for him, their worlds collide. At first resentful and distant, Will gradually opens up to Lou, and their bond becomes something that changes both of them forever.
+
+    *Me Before You* is a heartfelt story about love, loss, and choosing how to live. It asks the question: what would you do if making the person you love happy meant breaking your own heart?
+  DESC
+)
+
+BookMetadatum.create!(
+  work_key: "/works/OL54797W",
+  author: "Nicholas Sparks",
+  category: "Romance",
+  description: <<~DESC.strip
+    In a quiet nursing home, an old man reads aloud from a worn-out notebook to a woman who no longer remembers him.
+
+    The story he tells is one of love that bloomed in the 1940s: Noah Calhoun, a country boy back from the war, and Allie Nelson, a wealthy young woman, fell deeply in love one summer.
+
+    But life and circumstance pulled them apart. Decades later, their story returns — a testament to enduring passion, heartbreak, and the power of memory.
+
+    *The Notebook* is a timeless romance about how some loves are meant to last a lifetime — no matter what.
+  DESC
+)
+
+
 puts "📚 Creating Sci-Fi books..."
 
 BookMetadatum.create!(
-  work_key: "/works/OL456789W",
+  work_key: "/works/OL17076473W",
   author: "Pierce Brown",
   category: "Sci-Fi",
   description: <<~DESC.strip
@@ -96,7 +178,7 @@ BookMetadatum.create!(
 )
 
 BookMetadatum.create!(
-  work_key: "/works/OL567890W",
+  work_key: "/works/OL19340986W",
   author: "Pierce Brown",
   category: "Sci-Fi",
   description: <<~DESC.strip
@@ -109,7 +191,7 @@ BookMetadatum.create!(
 )
 
 BookMetadatum.create!(
-  work_key: "/works/OL678901W",
+  work_key: "/works/OL19650409W",
   author: "Pierce Brown",
   category: "Sci-Fi",
   description: <<~DESC.strip
@@ -121,10 +203,35 @@ BookMetadatum.create!(
   DESC
 )
 
+BookMetadatum.create!(
+  work_key: "/works/OL24731706W",
+  author: "Emily St. John Mandel",
+  category: "Science Fiction",
+  description: <<~DESC.strip
+    Une forêt canadienne en 1912. Une station lunaire en 2203. Un musicien, un écrivain en tournée, une détective temporelle. Leurs vies n’auraient jamais dû se croiser — sauf qu’un phénomène étrange les relie tous : un battement, une faille, une boucle temporelle.
+
+    *Sea of Tranquility* est une fresque subtile de science-fiction sur l’effondrement des mondes, le voyage dans le temps et la beauté de la vie, même fugace. Poétique, mélancolique, fascinant.
+  DESC
+)
+
+
+BookMetadatum.create!(
+  work_key: "/works/OL21745884W",
+  author: "Andy Weir",
+  category: "Science Fiction",
+  description: <<~DESC.strip
+    Ryland Grace se réveille seul dans un vaisseau spatial, sans souvenir de sa mission ni de son identité. Ce qu’il découvre est terrifiant : il est la seule chance de sauver l’humanité.
+
+    Avec seulement un ordinateur, ses connaissances scientifiques, et un allié inattendu, il doit résoudre une énigme cosmique… ou tout perdre.
+
+    *Project Hail Mary* est une odyssée spatiale brillante, émotive et pleine d’humour, par l’auteur de *The Martian*.
+  DESC
+)
+
 puts "📚 Creating Thriller books..."
 
 BookMetadatum.create!(
-  work_key: "/works/OL789012W",
+  work_key: "/works/OL27729743W",
   author: "Freida McFadden",
   category: "Thriller",
   description: <<~DESC.strip
@@ -135,7 +242,7 @@ BookMetadatum.create!(
 )
 
 BookMetadatum.create!(
-  work_key: "/works/OL890123W",
+  work_key: "/works/OL34113490W",
   author: "Freida McFadden",
   category: "Thriller",
   description: <<~DESC.strip
@@ -148,7 +255,7 @@ BookMetadatum.create!(
 )
 
 BookMetadatum.create!(
-  work_key: "/works/OL901234W",
+  work_key: "/works/OL37576476W",
   author: "Freida McFadden",
   category: "Thriller",
   description: <<~DESC.strip
@@ -157,6 +264,32 @@ BookMetadatum.create!(
     The line between right and wrong blurs once again in a finale full of shocking revelations.
 
     The ultimate psychological game.
+  DESC
+)
+
+BookMetadatum.create!(
+  work_key: "/works/OL29327038W",
+  author: "Lisa Jewell",
+  category: "Thriller",
+  description: <<~DESC.strip
+    Alix, une podcasteuse célèbre, rencontre Josie lors d’un dîner d’anniversaire. Josie semble banale… jusqu’à ce qu’elle propose de devenir le sujet du prochain podcast.
+
+    Très vite, Alix se retrouve prise dans une toile de secrets et de manipulations. Car Josie cache quelque chose. Et une fois qu’elle a mis la main sur vous, elle ne vous lâche plus.
+
+    *None of This Is True* est un thriller psychologique haletant sur l’identité, le danger et le voyeurisme.
+  DESC
+)
+
+BookMetadatum.create!(
+  work_key: "/works/OL27774874W",
+  author: "Ana Reyes",
+  category: "Thriller",
+  description: <<~DESC.strip
+    Maya est hantée par le souvenir d’un été : sa meilleure amie est morte subitement… sous les yeux d’un garçon mystérieux, Frank. Sept ans plus tard, une vidéo virale montre une mort identique, avec Frank encore là.
+
+    Maya doit replonger dans ses souvenirs — et dans cette cabane perdue au milieu des pins — pour découvrir la vérité.
+
+    *The House in the Pines* est un thriller psychologique à suspense lent, envoûtant et très addictif.
   DESC
 )
 
