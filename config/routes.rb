@@ -1,27 +1,27 @@
 Rails.application.routes.draw do
-  get 'wishlists/index'
-  get 'reviews/index'
-  get 'reviews/create'
-  get 'reviews/destroy'
-  get 'bereads/index'
-  get 'bereads/create'
-  get 'bereads/destroy'
-  get 'libraries/create'
-  get 'libraries/destroy'
-  get 'categories/index'
-  get 'categories/show'
-  get 'books/index'
-  get 'books/show'
-  get 'books/create'
-  get 'books/update'
-  get 'books/destroy'
-  get 'users/index'
-  get 'users/show'
-  get 'users/create'
-  get 'users/update'
-  get 'users/destroy'
+  # get 'wishlists/index'
+  # get 'reviews/index'
+  # get 'reviews/create'
+  # get 'reviews/destroy'
+  # get 'bereads/index'
+  # get 'bereads/create'
+  # get 'bereads/destroy'
+  # get 'libraries/create'
+  # get 'libraries/destroy'
+  # get 'categories/index'
+  # get 'categories/show'
+  # get 'books/index'
+  # get 'books/show'
+  # get 'books/create'
+  # get 'books/update'
+  # get 'books/destroy'
+  # get 'users/index'
+  # get 'users/show'
+  # post 'users/create'
+  # patch 'users/update'
+  # delete 'users/destroy'
   get 'dashboard', to: 'dashboard#index'
-  get "books/search", to: "books#index"
+  # get "books/search", to: "books#index"
   get 'splash', to: 'pages#splash'
   get "api/ratings/:work_key", to: "api/ratings#show"
 
@@ -40,8 +40,9 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "posts#index"
-  resources :books, only: [:index, :show]
-  resources :reviews, only: [:new, :create]
+  resources :books, only: [:index, :show] do
+    resources :reviews, only: [:new, :create]
+  end
   resources :users, only: [:show]
 
 end
