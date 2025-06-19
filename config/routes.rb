@@ -28,6 +28,8 @@ Rails.application.routes.draw do
   get "api/ratings/:work_key", to: "api/ratings#show"
 
   get 'wishlist', to: 'wishlists#index', as: 'wishlist'
+  get 'mybooks', to: 'libraries#index', as: 'mybooks'
+
 
 
 
@@ -46,4 +48,6 @@ Rails.application.routes.draw do
   resources :books, only: [:index, :show]
   resources :reviews, only: [:new, :create, :edit, :update, :destroy]
   resources :categories, only: [:index, :show]
+  resources :wishlists, only: [:index, :create]
+  resources :libraries, only: [:create]
 end

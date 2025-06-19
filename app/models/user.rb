@@ -1,11 +1,9 @@
 class User < ApplicationRecord
-  # Associations
-  has_many :books
+  has_many :wishlists, dependent: :destroy
+  has_many :libraries, dependent: :destroy
 
-  # Devise modules
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
-  # Validations
   validates :name, presence: true, length: { maximum: 50 }, allow_blank: true
 end

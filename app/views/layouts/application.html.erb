@@ -15,14 +15,17 @@
       <%= render "shared/navbar" %>
     <% end %>
 
-    <%# 🔔 Flash personnalisé style BookLoop %>
-    <% if flash[:notice] %>
+
+    <% if flash[:notice].present? %>
       <div style="background-color: #fbeaea; color: #862221; padding: 15px 20px; margin: 20px auto; max-width: 600px; border-radius: 8px; font-family: 'Helvetica Neue', sans-serif; text-align: center; box-shadow: 0 2px 6px rgba(0,0,0,0.05);">
         <%= flash[:notice] %>
       </div>
+    <% elsif flash[:alert].present? %>
+      <div style="background-color: #ffe6e6; color: red; padding: 15px 20px; margin: 20px auto; max-width: 600px; border-radius: 8px; font-family: 'Helvetica Neue', sans-serif; text-align: center; box-shadow: 0 2px 6px rgba(0,0,0,0.05);">
+        <%= flash[:alert] %>
+      </div>
     <% end %>
 
-    <%= render "shared/flashes" %>
     <%= yield %>
 
     <%= javascript_include_tag "controllers", type: "module" %>
