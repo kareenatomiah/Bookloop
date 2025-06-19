@@ -30,7 +30,7 @@
       <% @my_books.each do |book| %>
         <%= link_to book_path(book), class: "book-item" do %>
           <div class="book-cover-wrapper">
-            <%= image_tag(book.cover_url, alt: book.title, class: "book-cover") if book.cover_url.present? %>
+            <%= image_tag(alt: book.title, class: "book-cover") if book.cover_url.present? %>
           </div>
           <div class="book-details">
             <h3 class="book-title"><%= book.title %></h3>
@@ -89,4 +89,3 @@
     data-navbar-target="searchBar"
   />
 </div>
-
