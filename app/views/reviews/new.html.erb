@@ -1,6 +1,6 @@
 <div style="max-width: 600px; margin: 50px auto; padding: 30px; background: white; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.05); font-family: 'Helvetica Neue', sans-serif;">
 
-  <%# 📘 Cover Image + infos %>
+  <%# 📘 Cover Image + Info %>
   <div style="text-align: center; margin-bottom: 30px;">
     <% if @work["covers"]&.any? %>
       <%= image_tag "https://covers.openlibrary.org/b/id/#{@work["covers"].first}-M.jpg",
@@ -16,17 +16,16 @@
     <p style="margin: 0; color: #555;"><%= @full_author %></p>
   </div>
 
-  <%# ✍️ Review form %>
-  <%= form_with model: @review, url: reviews_path, local: true do |form| %>
+  <%# ✍️ New Review Form %>
+  <%= form_with model: @review do |form| %>
     <%= form.hidden_field :work_key, value: @work_key %>
-
     <div style="margin-bottom: 20px; text-align: center;">
       <strong>Rating:</strong><br>
       <div id="star-rating" style="margin-top: 8px;">
         <% 1.upto(5) do |i| %>
           <label style="font-size: 28px; cursor: pointer; color: #ccc;">
             <input type="radio" name="review[rating]" value="<%= i %>" style="display:none;" />
-            <span class="star" data-index="<%= i %>">☆</span>
+            <span class="star">☆</span>
           </label>
         <% end %>
       </div>
@@ -49,20 +48,13 @@
 
 <script>
   const stars = document.querySelectorAll('.star');
-
   stars.forEach((star, idx) => {
     star.addEventListener('click', () => {
       stars.forEach((s, i) => {
-        if (i < idx + 1) {
-          s.innerHTML = '★';
-          s.style.color = '#862221';
-        } else {
-          s.innerHTML = '☆';
-          s.style.color = '#ccc';
-        }
+        s.innerText = i <= idx ? '★' : '☆';
+        s.style.color = i <= idx ? '#862221' : '#ccc';
       });
 
-      // Sélectionne le bon radio
       const radio = document.querySelector(`input[name='review[rating]'][value='${idx + 1}']`);
       if (radio) radio.checked = true;
     });
