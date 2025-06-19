@@ -1,11 +1,13 @@
 class CategoriesController < ApplicationController
   def index
-    # Récupère toutes les catégories distinctes présentes dans BookMetadatum
+    # Get unique category names as strings
     @categories = BookMetadatum.select(:category).distinct.order(:category)
   end
 
   def show
-    @category = params[:id] 
+    # Use params[:id] directly as category string
+    @category = params[:id]
+    # Fetch all books with this category
     @books = BookMetadatum.where(category: @category)
   end
 end
