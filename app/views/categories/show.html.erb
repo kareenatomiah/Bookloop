@@ -1,0 +1,27 @@
+<div style="max-width: 1000px; margin: 50px auto; font-family: 'Helvetica Neue', sans-serif;">
+  <h1 style="font-size: 36px; color: #862221; margin-bottom: 30px;"><%= @category.capitalize %> Books</h1>
+
+  <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 20px;">
+    <% @books.each do |book| %>
+      <% work = OpenLibraryService.new.get_work_details(book.work_key) %>
+
+      <div style="text-align: center;">
+        <% if work["covers"]&.any? %>
+          <%= link_to book_path(book.work_key) do %>
+            <img src="https://covers.openlibrary.org/b/id/<%= work["covers"].first %>-M.jpg"
+                 alt="<%= work["title"] %>"
+                 style="width: 110px; height: auto; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);" />
+          <% end %>
+        <% else %>
+          <div style="width: 110px; height: 160px; background-color: #eee; border-radius: 8px;"></div>
+        <% end %>
+
+        <p style="margin-top: 8px; font-weight: bold; font-size: 14px;">
+          <%= link_to (work["title"] || "Untitled"), book_path(book.work_key), style: "color: #2c2c2c; text-decoration: none;" %>
+        </p>
+        <p style="margin: 0; font-size: 12px; color: #666;"><%= book.author %></p>
+      </div>
+    <% end %>
+  </div>
+</div>
+
