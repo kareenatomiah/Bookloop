@@ -59,6 +59,17 @@
     </div>
   </div>
 
+  <div style="margin-top: 20px; display: flex; justify-content: center; gap: 15px;">
+  <%= button_to wishlists_path(work_key: @work_key), method: :post, class: "wishlist-btn", form_class: "inline-form" do %>
+    Save to Wishlist
+  <% end %>
+
+  <%= button_to libraries_path(work_key: @work_key), method: :post, class: "library-btn", form_class: "inline-form" do %>
+    Add to My Books
+  <% end %>
+  </div>
+
+
   <%# ✅ Reviews list %>
   <% if @reviews.any? %>
     <hr style="margin: 40px 0 20px 0;">
@@ -82,5 +93,3 @@
   <hr style="margin: 30px 0;">
   <%= link_to "← Back to Search", books_path, style: "color: #007bff; text-decoration: underline;" %>
 </div>
-
-<%= console %>

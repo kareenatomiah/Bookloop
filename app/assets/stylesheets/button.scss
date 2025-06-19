@@ -1,0 +1,34 @@
+.wishlist-btn, .library-btn {
+  background-color: #862221;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.2s ease;
+}
+
+.wishlist-btn:hover, .library-btn:hover {
+  background-color: #6e1c1c;
+}
+
+.inline-form {
+  display: inline;
+}
+
+.btn-review {
+  background-color: #862221;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.btn-review:hover {
+  background-color: #6e1a1a;
+}
