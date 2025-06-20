@@ -32,3 +32,26 @@
 .btn-review:hover {
   background-color: #6e1a1a;
 }
+
+.category-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.btn-grenat {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #800020; /* Grenat color */
+  color: white;
+  text-decoration: none;
+  border: none;
+  border-radius: 4px;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.btn-grenat:hover {
+  background-color: #660018; /* Slightly darker grenat for hover */
+}
+

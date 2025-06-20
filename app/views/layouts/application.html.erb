@@ -12,7 +12,12 @@
 
   <body>
     <% unless devise_controller? || (controller_name == 'pages' && action_name == 'splash') %>
-      <%= render "shared/navbar" %>
+      <div data-controller="sidebar">
+        <%= render "shared/navbar" %>
+        <%= render "shared/sidebar" %>
+      </div>
+    <% else %>
+      <%= yield %>
     <% end %>
 
     <% if flash[:notice].present? || flash[:alert].present? %>
