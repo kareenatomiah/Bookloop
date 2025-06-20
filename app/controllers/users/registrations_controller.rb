@@ -17,8 +17,8 @@ class Users::RegistrationsController < Devise::RegistrationsController
     params[:user].delete(:avatar_upload)
 
     if resource.update_without_password(account_update_params)
-      set_flash_message!(:notice, :updated_custom)  # <-- Use custom flash key
-      redirect_to dashboard_path
+      set_flash_message!(:notice, :updated_custom)  # Custom flash message
+      redirect_to user_path(current_user)
     else
       flash.now[:alert] = "Failed to update profile. Please check the form."
       render :edit, status: :unprocessable_entity
@@ -35,13 +35,11 @@ class Users::RegistrationsController < Devise::RegistrationsController
     ])
   end
 
-  # Override Devise method to skip password validation on update
   def update_resource(resource, params)
     resource.update_without_password(params)
   end
 
-  # Redirect path after update
   def after_update_path_for(resource)
-    dashboard_path
+    user_path(current_user)
   end
 end

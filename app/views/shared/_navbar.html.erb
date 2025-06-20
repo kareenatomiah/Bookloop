@@ -1,6 +1,13 @@
 <nav class="bookloop-navbar">
   <div class="navbar-left">
-    <i class="fa fa-bars" id="menu-toggle"></i>
+    <i
+      class="fa fa-bars"
+      data-action="click->sidebar#open"
+      style="cursor: pointer;"
+      aria-label="Open sidebar menu"
+      role="button"
+      tabindex="0"
+    ></i>
   </div>
 
   <div class="navbar-center">
@@ -11,28 +18,7 @@
 
   <div class="navbar-right">
     <%= link_to books_path do %>
-      <i class="fa fa-search" style="color: white;"></i>
+      <i class="fa fa-search" style="color: white;" aria-label="Search books"></i>
     <% end %>
   </div>
 </nav>
-
-<%= render "shared/sidebar" %>
-
-
-<script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const sidebar = document.getElementById("sidebar");
-    const menuToggle = document.getElementById("menu-toggle");
-    const closeBtn = document.getElementById("close-sidebar");
-
-    if (menuToggle && sidebar && closeBtn) {
-      menuToggle.addEventListener("click", () => {
-        sidebar.classList.add("open");
-      });
-
-      closeBtn.addEventListener("click", () => {
-        sidebar.classList.remove("open");
-      });
-    }
-  });
-</script>
