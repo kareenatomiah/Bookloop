@@ -108,6 +108,7 @@
   const photoInput = document.getElementById('be-read-photo-input');
   const captureButton = document.getElementById('be-read-capture');
 
+  // Start camera
   navigator.mediaDevices.getUserMedia({ video: true })
     .then((stream) => {
       video.srcObject = stream;
@@ -116,6 +117,7 @@
       alert("Camera access error: " + err.message);
     });
 
+  // Capture photo
   captureButton.addEventListener('click', () => {
     const context = canvas.getContext('2d');
     canvas.width = video.videoWidth;
@@ -123,7 +125,16 @@
     context.drawImage(video, 0, 0);
     const dataURL = canvas.toDataURL('image/jpeg');
     photoInput.value = dataURL;
-    alert("📸 Photo captured!");
+    alert("📸 Photo has been captured!");
+  });
+
+  // Stop camera when form is submitted
+  document.querySelector("form").addEventListener("submit", () => {
+    const stream = video.srcObject;
+    if (stream) {
+      const tracks = stream.getTracks();
+      tracks.forEach(track => track.stop());
+    }
   });
 </script>
 
