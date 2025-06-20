@@ -2,8 +2,8 @@ class ApplicationController < ActionController::Base
   # Require users to be logged in by default
   before_action :authenticate_user!
 
-  # Uncomment and implement if you want locale support
-  # before_action :set_locale
+  # Allow additional parameters for Devise
+  before_action :configure_permitted_parameters, if: :devise_controller?
 
   # Redirect user after sign in (login)
   def after_sign_in_path_for(resource)
@@ -11,15 +11,16 @@ class ApplicationController < ActionController::Base
   end
 
   # Redirect user after sign up (registration)
-  # Note: This works only if you override Devise::RegistrationsController
   def after_sign_up_path_for(resource)
     dashboard_path
   end
 
-  private
+  protected
 
-  # Example method to set locale, if needed
-  # def set_locale
-  #   I18n.locale = params[:locale] || I18n.default_locale
-  # end
+  # Permit additional user attributes for sign up and account update
+  def configure_permitted_parameters
+    added_attrs = [:name, :email, :password, :password_confirmation, :avatar_url, :date_of_birth, :country, :bio]
+    devise_parameter_sanitizer.permit(:sign_up, keys: added_attrs)
+    devise_parameter_sanitizer.permit(:account_update, keys: added_attrs)
+  end
 end

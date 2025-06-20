@@ -1,0 +1,139 @@
+.edit-profile-container {
+  max-width: 400px;
+  margin: 40px auto;
+  padding: 25px 30px 40px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  color: #222;
+}
+
+.back-button {
+  display: inline-block;
+  font-size: 1rem;
+  color: #900020; /* grenat */
+  text-decoration: none;
+  font-weight: 600;
+  margin-bottom: 30px;
+  transition: color 0.3s ease;
+}
+.back-button:hover {
+  color: #b30030;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 35px;
+  font-weight: 700;
+  font-size: 1.8rem;
+  letter-spacing: 0.03em;
+}
+
+.avatar-upload {
+  position: relative;
+  width: 150px;
+  height: 150px;
+  margin: 0 auto 40px;
+
+  .profile-avatar, &.placeholder {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    background-color: #ddd;
+    border: 3px solid #900020;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+  }
+
+  .placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    color: #900020;
+  }
+
+  .avatar-input {
+    display: none;
+  }
+
+  .avatar-upload-label {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background: #900020;
+    color: white;
+    padding: 6px 12px;
+    font-size: 0.85rem;
+    border-radius: 0 0 50% 50%;
+    cursor: pointer;
+    user-select: none;
+    font-weight: 600;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    transition: background 0.3s ease;
+  }
+
+  .avatar-upload-label:hover {
+    background: #b30030;
+  }
+}
+
+.input-label {
+  display: block;
+  margin-bottom: 7px;
+  font-weight: 600;
+  color: #444;
+  font-size: 0.95rem;
+}
+
+.input {
+  width: 100%;
+  padding: 10px 12px;
+  margin-bottom: 25px;
+  border: 1.5px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+
+  &:focus {
+    outline: none;
+    border-color: #900020;
+    box-shadow: 0 0 5px rgba(144,0,32,0.4);
+  }
+}
+
+.save-button {
+  width: 100%;
+  background-color: #900020;
+  color: white;
+  padding: 14px 0;
+  font-size: 1.2rem;
+  font-weight: 700;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: #b30030;
+  }
+}
+
+.flash.notice {
+  background-color: #d4edda;
+  color: #155724;
+  padding: 10px;
+  border: 1px solid #c3e6cb;
+  border-radius: 5px;
+  margin-bottom: 15px;
+}
+
+.flash.alert {
+  background-color: #f8d7da;
+  color: #721c24;
+  padding: 10px;
+  border: 1px solid #f5c6cb;
+  border-radius: 5px;
+  margin-bottom: 15px;
+}
