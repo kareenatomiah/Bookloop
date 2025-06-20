@@ -29,6 +29,7 @@ Rails.application.routes.draw do
 
   get 'wishlist', to: 'wishlists#index', as: 'wishlist'
   get 'mybooks', to: 'libraries#index', as: 'mybooks'
+  get "/profile", to: "users#show", as: :profile
 
 
 
@@ -50,4 +51,6 @@ Rails.application.routes.draw do
   resources :categories, only: [:index, :show]
   resources :wishlists, only: [:index, :create]
   resources :libraries, only: [:create]
+  resources :users, only: [:show]
+
 end

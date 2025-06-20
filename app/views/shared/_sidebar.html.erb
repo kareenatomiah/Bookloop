@@ -5,7 +5,7 @@
   </div>
 
   <ul class="sidebar-links">
-    <li><%= link_to "Profile", "#" %></li>
+    <li><%= link_to "Profile", user_path(current_user) %></li>
     <li><%= link_to "Categories", categories_path %></li>
     <li><%= link_to "Friends", "#" %></li> <!-- Update this path when friends feature is added -->
     <li><%= link_to "My Books", mybooks_path %></li>
@@ -13,7 +13,6 @@
     <li><%= link_to "Sign out", destroy_user_session_path, method: :delete, data: { turbo: false } %></li>
   </ul>
 </div>
-
 
 <style>
   .sidebar {
