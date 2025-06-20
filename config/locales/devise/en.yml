@@ -92,6 +92,7 @@ en:
       updated: Your password has been changed successfully. You are now signed in.
       updated_not_active: Your password has been changed successfully.
     registrations:
+      updated_custom: "Profile updated successfully!"
       destroyed: Bye! Your account has been successfully cancelled. We hope to see you again soon.
       edit:
         are_you_sure: Are you sure?

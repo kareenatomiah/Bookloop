@@ -1,35 +1,68 @@
-<h2>Edit <%= resource_name.to_s.humanize %></h2>
+<%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put, multipart: true, class: "edit-profile-form" }) do |f| %>
+  <div class="edit-profile-container">
 
-<%= simple_form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
-  <%= f.error_notification %>
+    <%= link_to "← Back", "#", class: "back-button" %>
 
-  <div class="form-inputs">
-    <%= f.input :email, required: true, autofocus: true %>
+    <h2>Edit Profile</h2>
 
-    <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
-      <p>Currently waiting confirmation for: <%= resource.unconfirmed_email %></p>
-    <% end %>
+    <div class="avatar-upload">
+      <% if resource.avatar_url.present? %>
+        <%= image_tag(resource.avatar_url, class: "profile-avatar", id: "avatarPreview") %>
+      <% else %>
+        <div class="profile-avatar placeholder" id="avatarPreview"></div>
+      <% end %>
 
-    <%= f.input :password,
-                hint: "leave it blank if you don't want to change it",
-                required: false,
-                input_html: { autocomplete: "new-password" } %>
-    <%= f.input :password_confirmation,
-                required: false,
-                input_html: { autocomplete: "new-password" } %>
-    <%= f.input :current_password,
-                hint: "we need your current password to confirm your changes",
-                required: true,
-                input_html: { autocomplete: "current-password" } %>
-  </div>
+      <%= f.file_field :avatar_upload, accept: "image/*", class: "avatar-input", id: "avatarInput" %>
+      <label for="avatarInput" class="avatar-upload-label">Change photo</label>
+    </div>
 
-  <div class="form-actions">
-    <%= f.button :submit, "Update" %>
+    <%= f.label :name, "Full Name", class: "input-label" %>
+    <%= f.text_field :name, class: "input", placeholder: "Enter your name" %>
+
+    <%= f.label :email, class: "input-label" %>
+    <%= f.email_field :email, class: "input", placeholder: "Enter your email" %>
+
+    <%= f.label :password, class: "input-label" %>
+    <%= f.password_field :password, autocomplete: "new-password", placeholder: "Enter new password", class: "input" %>
+
+    <%= f.label :date_of_birth, "Date of Birth", class: "input-label" %>
+    <%= f.date_field :date_of_birth, class: "input" %>
+
+    <%= f.label :country, class: "input-label" %>
+    <%= f.select :country, ["Mauritius", "France", "Nigeria", "India"], {}, class: "input" %>
+
+    <%= f.label :bio, "Bio", class: "input-label" %>
+    <%= f.text_area :bio, class: "input", rows: 4, placeholder: "Tell us something about yourself..." %>
+
+
+    <%= f.submit "Save changes", class: "save-button" %>
   </div>
 <% end %>
 
-<h3>Cancel my account</h3>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const input = document.getElementById("avatarInput");
+    const preview = document.getElementById("avatarPreview");
 
-<div>Unhappy? <%= button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?", turbo_confirm: "Are you sure?" }, method: :delete %></div>
+    if (input && preview) {
+      input.addEventListener("change", e => {
+        const file = e.target.files[0];
+        if (!file) return;
 
-<%= link_to "Back", :back %>
+        const reader = new FileReader();
+        reader.onload = e => {
+          if (preview.tagName === "IMG") {
+            preview.src = e.target.result;
+          } else {
+            const img = document.createElement("img");
+            img.src = e.target.result;
+            img.className = "profile-avatar";
+            img.id = "avatarPreview";
+            preview.replaceWith(img);
+          }
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+  });
+</script>
