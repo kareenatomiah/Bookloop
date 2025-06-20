@@ -13,12 +13,7 @@
   <body>
     <!-- ✅ Navigation bar unless splash or Devise -->
     <% unless devise_controller? || (controller_name == 'pages' && action_name == 'splash') %>
-      <div data-controller="sidebar">
-        <%= render "shared/navbar" %>
-        <%= render "shared/sidebar" %>
-      </div>
-    <% else %>
-      <%= yield %>
+      <%= render "shared/navbar" %>
     <% end %>
 
     <!-- ✅ Flash messages -->
@@ -38,6 +33,9 @@
         <%= flash[:notice] || flash[:alert] %>
       </div>
     <% end %>
+
+    <!-- ✅ Page content -->
+    <%= yield %>
 
     <!-- ✅ Floating "+ New BeRead" button (only for logged-in users) -->
     <% if user_signed_in? %>
@@ -76,4 +74,3 @@
     <%= javascript_include_tag "controllers", type: "module" %>
   </body>
 </html>
-
