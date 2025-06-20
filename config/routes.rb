@@ -17,5 +17,7 @@ Rails.application.routes.draw do
   resources :wishlists, only: [:index, :create]
   resources :libraries, only: [:create]
   resources :users, only: [:show]
+  resources :be_reads
+
 
 end

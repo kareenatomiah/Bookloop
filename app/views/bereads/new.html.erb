@@ -1,0 +1,129 @@
+<h1 class="page-title">Create a new BeRead</h1>
+
+<%= form_with(model: @be_read, local: true, html: { multipart: true, class: "be-read-form" }) do |form| %>
+  <div class="selfie-container">
+
+    <!-- ✅ Video preview -->
+    <video id="be-read-video" autoplay playsinline></video>
+
+    <!-- ✅ Canvas to capture the photo -->
+    <canvas id="be-read-canvas" style="display:none;"></canvas>
+
+    <!-- ✅ Text input -->
+    <div class="form-group">
+      <%= form.label :text, "Your message" %>
+      <%= form.text_field :text, placeholder: "Write your message...", class: "form-control" %>
+    </div>
+
+    <!-- ✅ Hidden input to store captured photo -->
+    <%= form.hidden_field :photo_data, id: "be-read-photo-input" %>
+
+    <!-- ✅ Capture button -->
+    <button type="button" id="be-read-capture" class="capture-button">📸 Take photo</button>
+
+    <!-- ✅ Submit button -->
+    <div style="margin-top: 20px;">
+      <%= form.submit "Send my BeRead", class: "submit-button" %>
+    </div>
+  </div>
+<% end %>
+
+<!-- ✅ Styling for the form -->
+<style>
+  .page-title {
+    font-size: 28px;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #862221;
+  }
+
+  .be-read-form {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 25px;
+    border-radius: 12px;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  }
+
+  .selfie-container video {
+    width: 100%;
+    border-radius: 12px;
+    margin-bottom: 15px;
+  }
+
+  .form-group {
+    margin: 15px 0;
+  }
+
+  .form-control {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+  }
+
+  .form-control:focus {
+    border-color: #862221;
+    outline: none;
+    box-shadow: 0 0 5px rgba(134, 34, 33, 0.3);
+  }
+
+  .capture-button {
+    display: inline-block;
+    background-color: #e0e0e0;
+    color: #333;
+    border: none;
+    padding: 10px 16px;
+    font-size: 16px;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+
+  .capture-button:hover {
+    background-color: #ccc;
+  }
+
+  .submit-button {
+    width: 100%;
+    padding: 14px;
+    background-color: #862221;
+    color: white;
+    font-size: 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+
+  .submit-button:hover {
+    background-color: #6b1c1b;
+  }
+</style>
+
+<!-- ✅ JavaScript to handle the camera and photo capture -->
+<script>
+  const video = document.getElementById('be-read-video');
+  const canvas = document.getElementById('be-read-canvas');
+  const photoInput = document.getElementById('be-read-photo-input');
+  const captureButton = document.getElementById('be-read-capture');
+
+  navigator.mediaDevices.getUserMedia({ video: true })
+    .then((stream) => {
+      video.srcObject = stream;
+    })
+    .catch((err) => {
+      alert("Camera access error: " + err.message);
+    });
+
+  captureButton.addEventListener('click', () => {
+    const context = canvas.getContext('2d');
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    context.drawImage(video, 0, 0);
+    const dataURL = canvas.toDataURL('image/jpeg');
+    photoInput.value = dataURL;
+    alert("📸 Photo captured!");
+  });
+</script>
+
