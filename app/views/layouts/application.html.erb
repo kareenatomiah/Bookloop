@@ -11,10 +11,12 @@
   </head>
 
   <body>
+    <!-- ✅ Navigation bar unless splash or Devise -->
     <% unless devise_controller? || (controller_name == 'pages' && action_name == 'splash') %>
       <%= render "shared/navbar" %>
     <% end %>
 
+    <!-- ✅ Flash messages -->
     <% if flash[:notice].present? || flash[:alert].present? %>
       <div style="
         background-color: <%= flash[:notice] ? '#e9f9ef' : '#fbeaea' %>;
@@ -32,8 +34,44 @@
       </div>
     <% end %>
 
+    <!-- ✅ Page content -->
     <%= yield %>
 
+    <!-- ✅ Floating "+ New BeRead" button (only for logged-in users) -->
+    <% if user_signed_in? %>
+      <%= link_to new_be_read_path, class: "be-read-floating-button" do %>
+        +
+      <% end %>
+    <% end %>
+
+    <!-- ✅ Button style -->
+    <style>
+      .be-read-floating-button {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        width: 60px;
+        height: 60px;
+        background-color: #862221; /* BookLoop rouge */
+        color: white;
+        font-size: 36px;
+        font-weight: bold;
+        text-align: center;
+        line-height: 60px;
+        border-radius: 50%;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        text-decoration: none;
+        z-index: 1000;
+        transition: background-color 0.2s ease;
+      }
+
+      .be-read-floating-button:hover {
+        background-color: #6b1c1b; /* Rouge foncé au hover */
+      }
+    </style>
+
+    <!-- ✅ Stimulus controllers -->
     <%= javascript_include_tag "controllers", type: "module" %>
   </body>
 </html>
+
