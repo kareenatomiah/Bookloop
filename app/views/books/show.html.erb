@@ -32,7 +32,7 @@
     <strong>Category:</strong> <%= @local_metadata&.category || @work["subjects"]&.first || "Unknown" %>
   </p>
 
-    <p style="color: #666; margin-bottom: 20px;">
+  <p style="color: #666; margin-bottom: 20px;">
     <strong>Ratings:</strong> <%= average_rating(@reviews) %> <strong>☆</strong>
   </p>
 
@@ -60,15 +60,14 @@
   </div>
 
   <div style="margin-top: 20px; display: flex; justify-content: center; gap: 15px;">
-  <%= button_to wishlists_path(work_key: @work_key), method: :post, class: "wishlist-btn", form_class: "inline-form" do %>
-    Save to Wishlist
-  <% end %>
+    <%= button_to wishlists_path(work_key: @work_key), method: :post, class: "wishlist-btn", form_class: "inline-form" do %>
+      Save to Wishlist
+    <% end %>
 
-  <%= button_to libraries_path(work_key: @work_key), method: :post, class: "library-btn", form_class: "inline-form" do %>
-    Add to My Books
-  <% end %>
+    <%= button_to libraries_path(work_key: @work_key), method: :post, class: "library-btn", form_class: "inline-form" do %>
+      Add to My Books
+    <% end %>
   </div>
-
 
   <%# ✅ Reviews list %>
   <% if @reviews.any? %>
@@ -79,9 +78,9 @@
         <p style="margin: 0;"><strong>Rating:</strong> <span style="color: #862221;"><%= "★" * review.rating %><%= "☆" * (5 - review.rating) %></span></p>
         <p style="margin-top: 8px;"><%= review.content %></p>
         <% if user_signed_in? && review.user_id == current_user.id %>
-          <div style="margin-top: 10px;">
-            <%= link_to "✏️ Edit", edit_review_path(review), style: "margin-right: 10px; color: #007bff;" %>
-            <%= link_to "🗑️ Delete", review_path(review), method: :delete, data: { confirm: "Are you sure?" }, style: "color: red;" %>
+          <div style="margin-top: 10px; display: flex; justify-content: flex-end; gap: 8px;">
+            <%= link_to "✏️ Edit", edit_review_path(review), style: "border: 1px solid #862221; color: #862221; background: white; padding: 5px 10px; font-size: 13px; border-radius: 5px; text-decoration: none;" %>
+            <%= button_to "🗑️ Delete", review_path(review), method: :delete, data: { confirm: "Are you sure?" }, style: "border: none; background: #862221; color: white; padding: 5px 10px; font-size: 13px; border-radius: 5px; cursor: pointer;" %>
           </div>
         <% end %>
       </div>
@@ -93,3 +92,4 @@
   <hr style="margin: 30px 0;">
   <%= link_to "← Back to Search", books_path, style: "color: #007bff; text-decoration: underline;" %>
 </div>
+

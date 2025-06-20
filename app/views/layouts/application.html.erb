@@ -15,24 +15,22 @@
       <%= render "shared/navbar" %>
     <% end %>
 
-
-    <% if flash[:notice].present? %>
-      <div style="background-color: #fbeaea; color: #862221; padding: 15px 20px; margin: 20px auto; max-width: 600px; border-radius: 8px; font-family: 'Helvetica Neue', sans-serif; text-align: center; box-shadow: 0 2px 6px rgba(0,0,0,0.05);">
-        <%= flash[:notice] %>
+    <% if flash[:notice].present? || flash[:alert].present? %>
+      <div style="
+        background-color: <%= flash[:notice] ? '#e9f9ef' : '#fbeaea' %>;
+        color: <%= flash[:notice] ? '#1f6b3a' : '#862221' %>;
+        border: 1px solid <%= flash[:notice] ? '#c5ebd6' : '#f1c0c0' %>;
+        padding: 15px 20px;
+        margin: 20px auto;
+        max-width: 600px;
+        border-radius: 8px;
+        font-family: 'Helvetica Neue', sans-serif;
+        text-align: center;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+      ">
+        <%= flash[:notice] || flash[:alert] %>
       </div>
-    <% elsif flash[:alert].present? %>
-      <div style="background-color: #ffe6e6; color: red; padding: 15px 20px; margin: 20px auto; max-width: 600px; border-radius: 8px; font-family: 'Helvetica Neue', sans-serif; text-align: center; box-shadow: 0 2px 6px rgba(0,0,0,0.05);">
-        <%= flash[:alert] %>
-      </div>
     <% end %>
-
-    <% if flash[:notice] %>
-      <div class="flash notice"><%= flash[:notice] %></div>
-    <% end %>
-    <% if flash[:alert] %>
-      <div class="flash alert"><%= flash[:alert] %></div>
-    <% end %>
-
 
     <%= yield %>
 
