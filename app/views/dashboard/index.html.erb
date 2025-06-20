@@ -6,82 +6,69 @@
     <h2>Recently Added</h2>
     <div class="book-list">
       <% @recent_books.each do |book| %>
-        <%= link_to book_path(book), class: "book-item" do %>
-          <div class="book-cover-wrapper">
-            <%= image_tag(book.cover_url, alt: book.title, class: "book-cover") if book.cover_url.present? %>
-          </div>
-          <div class="book-details">
-            <h3 class="book-title"><%= book.title %></h3>
-            <p class="book-author">by <%= book.author %></p>
-            <p class="book-category"><%= book.category.name if book.category %></p>
-            <% if book.description.present? %>
-              <p class="book-description"><%= truncate(book.description, length: 140) %></p>
-            <% end %>
-          </div>
-        <% end %>
+        <div class="book-item">
+          <%= link_to book_path(book) do %>
+            <div class="book-cover-wrapper">
+              <%= image_tag(book.cover_url, alt: book.title, class: "book-cover") if book.cover_url.present? %>
+            </div>
+            <div class="book-title"><%= book.title %></div>
+            <div class="book-author">by <%= book.author %></div>
+          <% end %>
+        </div>
       <% end %>
     </div>
   </section>
 
-<!-- My Books -->
-<section class="my-books">
-  <h2>My Books (<%= @my_books.count %>)</h2>
-  <div class="book-list">
-    <% @my_books.each do |library| %>
-      <% work_key = library.work_key %>
-      <% work_data = fetch_openlibrary_data(work_key) %>
-      <% next if work_data.blank? %>
-
-      <%= link_to book_path(work_key), class: "book-item" do %>
-        <div class="book-cover-wrapper">
-          <% if work_data["covers"]&.any? %>
-            <%= image_tag("https://covers.openlibrary.org/b/id/#{work_data["covers"].first}-M.jpg", alt: work_data["title"], class: "book-cover") %>
-          <% end %>
-        </div>
-        <div class="book-details">
-          <h3 class="book-title"><%= work_data["title"] %></h3>
-          <p class="book-author">
-            by <%= extract_author(work_data) || "Unknown" %>
-          </p>
-          <% if work_data["description"].is_a?(Hash) %>
-            <p class="book-description"><%= truncate(work_data["description"]["value"], length: 140) %></p>
-          <% elsif work_data["description"].is_a?(String) %>
-            <p class="book-description"><%= truncate(work_data["description"], length: 140) %></p>
+  <!-- My Books -->
+  <section class="my-books">
+    <h2>My Books (<%= @my_books.count %>)</h2>
+    <div class="book-list">
+      <% @my_books.each do |library| %>
+        <% work_key = library.work_key %>
+        <% work_data = fetch_openlibrary_data(work_key) %>
+        <% next if work_data.blank? %>
+        <div class="book-item">
+          <%= link_to book_path(work_key) do %>
+            <div class="book-cover-wrapper">
+              <% if work_data["covers"]&.any? %>
+                <%= image_tag("https://covers.openlibrary.org/b/id/#{work_data["covers"].first}-M.jpg", alt: work_data["title"], class: "book-cover") %>
+              <% end %>
+            </div>
+            <div class="book-title"><%= work_data["title"] %></div>
+            <div class="book-author">by <%= extract_author(work_data) || "Unknown" %></div>
           <% end %>
         </div>
       <% end %>
-    <% end %>
-  </div>
-</section>
-
+    </div>
+  </section>
 
   <!-- Wishlist -->
   <section class="wishlist">
     <h2>Wishlist (<%= @wishlist ? @wishlist.count : 0 %>)</h2>
     <div class="book-list">
       <% (@wishlist || []).each do |book| %>
-        <%= link_to book_path(book), class: "book-item" do %>
-          <div class="book-cover-wrapper">
-            <%= image_tag(book.cover_url, alt: book.title, class: "book-cover") if book.cover_url.present? %>
-          </div>
-          <div class="book-details">
-            <h3 class="book-title"><%= book.title %></h3>
-            <p class="book-author">by <%= book.author %></p>
-            <p class="book-category"><%= book.category.name if book.category %></p>
-            <% if book.description.present? %>
-              <p class="book-description"><%= truncate(book.description, length: 140) %></p>
-            <% end %>
-          </div>
-        <% end %>
+        <div class="book-item">
+          <%= link_to book_path(book) do %>
+            <div class="book-cover-wrapper">
+              <%= image_tag(book.cover_url, alt: book.title, class: "book-cover") if book.cover_url.present? %>
+            </div>
+            <div class="book-title"><%= book.title %></div>
+            <div class="book-author">by <%= book.author %></div>
+          <% end %>
+        </div>
       <% end %>
     </div>
   </section>
 
-<!-- Categories -->
-<div class="category-grid">
-  <% @categories.each do |category_record| %>
-    <%= link_to category_path(category_record.name), class: "category-tile btn-grenat" do %>
-      <%= category_record.name.capitalize %>
-    <% end %>
-  <% end %>
+  <!-- Categories -->
+  <section class="categories">
+    <h2>Categories</h2>
+    <div class="category-grid">
+      <% @categories.each do |category| %>
+        <%= link_to category_path(category.name), class: "category-tile" do %>
+          <%= category.name.capitalize %>
+        <% end %>
+      <% end %>
+    </div>
+  </section>
 </div>
