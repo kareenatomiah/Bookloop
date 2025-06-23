@@ -20,10 +20,41 @@ class OpenLibraryService
   # 📘 3. Détails d'un "work" (œuvre)
   # Exemple : /works/OL12345W.json
   # Donne : titre, description, sujets, etc.
-def get_work_details(work_key)
-  response = self.class.get("#{work_key}.json")
-  response.success? ? response.parsed_response : nil
-end
+  def get_work_details(work_key)
+    response = self.class.get("#{work_key}.json")
+    response.success? ? response.parsed_response : nil
+  end
+
+  # New helper to fetch enriched work data with author name and cover URL
+  def fetch_full_work_data(work_key)
+    work = get_work_details(work_key)
+    return nil unless work
+
+    # Extract title and covers
+    title = work["title"] || "Untitled"
+    covers = work["covers"] || []
+
+    # Get first author name if possible
+    full_author = "Unknown author"
+    if work["authors"] && work["authors"].any?
+      author_key = work["authors"].first["author"]["key"]
+      author = get_author_details(author_key)
+      full_author = author["name"] if author && author["name"]
+    end
+
+    # Build a hash that your controller/view can use
+    {
+      work_data: {
+        title: title,
+        covers: covers,
+        description: work["description"].is_a?(Hash) ? work["description"]["value"] : work["description"],
+        # Add any other fields needed here
+      },
+      full_author: full_author,
+      # Provide a cover URL for the first cover if any
+      cover_url: covers.any? ? book_cover_url(covers.first, 'M') : nil
+    }
+  end
 
   # def get_work_ratings(work_key)
   # # Ex: work_key = "/works/OL45804W"
