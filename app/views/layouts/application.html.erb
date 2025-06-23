@@ -11,9 +11,11 @@
   </head>
 
   <body>
-    <!-- ✅ Navigation bar unless splash or Devise -->
     <% unless devise_controller? || (controller_name == 'pages' && action_name == 'splash') %>
-      <%= render "shared/navbar" %>
+      <div data-controller="sidebar">
+        <%= render "shared/navbar" %>
+        <%= render "shared/sidebar" %>
+      </div>
     <% end %>
 
     <!-- ✅ Flash messages -->
@@ -35,7 +37,10 @@
     <% end %>
 
     <!-- ✅ Page content -->
-    <%= yield %>
+    <%= yield unless devise_controller? || (controller_name == 'pages' && action_name == 'splash') %>
+    <% if devise_controller? || (controller_name == 'pages' && action_name == 'splash') %>
+      <%= yield %>
+    <% end %>
 
     <!-- ✅ Floating "+ New BeRead" button (only for logged-in users) -->
     <% if user_signed_in? %>
@@ -52,7 +57,7 @@
         right: 20px;
         width: 60px;
         height: 60px;
-        background-color: #862221; /* BookLoop rouge */
+        background-color: #862221;
         color: white;
         font-size: 36px;
         font-weight: bold;
@@ -66,7 +71,7 @@
       }
 
       .be-read-floating-button:hover {
-        background-color: #6b1c1b; /* Rouge foncé au hover */
+        background-color: #6b1c1b;
       }
     </style>
 
