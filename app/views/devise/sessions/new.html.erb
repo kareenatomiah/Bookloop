@@ -1,3 +1,7 @@
+<% resource ||= User.new %>
+<% resource_name ||= :user %>
+<% devise_mapping ||= Devise.mappings[:user] %>
+
 <div class="login-container" style="max-width: 400px; margin: 60px auto; padding: 20px; font-family: 'Helvetica Neue', sans-serif;">
 
   <!-- Logo -->
@@ -7,7 +11,9 @@
 
   <!-- Heading -->
   <h2 style="text-align: center; font-size: 24px; font-weight: bold; margin-bottom: 10px;">Welcome Back</h2>
-  <p style="text-align: center; color: #777; margin-bottom: 30px;">Login to continue your book journey</p>
+  <p style="text-align: center; color: #777; margin-bottom: 30px;">
+    Login to continue your book journey
+  </p>
 
   <!-- Login Form -->
   <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
@@ -21,7 +27,7 @@
       <%= f.password_field :password, autocomplete: "current-password", class: "form-control", style: "width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px;" %>
     </div>
 
-    <!-- Forgot password - modified -->
+    <!-- Forgot password -->
     <div style="text-align: right; margin-top: 5px; margin-bottom: 25px;">
       <%= link_to "Forgot your password?", new_user_password_path, style: "color: rgb(91, 11, 11); font-size: 0.9em; text-decoration: none;" %>
     </div>
@@ -33,7 +39,8 @@
 
   <!-- Sign Up Link -->
   <div style="text-align: center; margin-top: 20px;">
-    <p style="color: #777;">Don't have an account?
+    <p style="color: #777;">
+      Don't have an account?
       <%= link_to "Sign up", new_user_registration_path, style: "color:rgb(91, 11, 11); text-decoration: none;" %>
     </p>
   </div>
