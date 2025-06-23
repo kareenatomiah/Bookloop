@@ -28,7 +28,9 @@
     <div><p style="font-weight:bold; font-size:20px;">37K</p><p style="font-size:13px; color:#666;">likes</p></div>
   </div>
   <div style="display:flex; justify-content:center; gap:20px; margin-bottom:30px;">
-    <%= link_to "Edit profile", edit_user_registration_path, class: "btn", style: "background-color:#862221; color:white; padding:10px 20px; border-radius:10px;" %>
+    <% if current_user == @user %>
+      <%= link_to "Edit profile", edit_user_registration_path, class: "btn", style: "background-color:#862221; color:white; padding:10px 20px; border-radius:10px;" %>
+    <% end %>
     <%= link_to "Add friends", "#", class: "btn", style: "background-color:#862221; color:white; padding:10px 20px; border-radius:10px;" %>
   </div>
 </div>
@@ -42,16 +44,16 @@
 
 <!-- BeRead content -->
 <div id="content-beeread">
-  <% if @user.be_reads.any? %>
+  <% if @user_be_reads.any? %>
     <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:15px; padding:0 20px;">
-      <% @user.be_reads.order(created_at: :desc).each do |beread| %>
+      <% @user_be_reads.each do |beread| %>
         <div style="background-color:#f9f9f9; border-radius:12px; box-shadow:0 2px 6px rgba(0,0,0,0.1); padding:10px; display:flex; flex-direction:column; align-items:center;">
-          <% if beread.selfie.attached? %>
-            <%= image_tag beread.selfie.variant(resize_to_limit: [300,300]), style: "border-radius:12px; width:100%; height:auto; object-fit:cover; margin-bottom:10px;" %>
+          <% if beread.photo.attached? %>
+            <%= image_tag beread.photo.variant(resize_to_limit: [300,300]), style: "border-radius:12px; width:100%; height:auto; object-fit:cover; margin-bottom:10px;" %>
           <% else %>
             <div style="width:100%; height:200px; background:#ddd; border-radius:12px; margin-bottom:10px;"></div>
           <% end %>
-          <p style="font-size:14px; color:#333; text-align:center; white-space:pre-wrap;"><%= beread.text %></p>
+          <p style="font-size:14px; color:#333; text-align:center; white-space:pre-wrap;"><%= beread.caption %></p>
           <p style="font-size:12px; color:#666; margin-top:8px;"><%= beread.book.title if beread.book %></p>
         </div>
       <% end %>
@@ -61,7 +63,6 @@
   <% end %>
 </div>
 
-<!-- My Books content -->
 <!-- My Books content -->
 <div id="content-mybooks" style="display:none;">
   <div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(130px,1fr)); gap:20px; padding:0 20px;">
@@ -84,16 +85,15 @@
   <% end %>
 </div>
 
-
 <script>
-function switchTab(tab) {
-  document.getElementById("content-beeread").style.display = tab === "beeread" ? "block" : "none";
-  document.getElementById("content-mybooks").style.display = tab === "mybooks" ? "block" : "none";
+  function switchTab(tab) {
+    document.getElementById("content-beeread").style.display = tab === "beeread" ? "block" : "none";
+    document.getElementById("content-mybooks").style.display = tab === "mybooks" ? "block" : "none";
 
-  document.getElementById("tab-beeread").style.color = tab === "beeread" ? "#862221" : "#aaa";
-  document.getElementById("tab-mybooks").style.color = tab === "mybooks" ? "#862221" : "#aaa";
+    document.getElementById("tab-beeread").style.color = tab === "beeread" ? "#862221" : "#aaa";
+    document.getElementById("tab-mybooks").style.color = tab === "mybooks" ? "#862221" : "#aaa";
 
-  document.getElementById("tab-beeread").style.fontWeight = tab === "beeread" ? "bold" : "normal";
-  document.getElementById("tab-mybooks").style.fontWeight = tab === "mybooks" ? "bold" : "normal";
-}
+    document.getElementById("tab-beeread").style.fontWeight = tab === "beeread" ? "bold" : "normal";
+    document.getElementById("tab-mybooks").style.fontWeight = tab === "mybooks" ? "bold" : "normal";
+  }
 </script>

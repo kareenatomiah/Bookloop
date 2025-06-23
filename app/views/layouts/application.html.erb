@@ -18,6 +18,7 @@
       </div>
     <% end %>
 
+    <!-- ✅ Flash messages -->
     <% if flash[:notice].present? || flash[:alert].present? %>
       <div style="
         background-color: <%= flash[:notice] ? '#e9f9ef' : '#fbeaea' %>;
@@ -35,17 +36,20 @@
       </div>
     <% end %>
 
+    <!-- ✅ Page content -->
     <%= yield unless devise_controller? || (controller_name == 'pages' && action_name == 'splash') %>
     <% if devise_controller? || (controller_name == 'pages' && action_name == 'splash') %>
       <%= yield %>
     <% end %>
 
+    <!-- ✅ Floating "+ New BeRead" button (only for logged-in users) -->
     <% if user_signed_in? %>
       <%= link_to new_be_read_path, class: "be-read-floating-button" do %>
         +
       <% end %>
     <% end %>
 
+    <!-- ✅ Button style -->
     <style>
       .be-read-floating-button {
         position: fixed;
@@ -71,6 +75,7 @@
       }
     </style>
 
+    <!-- ✅ Stimulus controllers -->
     <%= javascript_include_tag "controllers", type: "module" %>
   </body>
 </html>
