@@ -1,98 +1,52 @@
-<h1 class="page-title">Create a new BeRead</h1>
+class BeReadsController < ApplicationController
 
-<% my_books_for_select = @my_books.map do |lib|
-     title = @book_data.dig(lib.work_key, :work_data, "title") || "Untitled"
-     [title, lib.book_id]
-   end
-%>
+    def index
+    @be_reads = BeRead.all
+  end
 
-<%= form_with(model: @be_read, local: true, multipart: true, html: { id: "be-read-form" }) do |form| %>
-  <div class="selfie-container" data-controller="webcam" style="max-width:400px; margin:auto; text-align:center;">
+  def new
+    @be_read = BeRead.new
+  end
 
-    <!-- Camera Stream -->
-    <video data-webcam-target="video" autoplay playsinline muted
-           style="width:100%; background:black; border:2px solid #862221; border-radius:12px;"></video>
+  def create
+    @be_read = BeRead.new(text: params[:be_read][:text])
 
-    <!-- Canvas -->
-    <canvas data-webcam-target="canvas" style="display:none;"></canvas>
+    if params[:be_read][:photo_data].present?
+      decoded_image = decode_base64_image(params[:be_read][:photo_data])
+      @be_read.selfie.attach(
+        io: decoded_image,
+        filename: "selfie.jpg",
+        content_type: "image/jpeg"
+      )
+    end
 
-    <!-- Image Preview -->
-    <img data-webcam-target="preview" alt="Captured preview"
-         style="display:none; width:100%; border-radius:12px; margin-top:15px;" />
+    if @be_read.save
+      redirect_to current_user, notice: "BeRead successfully created."
+    else
+      render :new, status: :unprocessable_entity
+    end
+  end
 
-    <!-- Caption Input -->
-    <div style="margin-top:15px;">
-      <%= form.label :caption, "Your message", class: "form-label" %><br>
-      <%= form.text_field :caption, class: "form-control", style: "width:100%;" %>
-    </div>
+    def show
+    @be_read = BeRead.find(params[:id])
+  end
 
-    <!-- Book Select -->
-    <div style="margin-top:15px;">
-      <%= form.label :book_id, "Select a Book", class: "form-label" %><br>
-      <%= form.select :book_id,
-                      options_for_select(my_books_for_select, @be_read.book_id),
-                      prompt: "Choose a book",
-                      class: "form-control",
-                      style: "width:100%;" %>
-    </div>
+  def destroy
+    @be_read = BeRead.find(params[:id])
+    @be_read.destroy
+    redirect_to be_reads_path, notice: "BeRead deleted."
+  end
 
-    <!-- Hidden field to hold photo -->
-    <%= form.hidden_field :photo_data, data: { webcam_target: "photoInput" } %>
+  private
 
-    <!-- Capture Button -->
-    <button type="button" class="btn capture-btn"
-            data-action="click->webcam#capture"
-            data-webcam-target="captureButton"
-            style="margin-top:10px;">
-      📸 Take photo
-    </button>
-
-    <!-- Submit Button -->
-    <div style="margin-top:20px;">
-      <%= form.submit "Send my BeRead",
-                      disabled: true,
-                      class: "btn-primary",
-                      data: { webcam_target: "submitButton" } %>
-    </div>
-
-    <!-- Notification -->
-    <div data-webcam-target="notification"
-         style="display:none; position:fixed; top:20px; left:50%; transform:translateX(-50%);
-                background:#4caf50; color:#fff; padding:16px 24px; border-radius:30px;
-                opacity:0; transition:opacity .6s; z-index:1000; font-size:16px; font-weight:bold;">
-      📸 Photo captured!
-    </div>
-  </div>
-<% end %>
-
-<!-- Styles -->
-<style>
-  .btn-primary {
-    background: #862221;
-    color: #fff;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 6px;
-    font-size: 16px;
-  }
-
-  .capture-btn {
-    background: #862221;
-    color: #fff;
-    padding: 12px 20px;
-    border: none;
-    border-radius: 8px;
-    font-size: 16px;
-  }
-
-  .capture-btn:hover {
-    background: #6b1c1b;
-  }
-
-  .btn-primary:disabled,
-  .capture-btn:disabled {
-    cursor: not-allowed;
-    opacity: 0.6;
-  }
-</style>
+  def decode_base64_image(data)
+    image_data = data.sub(/^data:image\/\w+;base64,/, "")
+    decoded_data = Base64.decode64(image_data)
+    file = Tempfile.new(['selfie', '.jpg'])
+    file.binmode
+    file.write(decoded_data)
+    file.rewind
+    file
+  end
+end
 
