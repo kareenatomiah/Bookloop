@@ -1,74 +1,249 @@
+<style>
+  .dashboard {
+    padding: 0 20px;
+    font-family: 'Helvetica Neue', sans-serif;
+  }
+
+  .section-title {
+    font-size: 22px;
+    margin: 20px 0 10px;
+    font-weight: bold;
+    color: #862221;
+  }
+
+  .top-banner {
+    background-color: #862221;
+    color: white;
+    padding: 50px 0 30px;
+    border-bottom-left-radius: 50% 20px;
+    border-bottom-right-radius: 50% 20px;
+    margin-bottom: 20px;
+    position: relative;
+  }
+
+  .horizontal-scroll.my-books {
+    display: flex;
+    overflow: hidden;
+    gap: 15px;
+    padding: 10px;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .horizontal-scroll:not(.my-books) {
+    display: flex;
+    overflow-x: auto;
+    gap: 15px;
+    padding: 10px;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .horizontal-scroll::-webkit-scrollbar {
+    display: none;
+  }
+
+  .book-card {
+    flex: 0 0 auto;
+    width: 140px;
+    scroll-snap-align: start;
+    text-align: center;
+    background-color: transparent;
+    transition: transform 0.3s ease, opacity 0.3s ease, filter 0.3s ease;
+  }
+
+  .top-banner .book-card .book-cover {
+    height: 190px; /* réduit pour éviter le recadrage */
+  }
+
+  .top-banner .book-card.center {
+    transform: scale(1.1);
+    z-index: 2;
+    opacity: 1;
+    filter: none;
+  }
+
+  .top-banner .book-card:not(.center) {
+    transform: scale(0.95);
+    opacity: 0.5;
+    filter: grayscale(40%);
+  }
+
+  .book-cover {
+    width: 100%;
+    height: 210px;
+    object-fit: cover;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  }
+
+  .top-banner .section-title {
+    color: white !important;
+  }
+
+  .top-banner .book-title {
+    font-size: 15px;
+    font-weight: bold;
+    margin-top: 8px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: white;
+  }
+
+  .top-banner .book-author {
+    font-size: 13px;
+    color: #f0f0f0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .wishlist-section .book-title,
+  .categories-section .book-title {
+    font-size: 15px;
+    font-weight: bold;
+    margin-top: 8px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: #111;
+  }
+
+  .wishlist-section .book-author,
+  .categories-section .book-author {
+    font-size: 13px;
+    color: #444;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .category-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 15px;
+    margin: 10px 0 40px;
+  }
+
+  .category-tile {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #004e64;
+    color: white;
+    padding: 30px 20px;
+    border-radius: 12px;
+    font-size: 18px;
+    font-weight: bold;
+    text-decoration: none;
+    text-align: center;
+    transition: background-color 0.3s;
+  }
+
+  .category-tile:hover {
+    background-color: #003644;
+  }
+
+  .arrow-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 24px;
+    background-color: rgba(255,255,255,0.3);
+    color: white;
+    border: none;
+    cursor: pointer;
+    z-index: 3;
+    padding: 10px;
+  }
+
+  .arrow-left {
+    left: 10px;
+  }
+
+  .arrow-right {
+    right: 10px;
+  }
+</style>
+
 <div class="dashboard">
-  <h1>📚 BookLoop Catalog</h1>
-
-  <!-- Recently Added -->
-  <section class="recent-books">
-    <h2>Recently Added</h2>
-    <div class="book-list">
-      <% @recent_books.each do |book| %>
-        <div class="book-item">
-          <%= link_to book_path(book) do %>
-            <div class="book-cover-wrapper">
-              <%= image_tag(book.cover_url, alt: book.title, class: "book-cover") if book.cover_url.present? %>
-            </div>
-            <div class="book-title"><%= book.title %></div>
-            <div class="book-author">by <%= book.author %></div>
-          <% end %>
-        </div>
-      <% end %>
-    </div>
-  </section>
-
-  <!-- My Books -->
-  <section class="my-books">
-    <h2>My Books (<%= @my_books.count %>)</h2>
-    <div class="book-list">
-      <% @my_books.each do |library| %>
-        <% work_key = library.work_key %>
-        <% work_data = fetch_openlibrary_data(work_key) %>
-        <% next if work_data.blank? %>
-        <div class="book-item">
-          <%= link_to book_path(work_key) do %>
-            <div class="book-cover-wrapper">
-              <% if work_data["covers"]&.any? %>
-                <%= image_tag("https://covers.openlibrary.org/b/id/#{work_data["covers"].first}-M.jpg", alt: work_data["title"], class: "book-cover") %>
-              <% end %>
-            </div>
+  <!-- 🎯 My Books -->
+  <div class="top-banner">
+    <h2 class="section-title">📚 My Books (<%= @my_books&.count || 0 %>)</h2>
+    <button class="arrow-button arrow-left" onclick="shiftBooks(-1)">←</button>
+    <button class="arrow-button arrow-right" onclick="shiftBooks(1)">→</button>
+    <div class="horizontal-scroll my-books" id="myBooksScroll">
+      <% @my_books&.first(12)&.each_with_index do |library, index| %>
+        <% data = @book_data[library.work_key] %>
+        <% next if data.blank? %>
+        <% work_data = data[:work_data] %>
+        <% author = data[:full_author] %>
+        <% cover_id = work_data["covers"]&.first %>
+        <div class="book-card <%= 'center' if index == 0 %>">
+          <%= link_to book_path(library.work_key) do %>
+            <%= image_tag(
+                  cover_id.present? ? "https://covers.openlibrary.org/b/id/#{cover_id}-M.jpg" : "https://via.placeholder.com/140x210?text=No+Cover",
+                  alt: work_data["title"],
+                  class: "book-cover"
+                ) %>
             <div class="book-title"><%= work_data["title"] %></div>
-            <div class="book-author">by <%= extract_author(work_data) || "Unknown" %></div>
+            <div class="book-author"><%= author || "Unknown" %></div>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <!-- ❤️ Wishlist -->
+  <section class="wishlist-section">
+    <h2 class="section-title">❤️ Wishlist (<%= @wishlist&.count || 0 %>)</h2>
+    <div class="horizontal-scroll">
+      <% @wishlist&.first(12)&.each do |item| %>
+        <% data = @book_data[item.work_key] %>
+        <% next if data.blank? %>
+        <% work_data = data[:work_data] %>
+        <% author = data[:full_author] %>
+        <% cover_id = work_data["covers"]&.first %>
+        <div class="book-card">
+          <%= link_to book_path(item.work_key) do %>
+            <%= image_tag(
+                  cover_id.present? ? "https://covers.openlibrary.org/b/id/#{cover_id}-M.jpg" : "https://via.placeholder.com/140x210?text=No+Cover",
+                  alt: work_data["title"],
+                  class: "book-cover"
+                ) %>
+            <div class="book-title"><%= work_data["title"] %></div>
+            <div class="book-author">by <%= author || "Unknown" %></div>
           <% end %>
         </div>
       <% end %>
     </div>
   </section>
 
-  <!-- Wishlist -->
-  <section class="wishlist">
-    <h2>Wishlist (<%= @wishlist ? @wishlist.count : 0 %>)</h2>
-    <div class="book-list">
-      <% (@wishlist || []).each do |book| %>
-        <div class="book-item">
-          <%= link_to book_path(book) do %>
-            <div class="book-cover-wrapper">
-              <%= image_tag(book.cover_url, alt: book.title, class: "book-cover") if book.cover_url.present? %>
-            </div>
-            <div class="book-title"><%= book.title %></div>
-            <div class="book-author">by <%= book.author %></div>
-          <% end %>
-        </div>
-      <% end %>
-    </div>
-  </section>
-
-  <!-- Categories -->
-  <section class="categories">
-    <h2>Categories</h2>
+  <!-- 🧭 Categories -->
+  <section class="categories-section">
+    <h2 class="section-title">🧭 Categories</h2>
     <div class="category-grid">
-      <% @categories.each do |category| %>
+      <% @categories&.each do |category| %>
         <%= link_to category_path(category.name), class: "category-tile" do %>
-          <%= category.name.capitalize %>
+          <span><%= category.name.capitalize %></span>
         <% end %>
       <% end %>
     </div>
   </section>
 </div>
+
+<script>
+  let currentIndex = 0;
+  function shiftBooks(direction) {
+    const container = document.getElementById("myBooksScroll");
+    const books = container.querySelectorAll(".book-card");
+    if (books.length === 0) return;
+
+    books[currentIndex].classList.remove("center");
+    currentIndex = (currentIndex + direction + books.length) % books.length;
+    books[currentIndex].scrollIntoView({ behavior: 'smooth', inline: 'center' });
+    books[currentIndex].classList.add("center");
+  }
+</script>
+
