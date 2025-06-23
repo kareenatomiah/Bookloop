@@ -1,15 +1,31 @@
 <h1 style="text-align: center;">📚 My Books</h1>
 
 <% if @my_books.any? %>
-  <% @my_books.each do |library| %>
-    <%= render partial: "books/book_preview", locals: {
-      work_data: @book_data[library.work_key][:work_data],
-      full_author: @book_data[library.work_key][:full_author],
-      reviews: @book_data[library.work_key][:reviews],
-      local_metadata: @book_data[library.work_key][:local_metadata],
-      work_key: library.work_key
-    } %>
-  <% end %>
+  <div class="books-grid" style="display: grid; grid-template-columns: repeat(auto-fill,minmax(220px,1fr)); gap: 20px; padding: 20px;">
+    <% @my_books.each do |library| %>
+      <div class="book-card" style="position: relative; background: white; border-radius: 12px; padding: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+
+        <%# Render your book preview partial, passing data from your API cache @book_data %>
+        <%= render partial: "books/book_preview", locals: {
+          work_data: @book_data[library.work_key][:work_data],
+          full_author: @book_data[library.work_key][:full_author],
+          reviews: @book_data[library.work_key][:reviews],
+          local_metadata: @book_data[library.work_key][:local_metadata],
+          work_key: library.work_key
+        } %>
+
+        <%# Link to create a BeRead for this book %>
+        <%= link_to new_be_read_path(book_id: library.book_id), class: "create-beread-btn", style: "
+            position: absolute; bottom: 10px; right: 10px;
+            background-color: #862221; color: #fff; padding: 8px 12px;
+            border-radius: 6px; text-decoration: none;
+            font-weight: bold;
+          " do %>
+          📸 BeRead this
+        <% end %>
+      </div>
+    <% end %>
+  </div>
 <% else %>
   <p style="text-align: center; color: #888;">Your library is empty.</p>
 <% end %>

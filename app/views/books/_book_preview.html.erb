@@ -2,20 +2,33 @@
 
   <% if work_data["covers"]&.any? %>
     <%= image_tag "https://covers.openlibrary.org/b/id/#{work_data["covers"].first}-M.jpg",
-                  alt: work_data["title"] || "Book cover",
+                  alt: (work_data["title"].presence || "Book cover"),
                   style: "width: 120px; height: auto; border-radius: 10px; margin-bottom: 10px;" %>
+  <% else %>
+    <div style="width: 120px; height: 180px; background: #eee; border-radius: 10px; margin: 0 auto 10px;"></div>
   <% end %>
 
-  <h2 style="font-size: 20px; color: #2c2c2c; margin: 10px 0;"><%= work_data["title"] || "Untitled" %></h2>
+  <h2 style="font-size: 20px; color: #2c2c2c; margin: 10px 0;">
+    <%= work_data["title"].presence || "Untitled" %>
+  </h2>
 
-  <p style="color: #555;"><strong>By:</strong> <%= full_author.presence || "Unknown" %></p>
+  <p style="color: #555; margin: 5px 0;">
+    <strong>By:</strong> <%= full_author.presence || "Unknown" %>
+  </p>
 
-  <p style="color: #555;"><strong>Category:</strong> <%= local_metadata&.category.presence || work_data["subjects"]&.first || "Unknown" %></p>
+  <p style="color: #555; margin: 5px 0;">
+    <strong>Category:</strong>
+    <%= local_metadata&.category.presence || work_data["subjects"]&.first.presence || "Unknown" %>
+  </p>
 
   <% if reviews.any? %>
-    <p style="color: #444;"><strong>Rating:</strong> <%= average_rating(reviews) %> ☆</p>
+    <p style="color: #444; margin: 10px 0 0;">
+      <strong>Rating:</strong> <%= average_rating(reviews) %> ☆
+    </p>
   <% end %>
 
-  <%= link_to "Details", book_path(work_key), class: "btn-review", style: "margin-top: 10px; display: inline-block;" %>
+  <%= link_to "Details", book_path(work_key), class: "btn-review",
+      style: "margin-top: 15px; display: inline-block; background-color: #862221; color: white; padding: 10px 16px; border-radius: 8px; text-decoration: none;" %>
 
 </div>
+
