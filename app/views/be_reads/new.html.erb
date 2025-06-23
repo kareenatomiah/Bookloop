@@ -28,7 +28,6 @@
   </div>
 <% end %>
 
-<!-- ✅ Styling for the form -->
 <style>
   .page-title {
     font-size: 28px;
@@ -101,29 +100,48 @@
   }
 </style>
 
-<!-- ✅ JavaScript to handle the camera and photo capture -->
 <script>
   const video = document.getElementById('be-read-video');
   const canvas = document.getElementById('be-read-canvas');
   const photoInput = document.getElementById('be-read-photo-input');
   const captureButton = document.getElementById('be-read-capture');
+  let stream;
 
+  // ✅ Start camera
   navigator.mediaDevices.getUserMedia({ video: true })
-    .then((stream) => {
+    .then((mediaStream) => {
+      stream = mediaStream;
       video.srcObject = stream;
     })
     .catch((err) => {
       alert("Camera access error: " + err.message);
     });
 
+  // ✅ Capture photo
   captureButton.addEventListener('click', () => {
-    const context = canvas.getContext('2d');
+    if (!video.videoWidth || !video.videoHeight) {
+      alert("Wait for camera to load...");
+      return;
+    }
+
     canvas.width = video.videoWidth;
     canvas.height = video.videoHeight;
-    context.drawImage(video, 0, 0);
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
     const dataURL = canvas.toDataURL('image/jpeg');
     photoInput.value = dataURL;
+
+    console.log("Photo captured!");
+    console.log("Base64 size:", dataURL.length);
+
     alert("📸 Photo captured!");
+  });
+
+  // ✅ Stop camera when submitting form
+  document.querySelector('form').addEventListener('submit', () => {
+    if (stream) {
+      stream.getTracks().forEach(track => track.stop());
+    }
   });
 </script>
 

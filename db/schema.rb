@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_06_20_105224) do
+ActiveRecord::Schema[7.1].define(version: 2025_06_20_121142) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -42,13 +42,14 @@ ActiveRecord::Schema[7.1].define(version: 2025_06_20_105224) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
-  create_table "bereads", force: :cascade do |t|
+  create_table "be_reads", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "book_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["book_id"], name: "index_bereads_on_book_id"
-    t.index ["user_id"], name: "index_bereads_on_user_id"
+    t.string "text"
+    t.index ["book_id"], name: "index_be_reads_on_book_id"
+    t.index ["user_id"], name: "index_be_reads_on_user_id"
   end
 
   create_table "book_metadata", force: :cascade do |t|
@@ -127,8 +128,8 @@ ActiveRecord::Schema[7.1].define(version: 2025_06_20_105224) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
-  add_foreign_key "bereads", "books"
-  add_foreign_key "bereads", "users"
+  add_foreign_key "be_reads", "books"
+  add_foreign_key "be_reads", "users"
   add_foreign_key "books", "categories"
   add_foreign_key "books", "users"
   add_foreign_key "libraries", "books"
