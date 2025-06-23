@@ -13,8 +13,10 @@
   <body>
     <% unless devise_controller? || (controller_name == 'pages' && action_name == 'splash') %>
       <div data-controller="sidebar">
-        <%= render "shared/navbar" %>
-        <%= render "shared/sidebar" %>
+        <% if user_signed_in? %>
+          <%= render "shared/navbar" %>
+          <%= render "shared/sidebar" %>
+        <% end %>
       </div>
     <% end %>
 
@@ -37,10 +39,7 @@
     <% end %>
 
     <!-- ✅ Page content -->
-    <%= yield unless devise_controller? || (controller_name == 'pages' && action_name == 'splash') %>
-    <% if devise_controller? || (controller_name == 'pages' && action_name == 'splash') %>
-      <%= yield %>
-    <% end %>
+    <%= yield %>
 
     <!-- ✅ Floating "+ New BeRead" button (only for logged-in users) -->
     <% if user_signed_in? %>
@@ -79,3 +78,4 @@
     <%= javascript_include_tag "controllers", type: "module" %>
   </body>
 </html>
+
