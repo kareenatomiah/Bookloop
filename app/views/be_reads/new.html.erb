@@ -1,147 +1,149 @@
 <h1 class="page-title">Create a new BeRead</h1>
 
 <%= form_with(model: @be_read, local: true, html: { multipart: true, class: "be-read-form" }) do |form| %>
-  <div class="selfie-container">
+  <div class="selfie-container" style="text-align:center; max-width: 400px; margin: auto;">
+    <video id="be-read-video" autoplay playsinline
+           style="width:100%; border-radius:12px; border:2px solid #862221; background:black;">
+    </video>
 
-    <!-- ✅ Video preview -->
-    <video id="be-read-video" autoplay playsinline></video>
-
-    <!-- ✅ Canvas to capture the photo -->
     <canvas id="be-read-canvas" style="display:none;"></canvas>
 
-    <!-- ✅ Text input -->
-    <div class="form-group">
-      <%= form.label :text, "Your message" %>
-      <%= form.text_field :text, placeholder: "Write your message...", class: "form-control" %>
+    <div class="form-group" style="margin-top:15px;">
+      <%= form.label :text, "Your message", style: "font-weight:bold;" %><br>
+      <%= form.text_field :text, placeholder: "Write your message...", class: "form-control", style: "width:100%; padding:8px; border-radius:6px; border:1px solid #ccc;" %>
     </div>
 
-    <!-- ✅ Hidden input to store captured photo -->
+    <div class="form-group" style="margin-top:15px;">
+      <%= form.label :book_id, "Select a Book", style: "font-weight:bold;" %><br>
+      <%= form.collection_select :book_id, @books, :id, :title,
+            prompt: "Choose a book",
+            selected: @be_read.book_id,
+            class: "form-control",
+            style: "width:100%; padding:8px; border-radius:6px; border:1px solid #ccc;" %>
+    </div>
+
     <%= form.hidden_field :photo_data, id: "be-read-photo-input" %>
 
-    <!-- ✅ Capture button -->
-    <button type="button" id="be-read-capture" class="capture-button">📸 Take photo</button>
+    <button type="button" id="be-read-capture" class="capture-button"
+            style="margin-top:10px; background-color:#862221; color:white; padding:12px 20px; font-size:18px; border:none; border-radius:8px; cursor:pointer; box-shadow:0 3px 6px rgba(0,0,0,0.2); transition:background-color .3s;">
+      📸 Take photo
+    </button>
 
-    <!-- ✅ Submit button -->
-    <div style="margin-top: 20px;">
-      <%= form.submit "Send my BeRead", class: "submit-button" %>
+    <div style="margin-top:20px;">
+      <%= form.submit "Send my BeRead", class: "submit-button", disabled: true, id: "submit-button",
+            style: "background-color:#862221; color:white; padding:12px 24px; font-size:18px; border:none; border-radius:8px; cursor:pointer; opacity:0.5; transition:opacity .3s;" %>
     </div>
   </div>
 <% end %>
 
+<div id="photo-notification" class="photo-notification" style="display:none;">📸 Photo captured!</div>
+
 <style>
-  .page-title {
-    font-size: 28px;
-    margin-bottom: 20px;
-    text-align: center;
-    color: #862221;
-  }
-
-  .be-read-form {
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 25px;
-    border-radius: 12px;
-    background-color: #f9f9f9;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-  }
-
-  .selfie-container video {
-    width: 100%;
-    border-radius: 12px;
-    margin-bottom: 15px;
-  }
-
-  .form-group {
-    margin: 15px 0;
-  }
-
-  .form-control {
-    width: 100%;
-    padding: 12px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-  }
-
-  .form-control:focus {
-    border-color: #862221;
-    outline: none;
-    box-shadow: 0 0 5px rgba(134, 34, 33, 0.3);
-  }
-
-  .capture-button {
-    display: inline-block;
-    background-color: #e0e0e0;
-    color: #333;
-    border: none;
-    padding: 10px 16px;
-    font-size: 16px;
-    border-radius: 6px;
-    cursor: pointer;
-  }
-
-  .capture-button:hover {
-    background-color: #ccc;
-  }
-
-  .submit-button {
-    width: 100%;
-    padding: 14px;
-    background-color: #862221;
+  .photo-notification {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #4caf50;
     color: white;
-    font-size: 16px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
+    padding: 12px 24px;
+    border-radius: 30px;
+    font-size: 18px;
+    font-weight: 600;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    opacity: 1;
+    transition: opacity 0.6s ease;
+    z-index: 10000;
+    user-select: none;
   }
 
-  .submit-button:hover {
+  .submit-button:disabled {
+    cursor: not-allowed;
+  }
+
+  .capture-button:hover:not(:disabled) {
     background-color: #6b1c1b;
   }
 </style>
 
 <script>
-  const video = document.getElementById('be-read-video');
-  const canvas = document.getElementById('be-read-canvas');
-  const photoInput = document.getElementById('be-read-photo-input');
-  const captureButton = document.getElementById('be-read-capture');
-  let stream;
+  document.addEventListener("turbo:load", () => {
+    const video = document.getElementById("be-read-video");
+    const canvas = document.getElementById("be-read-canvas");
+    const photoInput = document.getElementById("be-read-photo-input");
+    const captureButton = document.getElementById("be-read-capture");
+    const submitButton = document.getElementById("submit-button");
+    const notification = document.getElementById("photo-notification");
 
-  // ✅ Start camera
-  navigator.mediaDevices.getUserMedia({ video: true })
-    .then((mediaStream) => {
-      stream = mediaStream;
-      video.srcObject = stream;
-    })
-    .catch((err) => {
-      alert("Camera access error: " + err.message);
-    });
-
-  // ✅ Capture photo
-  captureButton.addEventListener('click', () => {
-    if (!video.videoWidth || !video.videoHeight) {
-      alert("Wait for camera to load...");
+    if (!video || !canvas || !photoInput || !captureButton || !submitButton) {
+      console.warn("BeRead camera elements missing. Skipping setup.");
       return;
     }
 
-    canvas.width = video.videoWidth;
-    canvas.height = video.videoHeight;
-    const ctx = canvas.getContext('2d');
-    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-    const dataURL = canvas.toDataURL('image/jpeg');
-    photoInput.value = dataURL;
+    let stream = null;
 
-    console.log("Photo captured!");
-    console.log("Base64 size:", dataURL.length);
+    navigator.mediaDevices.getUserMedia({ video: true })
+      .then(mediaStream => {
+        stream = mediaStream;
+        video.srcObject = stream;
+        video.play();
+      })
+      .catch(err => {
+        alert("Camera access error: " + err.message);
+      });
 
-    alert("📸 Photo captured!");
-  });
-
-  // ✅ Stop camera when submitting form
-  document.querySelector('form').addEventListener('submit', () => {
-    if (stream) {
-      stream.getTracks().forEach(track => track.stop());
+    function showNotification(msg) {
+      notification.textContent = msg;
+      notification.style.display = "block";
+      notification.style.opacity = "1";
+      setTimeout(() => {
+        notification.style.opacity = "0";
+        setTimeout(() => notification.style.display = "none", 600);
+      }, 1800);
     }
+
+    captureButton.addEventListener("click", () => {
+      if (!video.videoWidth || !video.videoHeight) {
+        alert("Wait for camera to load...");
+        return;
+      }
+
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      const ctx = canvas.getContext("2d");
+      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+      const dataURL = canvas.toDataURL("image/jpeg");
+      photoInput.value = dataURL;
+
+      showNotification("📸 Photo captured!");
+      submitButton.disabled = false;
+      submitButton.style.opacity = "1";
+
+      if (stream) {
+        stream.getTracks().forEach(track => track.stop());
+        stream = null;
+      }
+
+      video.style.display = "none";
+      captureButton.disabled = true;
+      captureButton.style.cursor = "not-allowed";
+    });
+
+    document.querySelector("form").addEventListener("submit", event => {
+      if (!photoInput.value) {
+        event.preventDefault();
+        showNotification("📸 Please take a photo before sending.");
+        return;
+      }
+
+      if (stream) {
+        stream.getTracks().forEach(track => track.stop());
+        stream = null;
+      }
+
+      submitButton.disabled = true;
+      submitButton.style.opacity = "0.5";
+    });
   });
 </script>
-

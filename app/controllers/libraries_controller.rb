@@ -28,6 +28,7 @@ class LibrariesController < ApplicationController
 
   private
 
+  # Fetch the OpenLibrary work data JSON for a given work_key
   def fetch_openlibrary_data(work_key)
     require 'net/http'
     require 'json'
@@ -44,6 +45,7 @@ class LibrariesController < ApplicationController
     end
   end
 
+  # Extract first author name from work_data by fetching author data from OpenLibrary
   def extract_author(work_data)
     author_keys = work_data.dig("authors")&.map { |a| a.dig("author", "key") }
     return nil unless author_keys&.any?

@@ -1,15 +1,17 @@
 <h1>Your BeRead</h1>
 
-<p>
+<div style="margin-bottom: 20px;">
   <strong>Text:</strong>
-  <%= @be_read.text %>
-</p>
+  <p style="font-size: 18px; line-height: 1.4; margin-top: 8px; white-space: pre-wrap;">
+    <%= @be_read.text %>
+  </p>
+</div>
 
 <% if @be_read.selfie.attached? %>
-  <p>
+  <div style="margin-bottom: 20px;">
     <strong>Selfie:</strong><br>
-    <%= image_tag @be_read.selfie, style: "max-width: 100%;" %>
-  </p>
+    <%= image_tag @be_read.selfie.variant(resize_to_limit: [600, 600]), style: "max-width: 100%; border-radius: 12px;" %>
+  </div>
 <% end %>
 
 <%= link_to 'Back', root_path, class: "btn btn-secondary" %>
