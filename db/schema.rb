@@ -109,11 +109,11 @@ ActiveRecord::Schema[7.1].define(version: 2025_06_20_121142) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "name"
+    t.text "bio"
+    t.string "location"
     t.string "avatar_url"
     t.date "date_of_birth"
     t.string "country"
-    t.text "bio"
-    t.string "location"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
