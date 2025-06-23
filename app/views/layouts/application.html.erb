@@ -13,8 +13,10 @@
   <body>
     <% unless devise_controller? || (controller_name == 'pages' && action_name == 'splash') %>
       <div data-controller="sidebar">
-        <%= render "shared/navbar" %>
-        <%= render "shared/sidebar" %>
+        <% if user_signed_in? %>
+          <%= render "shared/navbar" %>
+          <%= render "shared/sidebar" %>
+        <% end %>
       </div>
     <% end %>
 
@@ -35,10 +37,7 @@
       </div>
     <% end %>
 
-    <%= yield unless devise_controller? || (controller_name == 'pages' && action_name == 'splash') %>
-    <% if devise_controller? || (controller_name == 'pages' && action_name == 'splash') %>
-      <%= yield %>
-    <% end %>
+    <%= yield %>
 
     <% if user_signed_in? %>
       <%= link_to new_be_read_path, class: "be-read-floating-button" do %>
