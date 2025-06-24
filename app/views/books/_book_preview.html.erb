@@ -1,8 +1,11 @@
-<div style="max-width: 500px; margin: 30px auto; font-family: 'Helvetica Neue', sans-serif; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 8px rgba(0,0,0,0.05); text-align: center;">
+<div class="book-preview" style="max-width: 500px; margin: 30px auto; font-family: 'Helvetica Neue', sans-serif; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 8px rgba(0,0,0,0.05); text-align: center;">
 
-  <% if work_data["covers"]&.any? %>
-    <%= image_tag "https://covers.openlibrary.org/b/id/#{work_data["covers"].first}-M.jpg",
-                  alt: (work_data["title"].presence || "Book cover"),
+  <% cover_id = work_data["covers"]&.first %>
+
+  <% if cover_id %>
+    <%= image_tag "https://covers.openlibrary.org/b/id/#{cover_id}-M.jpg",
+                  alt: work_data["title"].presence || "Book cover",
+                  loading: "lazy",
                   style: "width: 120px; height: auto; border-radius: 10px; margin-bottom: 10px;" %>
   <% else %>
     <div style="width: 120px; height: 180px; background: #eee; border-radius: 10px; margin: 0 auto 10px;"></div>
@@ -21,7 +24,7 @@
     <%= local_metadata&.category.presence || work_data["subjects"]&.first.presence || "Unknown" %>
   </p>
 
-  <% if reviews.any? %>
+  <% if reviews&.any? %>
     <p style="color: #444; margin: 10px 0 0;">
       <strong>Rating:</strong> <%= average_rating(reviews) %> ☆
     </p>
@@ -29,6 +32,5 @@
 
   <%= link_to "Details", book_path(work_key), class: "btn-review",
       style: "margin-top: 15px; display: inline-block; background-color: #862221; color: white; padding: 10px 16px; border-radius: 8px; text-decoration: none;" %>
-
 </div>
 
