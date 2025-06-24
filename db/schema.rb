@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_06_24_053647) do
+ActiveRecord::Schema[7.1].define(version: 2025_06_24_090057) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -48,6 +48,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_06_24_053647) do
     t.datetime "updated_at", null: false
     t.string "text"
     t.string "caption"
+    t.boolean "posted_on_feed"
     t.index ["user_id"], name: "index_be_reads_on_user_id"
   end
 
@@ -79,6 +80,16 @@ ActiveRecord::Schema[7.1].define(version: 2025_06_24_053647) do
     t.string "name"
   end
 
+  create_table "comments", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "be_read_id", null: false
+    t.text "body"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["be_read_id"], name: "index_comments_on_be_read_id"
+    t.index ["user_id"], name: "index_comments_on_user_id"
+  end
+
   create_table "libraries", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.datetime "created_at", null: false
@@ -87,6 +98,15 @@ ActiveRecord::Schema[7.1].define(version: 2025_06_24_053647) do
     t.bigint "book_id"
     t.index ["book_id"], name: "index_libraries_on_book_id"
     t.index ["user_id"], name: "index_libraries_on_user_id"
+  end
+
+  create_table "likes", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "be_read_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["be_read_id"], name: "index_likes_on_be_read_id"
+    t.index ["user_id"], name: "index_likes_on_user_id"
   end
 
   create_table "reviews", force: :cascade do |t|
@@ -108,11 +128,11 @@ ActiveRecord::Schema[7.1].define(version: 2025_06_24_053647) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "name"
-    t.text "bio"
-    t.string "location"
     t.string "avatar_url"
     t.date "date_of_birth"
     t.string "country"
+    t.text "bio"
+    t.string "location"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
@@ -130,8 +150,12 @@ ActiveRecord::Schema[7.1].define(version: 2025_06_24_053647) do
   add_foreign_key "be_reads", "users"
   add_foreign_key "books", "categories"
   add_foreign_key "books", "users"
+  add_foreign_key "comments", "be_reads"
+  add_foreign_key "comments", "users"
   add_foreign_key "libraries", "books"
   add_foreign_key "libraries", "users"
+  add_foreign_key "likes", "be_reads"
+  add_foreign_key "likes", "users"
   add_foreign_key "reviews", "users"
   add_foreign_key "wishlists", "users"
 end

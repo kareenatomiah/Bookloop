@@ -1,0 +1,26 @@
+<h2 class="page-title" style="text-align:center; color:#862221; margin-bottom: 30px;">
+  Post your BeRead to the feed?
+</h2>
+
+<div class="card" style="max-width: 400px; margin: 0 auto 30px; border-radius: 12px; border: 2px solid #862221; box-shadow: 0 4px 8px rgba(134, 34, 33, 0.2);">
+  <div class="card-body text-center">
+    <p class="mb-3" style="font-weight: 600; color:#862221;">
+      <strong>Caption:</strong> <%= @be_read.caption.presence || "No caption" %>
+    </p>
+
+    <% if @be_read.photo.attached? %>
+      <%= image_tag @be_read.photo.variant(resize_to_limit: [400, 400]),
+                    alt: "BeRead photo",
+                    style: "max-width: 100%; border-radius: 12px; border: 1px solid #862221; box-shadow: 0 2px 6px rgba(0,0,0,0.1);" %>
+    <% else %>
+      <p>No photo attached.</p>
+    <% end %>
+  </div>
+</div>
+
+<div style="text-align: center;">
+  <%= form_with url: post_to_feed_be_read_path(@be_read), method: :post, local: true do %>
+    <%= submit_tag "Yes, post it!", class: "btn btn-primary", style: "background: #862221; border-color: #862221; padding: 12px 28px; font-size: 16px; border-radius: 8px;" %>
+    <%= link_to "No, thanks", profile_path, class: "btn btn-secondary", style: "margin-left: 15px; padding: 12px 28px; font-size: 16px; border-radius: 8px;" %>
+  <% end %>
+</div>
