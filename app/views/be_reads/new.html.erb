@@ -1,11 +1,5 @@
 <h1 class="page-title">Create a new BeRead</h1>
 
-<% my_books_for_select = @my_books.map do |lib|
-     title = @book_data.dig(lib.work_key, :work_data, "title") || "Untitled"
-     [title, lib.book_id]
-   end
-%>
-
 <%= form_with(model: @be_read, local: true, multipart: true, html: { id: "be-read-form" }) do |form| %>
   <div class="selfie-container" data-controller="webcam" style="max-width:400px; margin:auto; text-align:center;">
 
@@ -24,16 +18,6 @@
     <div style="margin-top:15px;">
       <%= form.label :caption, "Your message", class: "form-label" %><br>
       <%= form.text_field :caption, class: "form-control", style: "width:100%;" %>
-    </div>
-
-    <!-- Book Select -->
-    <div style="margin-top:15px;">
-      <%= form.label :book_id, "Select a Book", class: "form-label" %><br>
-      <%= form.select :book_id,
-                      options_for_select(my_books_for_select, @be_read.book_id),
-                      prompt: "Choose a book",
-                      class: "form-control",
-                      style: "width:100%;" %>
     </div>
 
     <!-- Hidden field to hold photo -->
@@ -95,3 +79,4 @@
     opacity: 0.6;
   }
 </style>
+

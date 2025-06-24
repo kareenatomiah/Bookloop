@@ -80,3 +80,5 @@ gem 'devise-i18n-views'
 gem 'i18n', '~> 1.14'
 gem "cloudinary"
 gem 'httparty'
+gem 'image_processing', '~> 1.2'
+

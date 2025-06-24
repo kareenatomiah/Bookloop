@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_06_23_104103) do
+ActiveRecord::Schema[7.1].define(version: 2025_06_24_053647) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -44,12 +44,10 @@ ActiveRecord::Schema[7.1].define(version: 2025_06_23_104103) do
 
   create_table "be_reads", force: :cascade do |t|
     t.bigint "user_id", null: false
-    t.bigint "book_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "text"
     t.string "caption"
-    t.index ["book_id"], name: "index_be_reads_on_book_id"
     t.index ["user_id"], name: "index_be_reads_on_user_id"
   end
 
@@ -110,11 +108,11 @@ ActiveRecord::Schema[7.1].define(version: 2025_06_23_104103) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "name"
-    t.text "bio"
-    t.string "location"
     t.string "avatar_url"
     t.date "date_of_birth"
     t.string "country"
+    t.text "bio"
+    t.string "location"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
@@ -129,7 +127,6 @@ ActiveRecord::Schema[7.1].define(version: 2025_06_23_104103) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
-  add_foreign_key "be_reads", "books"
   add_foreign_key "be_reads", "users"
   add_foreign_key "books", "categories"
   add_foreign_key "books", "users"

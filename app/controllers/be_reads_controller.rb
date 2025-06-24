@@ -1,7 +1,8 @@
 class BeReadsController < ApplicationController
+  before_action :set_be_read, only: [:show, :destroy]
 
-    def index
-    @be_reads = BeRead.all
+  def index
+    @be_reads = BeRead.with_attached_photo.order(created_at: :desc)
   end
 
   def new
@@ -9,16 +10,10 @@ class BeReadsController < ApplicationController
   end
 
   def create
-    @be_read = BeRead.new(text: params[:be_read][:text])
-
-    if params[:be_read][:photo_data].present?
-      decoded_image = decode_base64_image(params[:be_read][:photo_data])
-      @be_read.selfie.attach(
-        io: decoded_image,
-        filename: "selfie.jpg",
-        content_type: "image/jpeg"
-      )
-    end
+    @be_read = current_user.be_reads.build(
+      caption: params[:be_read][:caption],
+      photo_data: params[:be_read][:photo_data]
+    )
 
     if @be_read.save
       redirect_to current_user, notice: "BeRead successfully created."
@@ -27,26 +22,18 @@ class BeReadsController < ApplicationController
     end
   end
 
-    def show
-    @be_read = BeRead.find(params[:id])
+  def show
+    # Loaded by before_action
   end
 
   def destroy
-    @be_read = BeRead.find(params[:id])
     @be_read.destroy
-    redirect_to be_reads_path, notice: "BeRead deleted."
+    redirect_to user_path(current_user), notice: "BeRead deleted."
   end
 
   private
 
-  def decode_base64_image(data)
-    image_data = data.sub(/^data:image\/\w+;base64,/, "")
-    decoded_data = Base64.decode64(image_data)
-    file = Tempfile.new(['selfie', '.jpg'])
-    file.binmode
-    file.write(decoded_data)
-    file.rewind
-    file
+  def set_be_read
+    @be_read = BeRead.find(params[:id])
   end
 end
-

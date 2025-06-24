@@ -4,7 +4,7 @@
   <div style="position: absolute; top: 100px; left: 50%; transform: translateX(-50%);">
     <div style="width: 160px; height: 160px; border-radius: 50%; border: 3px solid #933; background-color: white; display: flex; align-items: center; justify-content: center; overflow: hidden;">
       <% if @user.avatar.attached? %>
-        <%= image_tag @user.avatar, style: "width:100%; height:100%; object-fit:cover;" %>
+        <%= image_tag @user.avatar.variant(resize_to_fill: [160, 160]), alt: "#{@user.name.presence || 'User'}'s avatar", style: "width:100%; height:100%; object-fit:cover;" %>
       <% else %>
         <i class="fa fa-user" style="font-size:60px; color:#933;"></i>
       <% end %>
@@ -14,8 +14,8 @@
 
 <!-- User info -->
 <div style="margin-top:100px; text-align:center;">
-  <h2 style="margin-top:20px; font-weight:bold;"><%= @user.name || "Unnamed User" %></h2>
-  <p style="color:#666;"><%= @user.bio || "Book lover & explorer" %></p>
+  <h2 style="margin-top:20px; font-weight:bold;"><%= @user.name.presence || "Unnamed User" %></h2>
+  <p style="color:#666;"><%= @user.bio.presence || "Book lover & explorer" %></p>
   <% if @user.location.present? %>
     <p style="color:#933; font-size:14px;">
       <i class="fa fa-map-marker" style="margin-right:5px;"></i>
@@ -23,9 +23,18 @@
     </p>
   <% end %>
   <div style="display:flex; justify-content:center; gap:30px; margin:25px 0;">
-    <div><p style="font-weight:bold; font-size:20px;">122</p><p style="font-size:13px; color:#666;">followers</p></div>
-    <div><p style="font-weight:bold; font-size:20px;">67</p><p style="font-size:13px; color:#666;">following</p></div>
-    <div><p style="font-weight:bold; font-size:20px;">37K</p><p style="font-size:13px; color:#666;">likes</p></div>
+    <div>
+      <p style="font-weight:bold; font-size:20px;">122</p>
+      <p style="font-size:13px; color:#666;">followers</p>
+    </div>
+    <div>
+      <p style="font-weight:bold; font-size:20px;">67</p>
+      <p style="font-size:13px; color:#666;">following</p>
+    </div>
+    <div>
+      <p style="font-weight:bold; font-size:20px;">37K</p>
+      <p style="font-size:13px; color:#666;">likes</p>
+    </div>
   </div>
   <div style="display:flex; justify-content:center; gap:20px; margin-bottom:30px;">
     <% if current_user == @user %>
@@ -47,14 +56,23 @@
   <% if @user_be_reads.any? %>
     <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:15px; padding:0 20px;">
       <% @user_be_reads.each do |beread| %>
-        <div style="background-color:#f9f9f9; border-radius:12px; box-shadow:0 2px 6px rgba(0,0,0,0.1); padding:10px; display:flex; flex-direction:column; align-items:center;">
+        <div style="background-color:#f9f9f9; border-radius:12px; box-shadow:0 2px 6px rgba(0,0,0,0.1); padding:10px; display:flex; flex-direction:column; align-items:center; position:relative;">
           <% if beread.photo.attached? %>
-            <%= image_tag beread.photo.variant(resize_to_limit: [300,300]), style: "border-radius:12px; width:100%; height:auto; object-fit:cover; margin-bottom:10px;" %>
+            <%= image_tag url_for(beread.photo), style: "border-radius:12px; width:100%; height:auto; object-fit:cover; margin-bottom:10px;" %>
           <% else %>
             <div style="width:100%; height:200px; background:#ddd; border-radius:12px; margin-bottom:10px;"></div>
           <% end %>
+
           <p style="font-size:14px; color:#333; text-align:center; white-space:pre-wrap;"><%= beread.caption %></p>
-          <p style="font-size:12px; color:#666; margin-top:8px;"><%= beread.book.title if beread.book %></p>
+          <p style="font-size:12px; color:#666; margin-top:8px;">
+            Posted on <%= beread.created_at.strftime("%b %d, %Y") %>
+          </p>
+
+          <% if current_user == @user %>
+            <%= button_to "🗑 Delete", be_read_path(beread), method: :delete,
+                data: { confirm: "Are you sure you want to delete this BeRead?" },
+                style: "position:absolute; top:10px; right:10px; background-color:#862221; color:white; border:none; padding:4px 8px; border-radius:6px; font-size:12px;" %>
+          <% end %>
         </div>
       <% end %>
     </div>
@@ -62,6 +80,7 @@
     <p style="text-align:center; color:#666;">No BeReads yet. Create one to see it here!</p>
   <% end %>
 </div>
+
 
 <!-- My Books content -->
 <div id="content-mybooks" style="display:none;">
