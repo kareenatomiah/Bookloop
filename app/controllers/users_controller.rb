@@ -16,7 +16,8 @@ class UsersController < ApplicationController
     end
 
     # Load BeReads for this user ordered newest first
-    @user_be_reads = @user.be_reads.order(created_at: :desc)
+    # Use `with_attached_photo` to eager load ActiveStorage attachments (the photos)
+    @user_be_reads = @user.be_reads.with_attached_photo.order(created_at: :desc)
   end
 
   def create
