@@ -1,30 +1,15 @@
 <h1 style="text-align: center;">📚 My Books</h1>
 
 <% if @my_books.any? %>
-  <div class="books-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; padding: 20px;">
-    <% @my_books.each do |library| %>
-      <% if (data = @book_data[library.work_key]).present? %>
-        <% work_data = data[:work_data] %>
-        <% full_author = data[:full_author] %>
-        <% reviews = data[:reviews] %>
-        <% local_metadata = data[:local_metadata] %>
-        <% work_key = library.work_key %>
-
-        <div class="book-card" style="background: white; border-radius: 12px; padding: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
-          <%# Turbo Frame optional integration %>
-          <%# turbo_frame_tag "book_#{work_key}" do %>
-            <%= render partial: "books/book_preview", locals: {
-              work_data: work_data,
-              full_author: full_author,
-              reviews: reviews,
-              local_metadata: local_metadata,
-              work_key: work_key
-            } %>
-          <%# end %>
-        </div>
-      <% end %>
-    <% end %>
-  </div>
+  <% @my_books.each do |library| %>
+    <%= render partial: "books/book_preview", locals: {
+      work_data: @book_data[library.work_key][:work_data],
+      full_author: @book_data[library.work_key][:full_author],
+      reviews: @book_data[library.work_key][:reviews],
+      local_metadata: @book_data[library.work_key][:local_metadata],
+      work_key: library.work_key
+    } %>
+  <% end %>
 <% else %>
   <p style="text-align: center; color: #888;">Your library is empty.</p>
 <% end %>

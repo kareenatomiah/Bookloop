@@ -61,4 +61,3 @@ class LibrariesController < ApplicationController
     end
   end
 end
-
