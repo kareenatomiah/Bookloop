@@ -85,6 +85,5 @@ class DashboardController < ApplicationController
       local_metadata: local_metadata
     }
   end
-end
-
+  end
 end

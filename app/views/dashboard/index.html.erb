@@ -171,26 +171,30 @@
   <!-- 🎯 My Books -->
   <div class="top-banner">
     <h2 class="section-title">📚 My Books (<%= @my_books&.count || 0 %>)</h2>
-    <button class="arrow-button arrow-left" onclick="shiftBooks(-1)">←</button>
-    <button class="arrow-button arrow-right" onclick="shiftBooks(1)">→</button>
+    <% if @my_books&.any? %>
+      <button class="arrow-button arrow-left" onclick="shiftBooks(-1)" aria-label="Scroll left">←</button>
+      <button class="arrow-button arrow-right" onclick="shiftBooks(1)" aria-label="Scroll right">→</button>
+    <% end %>
+
     <div class="horizontal-scroll my-books" id="myBooksScroll">
       <% @my_books&.first(12)&.each_with_index do |library, index| %>
-        <% data = @book_data[library.work_key] %>
-        <% next if data.blank? %>
-        <% work_data = data[:work_data] %>
-        <% author = data[:full_author] %>
-        <% cover_id = work_data["covers"]&.first %>
-        <div class="book-card <%= 'center' if index == 0 %>">
-          <%= link_to book_path(library.work_key) do %>
-            <%= image_tag(
-                  cover_id.present? ? "https://covers.openlibrary.org/b/id/#{cover_id}-M.jpg" : "https://via.placeholder.com/140x210?text=No+Cover",
-                  alt: work_data["title"],
-                  class: "book-cover"
-                ) %>
-            <div class="book-title"><%= work_data["title"] %></div>
-            <div class="book-author"><%= author || "Unknown" %></div>
-          <% end %>
-        </div>
+        <% if (data = @book_data[library.work_key]).present? %>
+          <% work_data = data[:work_data] %>
+          <% author = data[:full_author] %>
+          <% cover_id = work_data["covers"]&.first %>
+          <div class="book-card <%= 'center' if index == 0 %>">
+            <%= link_to book_path(library.work_key) do %>
+              <%= image_tag(
+                    cover_id ? "https://covers.openlibrary.org/b/id/#{cover_id}-M.jpg" : "https://via.placeholder.com/140x210?text=No+Cover",
+                    alt: work_data["title"] || "Book Cover",
+                    class: "book-cover",
+                    loading: "lazy"
+                  ) %>
+              <div class="book-title"><%= work_data["title"] %></div>
+              <div class="book-author"><%= author.presence || "Unknown" %></div>
+            <% end %>
+          </div>
+        <% end %>
       <% end %>
     </div>
   </div>
@@ -200,22 +204,23 @@
     <h2 class="section-title">❤️ Wishlist (<%= @wishlist&.count || 0 %>)</h2>
     <div class="horizontal-scroll">
       <% @wishlist&.first(12)&.each do |item| %>
-        <% data = @book_data[item.work_key] %>
-        <% next if data.blank? %>
-        <% work_data = data[:work_data] %>
-        <% author = data[:full_author] %>
-        <% cover_id = work_data["covers"]&.first %>
-        <div class="book-card">
-          <%= link_to book_path(item.work_key) do %>
-            <%= image_tag(
-                  cover_id.present? ? "https://covers.openlibrary.org/b/id/#{cover_id}-M.jpg" : "https://via.placeholder.com/140x210?text=No+Cover",
-                  alt: work_data["title"],
-                  class: "book-cover"
-                ) %>
-            <div class="book-title"><%= work_data["title"] %></div>
-            <div class="book-author">by <%= author || "Unknown" %></div>
-          <% end %>
-        </div>
+        <% if (data = @book_data[item.work_key]).present? %>
+          <% work_data = data[:work_data] %>
+          <% author = data[:full_author] %>
+          <% cover_id = work_data["covers"]&.first %>
+          <div class="book-card">
+            <%= link_to book_path(item.work_key) do %>
+              <%= image_tag(
+                    cover_id ? "https://covers.openlibrary.org/b/id/#{cover_id}-M.jpg" : "https://via.placeholder.com/140x210?text=No+Cover",
+                    alt: work_data["title"] || "Book Cover",
+                    class: "book-cover",
+                    loading: "lazy"
+                  ) %>
+              <div class="book-title"><%= work_data["title"] %></div>
+              <div class="book-author">by <%= author.presence || "Unknown" %></div>
+            <% end %>
+          </div>
+        <% end %>
       <% end %>
     </div>
   </section>
@@ -235,6 +240,7 @@
 
 <script>
   let currentIndex = 0;
+
   function shiftBooks(direction) {
     const container = document.getElementById("myBooksScroll");
     const books = container.querySelectorAll(".book-card");
@@ -246,4 +252,3 @@
     books[currentIndex].classList.add("center");
   }
 </script>
-
