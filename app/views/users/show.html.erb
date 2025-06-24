@@ -1,147 +1,446 @@
-<!-- Header with avatar -->
-<div style="position: relative;">
-  <div style="background-color: #933; height: 180px; border-bottom-left-radius: 60px; border-bottom-right-radius: 60px;"></div>
+<style>
+  /* Container and header */
+  .profile-header-bg {
+  position: relative;
+  width: 100vw;              /* Full viewport width */
+  left: 50%;                 /* Shift left by half the viewport */
+  right: 50%;                /* Shift right by half */
+  margin-left: -50vw;        /* Pull it to the left edge */
+  margin-right: -50vw;       /* Pull it to the right edge */
 
-  <div style="position: absolute; top: 100px; left: 50%; transform: translateX(-50%);">
-    <div style="width: 160px; height: 160px; border-radius: 50%; border: 3px solid #933; background-color: white; display: flex; align-items: center; justify-content: center; overflow: hidden;">
+  height: 180px;
+  background: linear-gradient(135deg, #a63333 0%, #5c1a1a 100%);
+  border-bottom-left-radius: 70px;
+  border-bottom-right-radius: 70px;
+  box-shadow: 0 4px 15px rgba(166, 51, 51, 0.5);
+  z-index: -1;
+}
+
+
+  .avatar-wrapper {
+    position: absolute;
+    top: 110px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    border: 5px solid #fff;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+  }
+
+  .avatar-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* User info */
+  .user-info {
+    margin-top: 100px;
+    text-align: center;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .user-name {
+    margin-top: 20px;
+    font-weight: 700;
+    font-size: 28px;
+    color: #2c2c2c;
+    letter-spacing: 0.03em;
+  }
+
+  .user-bio {
+    color: #555;
+    font-size: 17px;
+    margin: 8px 0 15px;
+    font-style: italic;
+  }
+
+  .user-location {
+    color: #a63333;
+    font-size: 15px;
+    font-weight: 500;
+  }
+
+  .user-location i {
+    margin-right: 7px;
+  }
+
+  /* Stats */
+  .user-stats {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin: 30px 0 40px;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+  }
+
+  .stat-item p:first-child {
+    font-weight: 700;
+    font-size: 22px;
+    margin: 0;
+    color: #222;
+  }
+
+  .stat-item p:last-child {
+    font-size: 14px;
+    color: #777;
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  /* Buttons */
+  .user-actions {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 50px;
+  }
+
+  .btn {
+    background-color: #a63333;
+    color: white;
+    padding: 12px 28px;
+    border-radius: 25px;
+    text-decoration: none;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    box-shadow: 0 5px 15px rgba(166, 51, 51, 0.4);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    user-select: none;
+  }
+
+  .btn:hover,
+  .btn:focus {
+    background-color: #7f2626;
+    box-shadow: 0 7px 20px rgba(127, 38, 38, 0.6);
+    outline: none;
+  }
+
+  /* Tabs */
+  nav.tabs {
+    display: flex;
+    justify-content: center;
+    gap: 50px;
+    margin-bottom: 20px;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+  }
+
+  nav.tabs button {
+    font-size: 18px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    color: #b8b8b8;
+    font-weight: 600;
+    padding-bottom: 8px;
+    border-bottom: 3px solid transparent;
+    transition: color 0.3s ease, border-color 0.3s ease;
+  }
+
+  nav.tabs button.tab-active {
+    color: #a63333;
+    border-bottom-color: #a63333;
+  }
+
+  hr.separator {
+    max-width: 320px;
+    margin: 0 auto 40px;
+    border-color: #f0f0f0;
+  }
+
+  /* BeRead posts grid */
+  .beread-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 22px;
+    padding: 0 24px 40px;
+  }
+
+  .beread-article {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 8px 22px rgba(0,0,0,0.07);
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    transition: transform 0.3s ease;
+  }
+
+  .beread-article:hover {
+    transform: translateY(-5px);
+  }
+
+  .beread-photo {
+    border-radius: 16px;
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    margin-bottom: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  }
+
+  .beread-placeholder {
+    width: 100%;
+    height: 200px;
+    background: #eee;
+    border-radius: 16px;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ccc;
+    font-size: 18px;
+    font-style: italic;
+  }
+
+  .beread-caption {
+    font-size: 15px;
+    color: #333;
+    text-align: center;
+    white-space: pre-wrap;
+    margin: 0;
+  }
+
+  .beread-date {
+    font-size: 13px;
+    color: #999;
+    margin-top: 10px;
+  }
+
+  .delete-button {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background-color: #a63333;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 12px;
+    font-size: 13px;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(166, 51, 51, 0.5);
+    transition: background-color 0.3s ease;
+  }
+
+  .delete-button:hover,
+  .delete-button:focus {
+    background-color: #7f2626;
+    outline: none;
+  }
+
+  /* My Books grid */
+  .books-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 26px;
+    padding: 20px 24px 50px;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+  }
+
+  .book-card {
+    background: white;
+    border-radius: 14px;
+    padding: 18px;
+    box-shadow: 0 8px 22px rgba(0,0,0,0.06);
+    transition: transform 0.25s ease;
+  }
+
+  .book-card:hover {
+    transform: translateY(-6px);
+  }
+
+  .book-card img {
+    width: 100%;
+    height: 320px;
+    border-radius: 12px;
+    object-fit: cover;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  }
+
+  .book-title {
+    margin-top: 14px;
+    font-weight: 700;
+    color: #222;
+    font-size: 18px;
+    line-height: 1.2;
+  }
+
+  .book-author {
+    font-size: 15px;
+    color: #666;
+    margin-top: 6px;
+    font-weight: 500;
+  }
+
+  .book-reviews {
+    font-size: 13px;
+    color: #aaa;
+    margin-top: 8px;
+    font-style: italic;
+  }
+
+  .empty-message {
+    text-align: center;
+    color: #aaa;
+    font-style: italic;
+    font-size: 16px;
+    margin-top: 60px;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+  }
+</style>
+
+<div>
+  <!-- Header with avatar -->
+  <div class="profile-header-bg">
+    <div class="avatar-wrapper" aria-label="User avatar">
       <% if @user.avatar.attached? %>
-        <%= image_tag @user.avatar_thumbnail, alt: "#{@user.name.presence || 'User'}'s avatar",
-          style: "width:100%; height:100%; object-fit:cover;" %>
+        <%= image_tag @user.avatar_thumbnail, alt: "#{@user.name.presence || 'User'}'s avatar", class: "avatar-img" %>
       <% else %>
-        <i class="fa fa-user" style="font-size:60px; color:#933;"></i>
+        <i class="fa fa-user" style="font-size: 70px; color: #a63333;" aria-hidden="true"></i>
       <% end %>
     </div>
   </div>
+
+  <!-- User info -->
+  <section class="user-info" aria-label="User information">
+    <h2 class="user-name"><%= @user.name.presence || "Unnamed User" %></h2>
+    <p class="user-bio"><%= @user.bio.presence || "Book lover & explorer" %></p>
+
+    <% if @user.location.present? %>
+      <p class="user-location">
+        <i class="fa fa-map-marker" aria-hidden="true"></i>
+        <%= @user.location %>
+      </p>
+    <% end %>
+
+    <div class="user-stats" role="list" aria-label="User statistics">
+      <div class="stat-item" role="listitem">
+        <p>122</p>
+        <p>followers</p>
+      </div>
+      <div class="stat-item" role="listitem">
+        <p>67</p>
+        <p>following</p>
+      </div>
+      <div class="stat-item" role="listitem">
+        <p>37K</p>
+        <p>likes</p>
+      </div>
+    </div>
+
+    <div class="user-actions">
+      <% if current_user == @user %>
+        <%= link_to "Edit profile", edit_user_registration_path, class: "btn", role: "button" %>
+      <% end %>
+      <%= link_to "Add friends", "#", class: "btn", role: "button" %>
+    </div>
+  </section>
+
+  <!-- Tabs -->
+  <nav class="tabs" role="tablist" aria-label="Profile content tabs">
+    <button id="tab-beeread" class="tab tab-active" type="button" role="tab" aria-selected="true" aria-controls="content-beeread"
+            onclick="switchTab('beeread')">BeRead</button>
+    <button id="tab-mybooks" class="tab" type="button" role="tab" aria-selected="false" aria-controls="content-mybooks"
+            onclick="switchTab('mybooks')">My Books</button>
+  </nav>
+
+  <hr class="separator">
+
+  <!-- BeRead content -->
+  <section id="content-beeread" aria-label="BeRead posts" role="tabpanel">
+    <% if @user_be_reads.any? %>
+      <div class="beread-grid">
+        <% @user_be_reads.each do |beread| %>
+          <article class="beread-article">
+            <% if beread.photo.attached? %>
+              <%= image_tag url_for(beread.photo), alt: "BeRead photo", loading: "lazy", class: "beread-photo" %>
+            <% else %>
+              <div class="beread-placeholder" aria-label="No image available">No image</div>
+            <% end %>
+
+            <p class="beread-caption"><%= beread.caption %></p>
+            <p class="beread-date">Posted on <time datetime="<%= beread.created_at.iso8601 %>"><%= beread.created_at.strftime("%b %d, %Y") %></time></p>
+
+            <% if current_user == @user %>
+              <%= button_to "🗑 Delete", be_read_path(beread), method: :delete,
+                    data: { confirm: "Are you sure you want to delete this BeRead?" },
+                    class: "delete-button" %>
+            <% end %>
+          </article>
+        <% end %>
+      </div>
+    <% else %>
+      <p class="empty-message">No BeReads yet. Create one to see it here!</p>
+    <% end %>
+  </section>
+
+  <!-- My Books content -->
+  <section id="content-mybooks" aria-label="My Books" role="tabpanel" hidden>
+    <% if @my_books.any? %>
+      <div class="books-grid">
+        <% @my_books.each do |library| %>
+          <% data = @book_data[library.work_key] %>
+          <% next if data.blank? %>
+
+          <% work_data = data[:work_data] %>
+          <% author = data[:full_author] %>
+          <% reviews = data[:reviews] %>
+          <% cover_id = work_data["covers"]&.first %>
+
+          <article class="book-card">
+            <%= link_to book_path(library.work_key), style: "text-decoration:none; color: inherit;" do %>
+              <%= image_tag(
+                cover_id.present? ? "https://covers.openlibrary.org/b/id/#{cover_id}-M.jpg" : "https://via.placeholder.com/140x210?text=No+Cover",
+                alt: work_data["title"] || "Book cover",
+                loading: "lazy"
+              ) %>
+              <div class="book-title"><%= work_data["title"] || "Untitled" %></div>
+              <div class="book-author"><%= author.presence || "Unknown" %></div>
+              <div class="book-reviews"><%= pluralize(reviews.count, "review") %></div>
+            <% end %>
+          </article>
+        <% end %>
+      </div>
+    <% else %>
+      <p class="empty-message">Your library is empty.</p>
+    <% end %>
+  </section>
 </div>
 
-<!-- User info -->
-<section style="margin-top:100px; text-align:center; font-family: 'Helvetica Neue', sans-serif;">
-  <h2 style="margin-top:20px; font-weight:bold; font-size: 24px; color: #2c2c2c;">
-    <%= @user.name.presence || "Unnamed User" %>
-  </h2>
-  <p style="color:#666; font-size: 16px; margin: 8px 0;">
-    <%= @user.bio.presence || "Book lover & explorer" %>
-  </p>
-  <% if @user.location.present? %>
-    <p style="color:#933; font-size:14px;">
-      <i class="fa fa-map-marker" aria-hidden="true" style="margin-right:5px;"></i>
-      <%= @user.location %>
-    </p>
-  <% end %>
-
-  <div style="display:flex; justify-content:center; gap:30px; margin:25px 0; font-family: 'Helvetica Neue', sans-serif;">
-    <div>
-      <p style="font-weight:bold; font-size:20px; margin:0;">122</p>
-      <p style="font-size:13px; color:#666; margin:0;">followers</p>
-    </div>
-    <div>
-      <p style="font-weight:bold; font-size:20px; margin:0;">67</p>
-      <p style="font-size:13px; color:#666; margin:0;">following</p>
-    </div>
-    <div>
-      <p style="font-weight:bold; font-size:20px; margin:0;">37K</p>
-      <p style="font-size:13px; color:#666; margin:0;">likes</p>
-    </div>
-  </div>
-
-  <div style="display:flex; justify-content:center; gap:20px; margin-bottom:30px;">
-    <% if current_user == @user %>
-      <%= link_to "Edit profile", edit_user_registration_path,
-            class: "btn",
-            style: "background-color:#862221; color:white; padding:10px 20px; border-radius:10px; text-decoration:none;" %>
-    <% end %>
-    <%= link_to "Add friends", "#",
-          class: "btn",
-          style: "background-color:#862221; color:white; padding:10px 20px; border-radius:10px; text-decoration:none;" %>
-  </div>
-</section>
-
-<!-- Tabs -->
-<nav style="display:flex; justify-content:center; margin-bottom:10px; font-family: 'Helvetica Neue', sans-serif;">
-  <button id="tab-beeread" class="tab tab-active" type="button"
-          onclick="switchTab('beeread')"
-          style="margin-right:30px; font-weight:bold; color:#862221; cursor:pointer; background:none; border:none; font-size:16px;">
-    BeRead
-  </button>
-  <button id="tab-mybooks" class="tab" type="button"
-          onclick="switchTab('mybooks')"
-          style="color:#aaa; cursor:pointer; background:none; border:none; font-size:16px;">
-    My Books
-  </button>
-</nav>
-<hr style="max-width:300px; margin:0 auto 30px; border-color:#eee;">
-
-<!-- BeRead content -->
-<section id="content-beeread" aria-label="BeRead posts">
-  <% if @user_be_reads.any? %>
-    <div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(250px,1fr)); gap:15px; padding:0 20px;">
-      <% @user_be_reads.each do |beread| %>
-        <article style="background:#f9f9f9; border-radius:12px; box-shadow:0 2px 6px rgba(0,0,0,0.1); padding:10px; display:flex; flex-direction:column; align-items:center; position:relative;">
-          <% if beread.photo.attached? %>
-            <%= image_tag url_for(beread.photo), alt: "BeRead photo", loading: "lazy",
-              style: "border-radius:12px; width:100%; height:auto; object-fit:cover; margin-bottom:10px;" %>
-          <% else %>
-            <div style="width:100%; height:200px; background:#ddd; border-radius:12px; margin-bottom:10px;"></div>
-          <% end %>
-
-          <p style="font-size:14px; color:#333; text-align:center; white-space:pre-wrap; margin:0;"><%= beread.caption %></p>
-          <p style="font-size:12px; color:#666; margin-top:8px;">Posted on <time datetime="<%= beread.created_at.iso8601 %>"><%= beread.created_at.strftime("%b %d, %Y") %></time></p>
-
-          <% if current_user == @user %>
-            <%= button_to "🗑 Delete", be_read_path(beread), method: :delete,
-                data: { confirm: "Are you sure you want to delete this BeRead?" },
-                style: "position:absolute; top:10px; right:10px; background-color:#862221; color:white; border:none; padding:4px 8px; border-radius:6px; font-size:12px; cursor:pointer;" %>
-          <% end %>
-        </article>
-      <% end %>
-    </div>
-  <% else %>
-    <p style="text-align:center; color:#666; font-family: 'Helvetica Neue', sans-serif;">No BeReads yet. Create one to see it here!</p>
-  <% end %>
-</section>
-
-<!-- My Books content -->
-<section id="content-mybooks" aria-label="My Books" style="display: none; font-family: 'Helvetica Neue', sans-serif;">
-  <% if @my_books.any? %>
-    <div class="books-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; padding: 20px;">
-      <% @my_books.each do |library| %>
-        <% data = @book_data[library.work_key] %>
-        <% next if data.blank? %>
-
-        <% work_data = data[:work_data] %>
-        <% author = data[:full_author] %>
-        <% reviews = data[:reviews] %>
-        <% cover_id = work_data["covers"]&.first %>
-
-        <article class="book-card" style="background: white; border-radius: 12px; padding: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
-          <%= link_to book_path(library.work_key), style: "text-decoration:none; color: inherit;" do %>
-            <%= image_tag(
-              cover_id.present? ? "https://covers.openlibrary.org/b/id/#{cover_id}-M.jpg" : "https://via.placeholder.com/140x210?text=No+Cover",
-              alt: work_data["title"] || "Book cover",
-              loading: "lazy",
-              style: "width:100%; height:auto; border-radius:8px;"
-            ) %>
-            <div style="margin-top: 10px; font-weight: bold; color: #333; font-size: 16px;"><%= work_data["title"] || "Untitled" %></div>
-            <div style="font-size: 14px; color: #666; margin-top: 4px;"><%= author.presence || "Unknown" %></div>
-            <div style="font-size: 13px; color: #888; margin-top: 6px;"><%= pluralize(reviews.count, "review") %></div>
-          <% end %>
-        </article>
-      <% end %>
-    </div>
-  <% else %>
-    <p style="text-align: center; color: #888;">Your library is empty.</p>
-  <% end %>
-</section>
-
-<!-- Tab switcher script -->
 <script>
   function switchTab(tab) {
     const tabs = ['beeread', 'mybooks'];
     tabs.forEach(t => {
-      document.getElementById(`content-${t}`).style.display = (t === tab) ? "block" : "none";
+      const content = document.getElementById(`content-${t}`);
       const tabBtn = document.getElementById(`tab-${t}`);
-      tabBtn.style.color = (t === tab) ? "#862221" : "#aaa";
-      tabBtn.style.fontWeight = (t === tab) ? "bold" : "normal";
+      const isActive = (t === tab);
+
+      if (content) {
+        content.style.display = isActive ? "block" : "none";
+        content.hidden = !isActive;
+        content.setAttribute("aria-hidden", !isActive);
+      }
+
+      if (tabBtn) {
+        tabBtn.classList.toggle("tab-active", isActive);
+        tabBtn.setAttribute("aria-selected", isActive);
+        tabBtn.tabIndex = isActive ? 0 : -1;
+      }
     });
   }
 </script>
