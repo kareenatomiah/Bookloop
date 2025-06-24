@@ -1,5 +1,15 @@
-<div style="position: fixed; bottom: 20px; right: 20px; z-index: 1000;">
-  <%= link_to new_be_read_path, style: "display: inline-block; background-color: #862221; color: white; font-size: 36px; width: 60px; height: 60px; border-radius: 50%; text-align: center; line-height: 60px; box-shadow: 0 4px 10px rgba(0,0,0,0.2);" do %>
-    +
-  <% end %>
-</div>
+<footer style="background-color: #f9f9f9; padding: 20px 0; margin-top: 40px; text-align: center; font-size: 14px; color: #555; border-top: 1px solid #e5e5e5;">
+  <div style="max-width: 1200px; margin: 0 auto; display: flex; flex-direction: column; align-items: center;">
+    <div style="margin-bottom: 10px;">
+      <%= link_to root_path do %>
+        <%= image_tag 'https://res.cloudinary.com/ds8cccxkn/image/upload/v1750153216/Bookloop_h9v0zf.png',
+                      alt: 'BookLoop Logo',
+                      style: 'height: 25px; opacity: 0.8;' %>
+      <% end %>
+    </div>
+    <div>
+      © 2025 Bookloop — All rights reserved. Built with ❤️
+    </div>
+  </div>
+</footer>
+
