@@ -1,4 +1,5 @@
-<%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put, multipart: true, class: "edit-profile-form" }) do |f| %>
+<%= form_for(resource, as: resource_name, url: registration_path(resource_name),
+             html: { method: :put, multipart: true, class: "edit-profile-form" }) do |f| %>
   <div class="edit-profile-container">
 
     <%= link_to "← Back", user_path(current_user), class: "back-button" %>
@@ -6,10 +7,16 @@
     <h2>Edit Profile</h2>
 
     <div class="avatar-upload">
-      <% if resource.avatar_url.present? %>
-        <%= image_tag(resource.avatar_url, class: "profile-avatar", id: "avatarPreview") %>
+      <% if resource.avatar.attached? %>
+        <% avatar_variant = resource.avatar.variant(resize_to_fill: [160, 160]) %>
+        <%= image_tag url_for(avatar_variant) + "?#{resource.avatar.blob.checksum}",
+                      class: "profile-avatar", id: "avatarPreview",
+                      style: "object-fit: cover; border-radius: 50%;" %>
       <% else %>
-        <div class="profile-avatar placeholder" id="avatarPreview"></div>
+        <div class="profile-avatar placeholder" id="avatarPreview"
+             style="width:160px; height:160px; border-radius:50%; background:#ddd; display:flex; align-items:center; justify-content:center;">
+          <i class="fa fa-user" style="font-size:60px; color:#933;"></i>
+        </div>
       <% end %>
 
       <%= f.file_field :avatar_upload, accept: "image/*", class: "avatar-input", id: "avatarInput" %>
@@ -34,7 +41,6 @@
     <%= f.label :bio, "Bio", class: "input-label" %>
     <%= f.text_area :bio, class: "input", rows: 4, placeholder: "Tell us something about yourself..." %>
 
-
     <%= f.submit "Save changes", class: "save-button" %>
   </div>
 <% end %>
@@ -54,10 +60,15 @@
           if (preview.tagName === "IMG") {
             preview.src = e.target.result;
           } else {
+            // Replace placeholder div with img tag on first upload
             const img = document.createElement("img");
             img.src = e.target.result;
             img.className = "profile-avatar";
             img.id = "avatarPreview";
+            img.style.borderRadius = "50%";
+            img.style.objectFit = "cover";
+            img.style.width = "160px";
+            img.style.height = "160px";
             preview.replaceWith(img);
           }
         };

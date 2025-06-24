@@ -3,21 +3,12 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   def update
     if params[:user][:avatar_upload].present?
-      uploaded_file = params[:user][:avatar_upload]
-
-      begin
-        cloudinary_response = Cloudinary::Uploader.upload(uploaded_file.path)
-        params[:user][:avatar_url] = cloudinary_response["secure_url"]
-      rescue => e
-        flash[:alert] = "Failed to upload avatar image. Please try again."
-        redirect_to edit_user_registration_path and return
-      end
+      resource.avatar.purge if resource.avatar.attached?
+      resource.avatar.attach(params[:user][:avatar_upload])
     end
 
-    params[:user].delete(:avatar_upload)
-
-    if resource.update_without_password(account_update_params)
-      set_flash_message!(:notice, :updated_custom)  # Custom flash message
+    if resource.update_without_password(account_update_params.except(:avatar_upload))
+      set_flash_message!(:notice, :updated)
       redirect_to user_path(current_user)
     else
       flash.now[:alert] = "Failed to update profile. Please check the form."
@@ -29,7 +20,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   def configure_account_update_params
     devise_parameter_sanitizer.permit(:account_update, keys: [
-      :avatar_upload, :avatar_url, :name, :email,
+      :avatar_upload, :name, :email,
       :password, :password_confirmation,
       :date_of_birth, :country, :bio
     ])
@@ -40,6 +31,6 @@ class Users::RegistrationsController < Devise::RegistrationsController
   end
 
   def after_update_path_for(resource)
-    user_path(current_user)
+    user_path(resource)
   end
 end

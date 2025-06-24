@@ -1,16 +1,21 @@
 <!-- Header with avatar -->
 <div style="position: relative;">
+  <!-- Background header color -->
   <div style="background-color: #933; height: 180px; border-bottom-left-radius: 60px; border-bottom-right-radius: 60px;"></div>
+
+  <!-- Avatar container (overlapping the background) -->
   <div style="position: absolute; top: 100px; left: 50%; transform: translateX(-50%);">
     <div style="width: 160px; height: 160px; border-radius: 50%; border: 3px solid #933; background-color: white; display: flex; align-items: center; justify-content: center; overflow: hidden;">
       <% if @user.avatar.attached? %>
-        <%= image_tag @user.avatar.variant(resize_to_fill: [160, 160]), alt: "#{@user.name.presence || 'User'}'s avatar", style: "width:100%; height:100%; object-fit:cover;" %>
+        <%= image_tag @user.avatar_thumbnail, alt: "#{@user.name.presence || 'User'}'s avatar",
+      style: "width:100%; height:100%; object-fit:cover;" %>
       <% else %>
         <i class="fa fa-user" style="font-size:60px; color:#933;"></i>
       <% end %>
     </div>
   </div>
 </div>
+
 
 <!-- User info -->
 <div style="margin-top:100px; text-align:center;">
@@ -43,6 +48,7 @@
     <%= link_to "Add friends", "#", class: "btn", style: "background-color:#862221; color:white; padding:10px 20px; border-radius:10px;" %>
   </div>
 </div>
+
 
 <!-- Tabs -->
 <div style="display:flex; justify-content:center; margin-bottom:10px;">
@@ -81,29 +87,39 @@
   <% end %>
 </div>
 
-
 <!-- My Books content -->
-<div id="content-mybooks" style="display:none;">
-  <div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(130px,1fr)); gap:20px; padding:0 20px;">
-    <% @my_books.each do |book| %>
-      <div style="position:relative; text-align:center;">
-        <% if book.cover_url.present? %>
-          <%= image_tag book.cover_url, alt: book.title, style: "width:100px; height:auto; border-radius:8px; box-shadow:0 2px 4px rgba(0,0,0,0.1);" %>
-        <% else %>
-          <div style="width:100px; height:140px; background:#ddd; border-radius:8px; margin: 0 auto;"></div>
-        <% end %>
-        <p style="margin-top:8px; font-weight:bold; font-size:14px; color:#333;"><%= truncate(book.title, length:40) %></p>
-        <%= link_to new_be_read_path(book_id: book.id), style: "position:absolute; bottom:8px; right:8px; background-color:#862221; color:#fff; padding:6px 10px; border-radius:6px; text-decoration:none;" do %>
-          📸 BeRead this
-        <% end %>
-      </div>
-    <% end %>
-  </div>
-  <% if @my_books.empty? %>
-    <p style="text-align:center; color:#888;">Your library is empty.</p>
+<div id="content-mybooks" style="display: none;">
+  <% if @my_books.any? %>
+    <div class="books-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; padding: 20px;">
+      <% @my_books.each do |library| %>
+        <% data = @book_data[library.work_key] %>
+        <% next if data.blank? %>
+
+        <% work_data = data[:work_data] %>
+        <% author = data[:full_author] %>
+        <% reviews = data[:reviews] %>
+        <% cover_id = work_data["covers"]&.first %>
+
+        <div class="book-card" style="background: white; border-radius: 12px; padding: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+          <%= link_to book_path(library.work_key) do %>
+            <%= image_tag(
+              cover_id.present? ? "https://covers.openlibrary.org/b/id/#{cover_id}-M.jpg" : "https://via.placeholder.com/140x210?text=No+Cover",
+              alt: work_data["title"],
+              style: "width:100%; height:auto; border-radius:8px;"
+            ) %>
+            <div style="margin-top: 10px; font-weight: bold; color: #333;"><%= work_data["title"] %></div>
+            <div style="font-size: 14px; color: #666;"><%= author.presence || "Unknown" %></div>
+            <div style="font-size: 13px; color: #888; margin-top: 6px;"><%= pluralize(reviews.count, "review") %></div>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <p style="text-align: center; color: #888;">Your library is empty.</p>
   <% end %>
 </div>
 
+<!-- Tab switcher script -->
 <script>
   function switchTab(tab) {
     document.getElementById("content-beeread").style.display = tab === "beeread" ? "block" : "none";
