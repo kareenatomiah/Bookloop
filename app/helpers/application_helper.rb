@@ -36,4 +36,7 @@ module ApplicationHelper
   end
   end
 
+  def footer_excluded?
+  controller_name.in?(%w[sessions registrations splash]) && action_name.in?(%w[new show index])
+  end
 end

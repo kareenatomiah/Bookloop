@@ -11,39 +11,45 @@
   </head>
 
   <body>
-    <% unless devise_controller? || (controller_name == 'pages' && action_name == 'splash') %>
-      <div data-controller="sidebar">
-        <% if user_signed_in? %>
-          <%= render "shared/navbar" %>
-          <%= render "shared/sidebar" %>
-        <% end %>
-      </div>
-    <% end %>
+    <div class="page-container"> <!-- 🧱 Conteneur principal -->
 
-    <!-- ✅ Flash messages -->
-    <% if flash[:notice].present? || flash[:alert].present? %>
-      <div style="
-        background-color: <%= flash[:notice] ? '#e9f9ef' : '#fbeaea' %>;
-        color: <%= flash[:notice] ? '#1f6b3a' : '#862221' %>;
-        border: 1px solid <%= flash[:notice] ? '#c5ebd6' : '#f1c0c0' %>;
-        padding: 15px 20px;
-        margin: 20px auto;
-        max-width: 600px;
-        border-radius: 8px;
-        font-family: 'Helvetica Neue', sans-serif;
-        text-align: center;
-        box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-      ">
-        <%= flash[:notice] || flash[:alert] %>
-      </div>
-    <% end %>
+      <% unless devise_controller? || (controller_name == 'pages' && action_name == 'splash') %>
+        <div data-controller="sidebar">
+          <% if user_signed_in? %>
+            <%= render "shared/navbar" %>
+            <%= render "shared/sidebar" %>
+          <% end %>
+        </div>
+      <% end %>
 
+      <!-- ✅ Flash messages -->
+      <% if flash[:notice].present? || flash[:alert].present? %>
+        <div style="
+          background-color: <%= flash[:notice] ? '#e9f9ef' : '#fbeaea' %>;
+          color: <%= flash[:notice] ? '#1f6b3a' : '#862221' %>;
+          border: 1px solid <%= flash[:notice] ? '#c5ebd6' : '#f1c0c0' %>;
+          padding: 15px 20px;
+          margin: 20px auto;
+          max-width: 600px;
+          border-radius: 8px;
+          font-family: 'Helvetica Neue', sans-serif;
+          text-align: center;
+          box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+        ">
+          <%= flash[:notice] || flash[:alert] %>
+        </div>
+      <% end %>
 
+      <!-- ✅ Page content (pousse le footer vers le bas) -->
+      <main class="content">
+        <%= yield %>
+      </main>
 
-    <!-- ✅ Page content -->
-    <%= yield %>
+      <!-- ✅ Footer -->
+      <%= render "shared/footer" unless footer_excluded? %>
+    </div>
 
-    <!-- ✅ Floating "+ New BeRead" button (only for logged-in users) -->
+    <!-- ✅ Floating "+ New BeRead" button -->
     <% if user_signed_in? %>
       <%= link_to new_be_read_path, class: "be-read-floating-button" do %>
         +
@@ -76,8 +82,6 @@
       }
     </style>
 
-    <!-- ✅ Stimulus controllers -->
     <%= javascript_include_tag "controllers", type: "module" %>
   </body>
 </html>
-
