@@ -53,7 +53,7 @@
   }
 
   .top-banner .book-card .book-cover {
-    height: 190px; /* réduit pour éviter le recadrage */
+    height: 190px;
   }
 
   .top-banner .book-card.center {
@@ -248,7 +248,12 @@
 
     books[currentIndex].classList.remove("center");
     currentIndex = (currentIndex + direction + books.length) % books.length;
-    books[currentIndex].scrollIntoView({ behavior: 'smooth', inline: 'center' });
+    books[currentIndex].scrollIntoView({
+      behavior: 'smooth',
+      block: 'nearest',
+      inline: 'center'
+    });
     books[currentIndex].classList.add("center");
   }
 </script>
+
