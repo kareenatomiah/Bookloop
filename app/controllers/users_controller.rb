@@ -3,14 +3,16 @@ class UsersController < ApplicationController
   before_action :set_user, only: [:show, :update]
 
   def index
-    # Implement user listing here if needed
+    if params[:query].present?
+      @users = User.where("name ILIKE ?", "%#{params[:query]}%").where.not(id: current_user.id)
+    else
+      @users = []
+    end
   end
 
   def show
-    # @user is set by before_action
-
     if current_user == @user
-      @my_books = current_user.libraries # or current_user.my_books if that’s the right association
+      @my_books = current_user.libraries
       @book_data = {}
 
       service = OpenLibraryService.new
@@ -40,25 +42,27 @@ class UsersController < ApplicationController
       @book_data = {}
     end
 
+    # Load BeReads for the profile
     @user_be_reads = @user.be_reads.with_attached_photo.order(created_at: :desc)
+
+    # Load friends for profile view (important for the Instagram-style friends list)
+    @friends = @user.friends
+
+    # Friendship status
+    @is_friend = current_user.friends_with?(@user)
   end
 
   def update
-    # Only allow user to update their own profile
     unless current_user == @user
       redirect_to root_path, alert: "Not authorized"
       return
     end
 
-    # Handle avatar upload if present
     if params[:user][:avatar_upload].present?
-      # Purge existing avatar if any
       @user.avatar.purge if @user.avatar.attached?
-      # Attach new avatar
       @user.avatar.attach(params[:user][:avatar_upload])
     end
 
-    # Prepare update params excluding avatar_upload (already handled)
     update_params = user_params.except(:avatar_upload)
 
     if @user.update(update_params)
@@ -70,11 +74,11 @@ class UsersController < ApplicationController
   end
 
   def create
-    # Implement if needed
+    # Not used
   end
 
   def destroy
-    # Implement if needed
+    # Not used
   end
 
   private
@@ -84,9 +88,7 @@ class UsersController < ApplicationController
   end
 
   def user_params
-    # Permit avatar_upload as virtual attribute plus other user attributes
     params.require(:user).permit(:name, :email, :password, :date_of_birth, :country, :bio, :avatar_upload)
   end
 end
-
 

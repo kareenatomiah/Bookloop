@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get 'friends/index'
   # Devise routes
   devise_for :users, controllers: { registrations: 'users/registrations' }
 
@@ -9,13 +10,16 @@ Rails.application.routes.draw do
   get 'up', to: 'rails/health#show', as: :rails_health_check
   get '/feed', to: 'feed#index', as: :feed
   get '/profile', to: 'users#show', as: :profile
+  get '/mybooks', to: 'books#mybooks', as: 'mybooks'
+  get '/search_friends', to: 'friends#search', as: 'search_friends'
+
 
   # API
   get "api/ratings/:work_key", to: "api/ratings#show"
 
   # Custom named routes
   get 'wishlist', to: 'wishlists#index', as: 'wishlist'
-  get 'mybooks', to: 'libraries#index', as: 'mybooks'
+  get 'myfriends', to: 'friends#index', as: 'myfriends'
 
   # Resources
   resources :books, only: [:index, :show]
@@ -24,6 +28,7 @@ Rails.application.routes.draw do
   resources :wishlists, only: [:index, :create]
   resources :libraries, only: [:create]
   resources :users, only: [:show]
+  resources :friendships, only: [:create, :destroy]
 
   # BeReads with custom member routes for confirm_post and post_to_feed
   resources :be_reads do
@@ -39,4 +44,3 @@ Rails.application.routes.draw do
     resources :comments, only: [:create, :destroy]
   end
 end
-

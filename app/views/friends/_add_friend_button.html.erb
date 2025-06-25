@@ -1,0 +1,58 @@
+<% if current_user.friends_with?(friend) %>
+  <%= button_to "Remove Friend",
+                friendship_path(current_user.friendships.find_by(friend: friend)),
+                method: :delete,
+                class: "btn btn-outline-danger",
+                data: { turbo: false, confirm: "Are you sure you want to remove #{friend.name} as a friend?" },
+                aria: { label: "Remove friend #{friend.name}" } %>
+<% else %>
+  <%= button_to "Add Friend",
+                friendships_path(friend_id: friend.id),
+                method: :post,
+                class: "btn btn-dark-red",
+                data: { turbo: false },
+                aria: { label: "Add friend #{friend.name}" } %>
+<% end %>
+
+<style>
+.btn.add-friend-btn {
+  background-color: #a63333;
+  color: white;
+  padding: 12px 28px;
+  border-radius: 25px;
+  border: none;
+  cursor: pointer;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  font-weight: 600;
+  box-shadow: 0 5px 15px rgba(166, 51, 51, 0.4);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  user-select: none;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.btn.add-friend-btn:hover,
+.btn.add-friend-btn:focus {
+  background-color: #7f2626;
+  box-shadow: 0 7px 20px rgba(127, 38, 38, 0.6);
+  outline: none;
+}
+
+.btn-outline-danger {
+  background-color: transparent;
+  color: #a63333;
+  border: 2px solid #a63333;
+  border-radius: 30px;
+  padding: 10px 24px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.btn-outline-danger:hover {
+  background-color: #a63333;
+  color: white;
+  box-shadow: 0 6px 18px rgba(166, 51, 51, 0.4);
+}
+</style>
