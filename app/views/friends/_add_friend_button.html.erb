@@ -1,18 +1,22 @@
 <% if current_user.friends_with?(friend) %>
+  <% friendship = current_user.friendships.find_by(friend: friend) %>
   <%= button_to "Remove Friend",
-                friendship_path(current_user.friendships.find_by(friend: friend)),
+                friend_path(friendship),
                 method: :delete,
                 class: "btn btn-outline-danger",
                 data: { turbo: false, confirm: "Are you sure you want to remove #{friend.name} as a friend?" },
                 aria: { label: "Remove friend #{friend.name}" } %>
 <% else %>
-  <%= button_to "Add Friend",
-                friendships_path(friend_id: friend.id),
-                method: :post,
-                class: "btn btn-dark-red",
-                data: { turbo: false },
-                aria: { label: "Add friend #{friend.name}" } %>
+  <%= form_with url: Rails.application.routes.url_helpers.friends_path, method: :post, local: true do |f| %>
+    <%= hidden_field_tag :friend_id, friend.id %>
+    <%= f.submit "Add Friend",
+                 class: "btn btn-dark-red",
+                 data: { turbo: false },
+                 aria: { label: "Add friend #{friend.name}" } %>
+  <% end %>
 <% end %>
+
+
 
 <style>
 .btn.add-friend-btn {

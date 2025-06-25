@@ -45,9 +45,9 @@ Rails.application.routes.draw do
   end
 
 
-  # resources :friends, only: [:index, :create, :destroy] do
-  #   collection do
-  #     get 'search', to: 'friends#search', as: :search
-  #   end
-  # end
+  resources :friends, only: [:index, :create, :destroy] do
+    collection do
+      get 'search'
+    end
+  end
 end
