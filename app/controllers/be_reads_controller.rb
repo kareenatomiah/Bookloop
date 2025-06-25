@@ -15,8 +15,6 @@ class BeReadsController < ApplicationController
     @be_read = current_user.be_reads.build(
       caption: params[:be_read][:caption],
       photo_data: params[:be_read][:photo_data]
-    )
-    @be_read = current_user.be_reads.build(be_read_params)
 
     if @be_read.save
       redirect_to confirm_post_be_read_path(@be_read), notice: "BeRead successfully created."

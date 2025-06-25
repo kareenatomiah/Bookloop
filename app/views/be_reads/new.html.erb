@@ -1,4 +1,4 @@
-<h1 class="page-title">Create a new BeRead</h1>More actions
+<h1 class="page-title">Create a new BeRead</h1>
 
 <%= form_with(model: @be_read, local: true, multipart: true, html: { id: "be-read-form" }) do |form| %>
   <div class="selfie-container" data-controller="webcam" style="max-width:400px; margin:auto; text-align:center;">
@@ -39,11 +39,6 @@
                       data: { webcam_target: "submitButton" } %>
     </div>
 
-    <!-- Go to Feed Button -->
-    <div style="margin-top:12px;">
-      <%= link_to "Go to Feed", feed_path, class: "btn btn-primary" %>
-    </div>
-
     <!-- Notification -->
     <div data-webcam-target="notification"
          style="display:none; position:fixed; top:20px; left:50%; transform:translateX(-50%);
@@ -63,9 +58,6 @@
     border: none;
     border-radius: 6px;
     font-size: 16px;
-    display: inline-block;
-    text-align: center;
-    cursor: pointer;
   }
 
   .capture-btn {
@@ -78,8 +70,6 @@
   }
 
   .capture-btn:hover {
-  .capture-btn:hover,
-  .btn-primary:hover {
     background: #6b1c1b;
   }
 
