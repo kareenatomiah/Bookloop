@@ -6,12 +6,18 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
+    <!-- ✅ Feuille de style principale -->
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
+
+    <!-- ✅ Ajout Bootstrap (si pas encore dans application.css) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-..." crossorigin="anonymous">
   </head>
 
-  <body>
-    <div class="page-container"> <!-- 🧱 Conteneur principal -->
+  <body class="bg-light">
+
+    <!-- ✅ Conteneur principal responsive -->
+    <div class="container-fluid px-0 page-container">
 
       <% unless devise_controller? || (controller_name == 'pages' && action_name == 'splash') %>
         <div data-controller="sidebar">
@@ -24,24 +30,20 @@
 
       <!-- ✅ Flash messages -->
       <% if flash[:notice].present? || flash[:alert].present? %>
-        <div style="
+        <div class="alert mt-3 mx-auto text-center fw-semibold" style="
           background-color: <%= flash[:notice] ? '#e9f9ef' : '#fbeaea' %>;
           color: <%= flash[:notice] ? '#1f6b3a' : '#862221' %>;
           border: 1px solid <%= flash[:notice] ? '#c5ebd6' : '#f1c0c0' %>;
-          padding: 15px 20px;
-          margin: 20px auto;
-          max-width: 600px;
+          max-width: 90%;
           border-radius: 8px;
-          font-family: 'Helvetica Neue', sans-serif;
-          text-align: center;
           box-shadow: 0 2px 6px rgba(0,0,0,0.05);
         ">
           <%= flash[:notice] || flash[:alert] %>
         </div>
       <% end %>
 
-      <!-- ✅ Page content (pousse le footer vers le bas) -->
-      <main class="content">
+      <!-- ✅ Contenu principal responsive -->
+      <main class="content py-4 px-3">
         <%= yield %>
       </main>
 
@@ -56,7 +58,7 @@
       <% end %>
     <% end %>
 
-    <!-- ✅ Button style -->
+    <!-- ✅ Style bouton + responsive -->
     <style>
       .be-read-floating-button {
         position: fixed;
@@ -80,8 +82,30 @@
       .be-read-floating-button:hover {
         background-color: #6b1c1b;
       }
+
+      @media (max-width: 768px) {
+        .be-read-floating-button {
+          width: 50px;
+          height: 50px;
+          font-size: 28px;
+          line-height: 50px;
+        }
+
+        .page-container {
+          padding-left: 10px;
+          padding-right: 10px;
+        }
+
+        .flash-message {
+          font-size: 14px;
+        }
+      }
     </style>
+
+    <!-- ✅ JS Bootstrap (si nécessaire) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-..." crossorigin="anonymous"></script>
 
     <%= javascript_include_tag "controllers", type: "module" %>
   </body>
 </html>
+
