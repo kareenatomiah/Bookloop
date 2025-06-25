@@ -1,21 +1,19 @@
 <style>
   /* Container and header */
   .profile-header-bg {
-  position: relative;
-  width: 100vw;              /* Full viewport width */
-  left: 50%;                 /* Shift left by half the viewport */
-  right: 50%;                /* Shift right by half */
-  margin-left: -50vw;        /* Pull it to the left edge */
-  margin-right: -50vw;       /* Pull it to the right edge */
-
-  height: 180px;
-  background: linear-gradient(135deg, #a63333 0%, #5c1a1a 100%);
-  border-bottom-left-radius: 70px;
-  border-bottom-right-radius: 70px;
-  box-shadow: 0 4px 15px rgba(166, 51, 51, 0.5);
-  z-index: -1;
-}
-
+    position: relative;
+    width: 100vw;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+    height: 180px;
+    background: linear-gradient(135deg, #a63333 0%, #5c1a1a 100%);
+    border-bottom-left-radius: 70px;
+    border-bottom-right-radius: 70px;
+    box-shadow: 0 4px 15px rgba(166, 51, 51, 0.5);
+    z-index: -1;
+  }
 
   .avatar-wrapper {
     position: absolute;
@@ -243,7 +241,7 @@
     outline: none;
   }
 
-  /* My Books grid */
+  /* Friends grid using similar style as books */
   .books-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
@@ -258,13 +256,15 @@
     padding: 18px;
     box-shadow: 0 8px 22px rgba(0,0,0,0.06);
     transition: transform 0.25s ease;
+    text-align: center;
   }
 
   .book-card:hover {
     transform: translateY(-6px);
   }
 
-  .book-card img {
+  .book-card img,
+  .book-card .book-card-img {
     width: 100%;
     height: 320px;
     border-radius: 12px;
@@ -278,20 +278,6 @@
     color: #222;
     font-size: 18px;
     line-height: 1.2;
-  }
-
-  .book-author {
-    font-size: 15px;
-    color: #666;
-    margin-top: 6px;
-    font-weight: 500;
-  }
-
-  .book-reviews {
-    font-size: 13px;
-    color: #aaa;
-    margin-top: 8px;
-    font-style: italic;
   }
 
   .empty-message {
@@ -321,6 +307,12 @@
     <h2 class="user-name"><%= @user.name.presence || "Unnamed User" %></h2>
     <p class="user-bio"><%= @user.bio.presence || "Book lover & explorer" %></p>
 
+    <% if @user.username.present? %>
+      <p style="font-size: 16px; color: #888; font-family: 'Helvetica Neue', Arial, sans-serif; margin-top: -8px; margin-bottom: 10px;">
+        @<%= @user.username %>
+      </p>
+    <% end %>
+
     <% if @user.location.present? %>
       <p class="user-location">
         <i class="fa fa-map-marker" aria-hidden="true"></i>
@@ -328,85 +320,95 @@
       </p>
     <% end %>
 
-    <div class="user-stats" role="list" aria-label="User statistics">
-      <div class="stat-item" role="listitem">
-        <p>122</p>
-        <p>followers</p>
-      </div>
-      <div class="stat-item" role="listitem">
-        <p>67</p>
-        <p>following</p>
-      </div>
-      <div class="stat-item" role="listitem">
-        <p>37K</p>
-        <p>likes</p>
-      </div>
-    </div>
-
     <div class="user-actions">
       <% if current_user == @user %>
         <%= link_to "Edit profile", edit_user_registration_path, class: "btn", role: "button" %>
+        <%= link_to "Add Friends", search_friends_path, class: "btn", role: "button" %>
+      <% else %>
+        <% if @is_friend %>
+          <%= render 'friendship/remove_friend_button', friend: @user %>
+        <% else %>
+          <%= render 'friendship/add_friend_button', friend: @user %>
+        <% end %>
       <% end %>
-      <%= link_to "Add friends", "#", class: "btn", role: "button" %>
       <%= link_to "Go to Feed", feed_path, class: "btn", role: "button" %>
     </div>
-  </section>
 
   <!-- Tabs -->
   <nav class="tabs" role="tablist" aria-label="Profile content tabs">
     <button id="tab-beeread" class="tab tab-active" type="button" role="tab" aria-selected="true" aria-controls="content-beeread"
             onclick="switchTab('beeread')">BeRead</button>
+    <button id="tab-friends" class="tab" type="button" role="tab" aria-selected="false" aria-controls="content-friends"
+            onclick="switchTab('friends')">My Friends</button>
   </nav>
 
-  <hr class="separator">
+  <hr class="separator" aria-hidden="true">
 
   <!-- BeRead content -->
-  <section id="content-beeread" aria-label="BeRead posts" role="tabpanel">
-    <% if @user_be_reads.any? %>
+  <section id="content-beeread" role="tabpanel" aria-labelledby="tab-beeread">
+    <% if @user_be_reads.present? %>
       <div class="beread-grid">
-        <% @user_be_reads.each do |beread| %>
+        <% @user_be_reads.each do |post| %>
           <article class="beread-article">
-            <% if beread.photo.attached? %>
-              <%= image_tag url_for(beread.photo), alt: "BeRead photo", loading: "lazy", class: "beread-photo" %>
+            <% if post.photo.attached? %>
+              <%= image_tag post.photo.variant(resize_to_fill: [420, 300]), alt: post.caption, class: "beread-photo" %>
             <% else %>
-              <div class="beread-placeholder" aria-label="No image available">No image</div>
+              <div class="beread-placeholder">No image available</div>
             <% end %>
-
-            <p class="beread-caption"><%= beread.caption %></p>
-            <p class="beread-date">Posted on <time datetime="<%= beread.created_at.iso8601 %>"><%= beread.created_at.strftime("%b %d, %Y") %></time></p>
-
+            <p class="beread-caption"><%= truncate(post.caption, length: 100) %></p>
+            <time class="beread-date" datetime="<%= post.created_at.iso8601 %>"><%= post.created_at.strftime("%b %d, %Y") %></time>
             <% if current_user == @user %>
-              <%= button_to "🗑 Delete", be_read_path(beread), method: :delete,
-                    data: { confirm: "Are you sure you want to delete this BeRead?" },
-                    class: "delete-button" %>
+              <button class="delete-button" onclick="deletePost(<%= post.id %>)" aria-label="Delete post">Delete</button>
             <% end %>
           </article>
         <% end %>
       </div>
     <% else %>
-      <p class="empty-message">No BeReads yet. Create one to see it here!</p>
+      <p class="empty-message">No posts to display.</p>
     <% end %>
   </section>
-</div>
+
+      <!-- My Friends content -->
+      <section id="content-friends" role="tabpanel" aria-labelledby="tab-friends" hidden>
+        <%= render partial: "friends_list", locals: { friends: @user.friends } %>
+      </section>
+    </div>
 
 <script>
   function switchTab(tab) {
-    const tabs = ['beeread'];
-    tabs.forEach(t => {
-      const content = document.getElementById(`content-${t}`);
-      const tabBtn = document.getElementById(`tab-${t}`);
-      const isActive = (t === tab);
+    const tabs = document.querySelectorAll('nav.tabs button');
+    const panels = document.querySelectorAll('section[role="tabpanel"]');
 
-      if (content) {
-        content.style.display = isActive ? "block" : "none";
-        content.hidden = !isActive;
-        content.setAttribute("aria-hidden", !isActive);
+    tabs.forEach(button => {
+      if (button.id === `tab-${tab}`) {
+        button.classList.add('tab-active');
+        button.setAttribute('aria-selected', 'true');
+      } else {
+        button.classList.remove('tab-active');
+        button.setAttribute('aria-selected', 'false');
       }
+    });
 
-      if (tabBtn) {
-        tabBtn.classList.toggle("tab-active", isActive);
-        tabBtn.setAttribute("aria-selected", isActive);
-        tabBtn.tabIndex = isActive ? 0 : -1;
+    panels.forEach(panel => {
+      if (panel.id === `content-${tab}`) {
+        panel.removeAttribute('hidden');
+      } else {
+        panel.setAttribute('hidden', '');
+      }
+    });
+  }
+
+  function deletePost(postId) {
+    if (!confirm('Are you sure you want to delete this post?')) return;
+
+    fetch(`/posts/${postId}`, {
+      method: 'DELETE',
+      headers: { 'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content }
+    }).then(response => {
+      if (response.ok) {
+        location.reload();
+      } else {
+        alert('Failed to delete post.');
       }
     });
   }

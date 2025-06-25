@@ -1,0 +1,115 @@
+<section class="friends-section">
+  <h2 class="section-title">My Friends</h2>
+
+  <% if @friends.any? %>
+    <div class="friends-grid">
+      <% @friends.each do |friend| %>
+        <div class="friend-card" role="listitem">
+          <%= link_to profile_path(friend), class: "friend-link" do %>
+            <div class="friend-avatar-wrapper" aria-label="<%= friend.name.presence || 'Unnamed User' %>'s avatar">
+              <% if friend.avatar.attached? %>
+                <%= image_tag friend.avatar.variant(resize_to_fill: [120, 120]), alt: "#{friend.name.presence || 'User'}'s avatar", class: "friend-avatar" %>
+              <% else %>
+                <i class="fa fa-user friend-avatar-placeholder" aria-hidden="true"></i>
+              <% end %>
+            </div>
+            <p class="friend-name"><%= friend.name.presence || "Unnamed User" %></p>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <p class="empty-message">You have no friends yet.</p>
+  <% end %>
+</section>
+
+<style>
+.friends-section {
+  max-width: 900px;
+  margin: 0 auto 50px;
+  padding: 0 24px;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+}
+
+.section-title {
+  font-weight: 700;
+  font-size: 28px;
+  color: #2c2c2c;
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+.friends-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 24px;
+}
+
+.friend-card {
+  background: white;
+  border-radius: 16px;
+  padding: 16px 12px 24px;
+  box-shadow: 0 8px 22px rgba(0,0,0,0.07);
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+}
+
+.friend-card:hover,
+.friend-card:focus-within {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 28px rgba(0,0,0,0.12);
+  outline: none;
+}
+
+.friend-link {
+  color: inherit;
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.friend-avatar-wrapper {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 4px solid #a63333;
+  background: #fff;
+  box-shadow: 0 6px 18px rgba(166, 51, 51, 0.35);
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.friend-avatar {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.friend-avatar-placeholder {
+  font-size: 60px;
+  color: #a63333;
+}
+
+.friend-name {
+  font-size: 17px;
+  font-weight: 600;
+  color: #2c2c2c;
+  letter-spacing: 0.02em;
+  word-break: break-word;
+}
+
+.empty-message {
+  text-align: center;
+  color: #aaa;
+  font-style: italic;
+  font-size: 16px;
+  margin-top: 40px;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+}
+</style>

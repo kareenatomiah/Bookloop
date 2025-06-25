@@ -11,23 +11,34 @@
 
   <!-- Sign Up Form -->
   <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+
+    <!-- Username -->
+    <div style="margin-bottom: 20px;">
+      <%= f.label :username, "Username", style: "display: block; margin-bottom: 5px;" %>
+      <%= f.text_field :username, autocomplete: "username", class: "form-control", style: "width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px;" %>
+    </div>
+
+    <!-- Email -->
     <div style="margin-bottom: 20px;">
       <%= f.label :email, "Email", style: "display: block; margin-bottom: 5px;" %>
       <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "form-control", style: "width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px;" %>
     </div>
 
+    <!-- Password -->
     <div style="margin-bottom: 20px;">
       <%= f.label :password, "Password", style: "display: block; margin-bottom: 5px;" %>
       <%= f.password_field :password, autocomplete: "new-password", class: "form-control", style: "width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px;" %>
     </div>
 
+    <!-- Password Confirmation -->
     <div style="margin-bottom: 25px;">
       <%= f.label :password_confirmation, "Password confirmation", style: "display: block; margin-bottom: 5px;" %>
       <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "form-control", style: "width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px;" %>
     </div>
 
+    <!-- Submit Button -->
     <div style="text-align: center;">
-      <%= f.submit "Sign up", class: "btn btn-dark", style: "padding: 10px 20px; background-color:rgb(67, 8, 8); color: white; border: none; border-radius: 5px; cursor: pointer;" %>
+      <%= f.submit "Sign up", class: "btn btn-dark", style: "padding: 10px 20px; background-color: rgb(91, 11, 11); color: white; border: none; border-radius: 5px; cursor: pointer;" %>
     </div>
   <% end %>
 

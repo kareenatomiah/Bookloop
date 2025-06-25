@@ -10,7 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+
 ActiveRecord::Schema[7.1].define(version: 2025_06_25_072657) do
+
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -70,12 +72,8 @@ ActiveRecord::Schema[7.1].define(version: 2025_06_25_072657) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "user_id", null: false
-    t.string "work_key"
-    t.string "title"
-    t.string "cover_url"
     t.index ["category_id"], name: "index_books_on_category_id"
     t.index ["user_id"], name: "index_books_on_user_id"
-    t.index ["work_key"], name: "index_books_on_work_key"
   end
 
   create_table "categories", force: :cascade do |t|
@@ -93,6 +91,16 @@ ActiveRecord::Schema[7.1].define(version: 2025_06_25_072657) do
     t.datetime "updated_at", null: false
     t.index ["be_read_id"], name: "index_comments_on_be_read_id"
     t.index ["user_id"], name: "index_comments_on_user_id"
+  end
+
+  create_table "friendships", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "friend_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["friend_id"], name: "index_friendships_on_friend_id"
+    t.index ["user_id", "friend_id"], name: "index_friendships_on_user_id_and_friend_id", unique: true
+    t.index ["user_id"], name: "index_friendships_on_user_id"
   end
 
   create_table "libraries", force: :cascade do |t|
@@ -133,15 +141,20 @@ ActiveRecord::Schema[7.1].define(version: 2025_06_25_072657) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "name"
-    t.text "bio"
-    t.string "location"
     t.string "avatar_url"
     t.date "date_of_birth"
     t.string "country"
+    t.text "bio"
+    t.string "location"
+    t.datetime "last_sign_in_at"
+    t.datetime "current_sign_in_at"
+    t.integer "sign_in_count"
+    t.string "username"
     t.integer "streak_count"
     t.date "last_be_read_at"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+    t.index ["username"], name: "index_users_on_username", unique: true
   end
 
   create_table "wishlists", force: :cascade do |t|
@@ -159,6 +172,8 @@ ActiveRecord::Schema[7.1].define(version: 2025_06_25_072657) do
   add_foreign_key "books", "users"
   add_foreign_key "comments", "be_reads"
   add_foreign_key "comments", "users"
+  add_foreign_key "friendships", "users"
+  add_foreign_key "friendships", "users", column: "friend_id"
   add_foreign_key "libraries", "books"
   add_foreign_key "libraries", "users"
   add_foreign_key "likes", "be_reads"
