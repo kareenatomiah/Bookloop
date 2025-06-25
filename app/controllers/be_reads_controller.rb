@@ -15,6 +15,7 @@ class BeReadsController < ApplicationController
     @be_read = current_user.be_reads.build(
       caption: params[:be_read][:caption],
       photo_data: params[:be_read][:photo_data]
+    )
 
     if @be_read.save
       redirect_to confirm_post_be_read_path(@be_read), notice: "BeRead successfully created."
@@ -39,7 +40,6 @@ class BeReadsController < ApplicationController
 
   def post_to_feed
     @be_read = current_user.be_reads.find(params[:id])
-    # Set a flag or attribute that makes this BeRead visible on the feed
     @be_read.update(posted_on_feed: true)
 
     redirect_to feed_path, notice: "Your BeRead is now posted on your feed!"

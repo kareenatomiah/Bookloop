@@ -348,6 +348,7 @@
         <%= link_to "Edit profile", edit_user_registration_path, class: "btn", role: "button" %>
       <% end %>
       <%= link_to "Add friends", "#", class: "btn", role: "button" %>
+      <%= link_to "Go to Feed", feed_path, class: "btn", role: "button" %>
     </div>
   </section>
 
@@ -355,8 +356,6 @@
   <nav class="tabs" role="tablist" aria-label="Profile content tabs">
     <button id="tab-beeread" class="tab tab-active" type="button" role="tab" aria-selected="true" aria-controls="content-beeread"
             onclick="switchTab('beeread')">BeRead</button>
-    <button id="tab-mybooks" class="tab" type="button" role="tab" aria-selected="false" aria-controls="content-mybooks"
-            onclick="switchTab('mybooks')">My Books</button>
   </nav>
 
   <hr class="separator">
@@ -388,43 +387,11 @@
       <p class="empty-message">No BeReads yet. Create one to see it here!</p>
     <% end %>
   </section>
-
-  <!-- My Books content -->
-  <section id="content-mybooks" aria-label="My Books" role="tabpanel" hidden>
-    <% if @my_books.any? %>
-      <div class="books-grid">
-        <% @my_books.each do |library| %>
-          <% data = @book_data[library.work_key] %>
-          <% next if data.blank? %>
-
-          <% work_data = data[:work_data] %>
-          <% author = data[:full_author] %>
-          <% reviews = data[:reviews] %>
-          <% cover_id = work_data["covers"]&.first %>
-
-          <article class="book-card">
-            <%= link_to book_path(library.work_key), style: "text-decoration:none; color: inherit;" do %>
-              <%= image_tag(
-                cover_id.present? ? "https://covers.openlibrary.org/b/id/#{cover_id}-M.jpg" : "https://via.placeholder.com/140x210?text=No+Cover",
-                alt: work_data["title"] || "Book cover",
-                loading: "lazy"
-              ) %>
-              <div class="book-title"><%= work_data["title"] || "Untitled" %></div>
-              <div class="book-author"><%= author.presence || "Unknown" %></div>
-              <div class="book-reviews"><%= pluralize(reviews.count, "review") %></div>
-            <% end %>
-          </article>
-        <% end %>
-      </div>
-    <% else %>
-      <p class="empty-message">Your library is empty.</p>
-    <% end %>
-  </section>
 </div>
 
 <script>
   function switchTab(tab) {
-    const tabs = ['beeread', 'mybooks'];
+    const tabs = ['beeread'];
     tabs.forEach(t => {
       const content = document.getElementById(`content-${t}`);
       const tabBtn = document.getElementById(`tab-${t}`);
@@ -444,4 +411,3 @@
     });
   }
 </script>
-

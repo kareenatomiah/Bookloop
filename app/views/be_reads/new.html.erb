@@ -49,6 +49,11 @@
   </div>
 <% end %>
 
+<!-- Go to Feed Button -->
+<div style="text-align: center; margin-top: 30px;">
+  <%= link_to "Go to Feed", feed_path, class: "btn-primary" %>
+</div>
+
 <!-- Styles -->
 <style>
   .btn-primary {
@@ -58,6 +63,8 @@
     border: none;
     border-radius: 6px;
     font-size: 16px;
+    text-decoration: none;
+    display: inline-block;
   }
 
   .capture-btn {
@@ -73,9 +80,14 @@
     background: #6b1c1b;
   }
 
+  .btn-primary:hover {
+    background: #6b1c1b;
+  }
+
   .btn-primary:disabled,
   .capture-btn:disabled {
     cursor: not-allowed;
     opacity: 0.6;
   }
 </style>
+

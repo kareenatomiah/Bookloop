@@ -19,11 +19,31 @@
             <i class="fa fa-comments me-1" style="color: #7B2626;"></i>
             <span style="color: #7B2626;"><%= pluralize(be_read.comments.count, 'Comment') %></span>
           </div>
-          <div>
-            <%= button_to (current_user.liked?(be_read) ? "Unlike" : "Like"),
-                          be_read_like_path(be_read), method: :post, remote: true,
-                          class: "btn btn-sm fw-semibold px-4",
-                          style: "background-color: #7B2626; color: white; border: none;" %>
+          <div class="d-flex gap-2">
+            <% if current_user.liked?(be_read) %>
+              <%= button_to "Unlike",
+                            be_read_like_path(be_read),
+                            method: :delete,
+                            remote: true,
+                            class: "btn btn-sm fw-semibold px-4",
+                            style: "background-color: #7B2626; color: white; border: none;" %>
+            <% else %>
+              <%= button_to "Like",
+                            be_read_like_path(be_read),
+                            method: :post,
+                            remote: true,
+                            class: "btn btn-sm fw-semibold px-4",
+                            style: "background-color: #7B2626; color: white; border: none;" %>
+            <% end %>
+
+            <% if be_read.user == current_user %>
+              <%= button_to "Delete Post",
+                            be_read_path(be_read),
+                            method: :delete,
+                            data: { confirm: "Are you sure you want to delete this post?" },
+                            class: "btn btn-sm fw-semibold px-4",
+                            style: "background-color: #7B2626; color: white; border: none;" %>
+            <% end %>
           </div>
         </div>
 
@@ -47,3 +67,4 @@
     </div>
   <% end %>
 </div>
+
