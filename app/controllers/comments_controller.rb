@@ -9,7 +9,7 @@ class CommentsController < ApplicationController
     if @comment.save
       respond_to do |format|
         format.html { redirect_back fallback_location: be_reads_path }
-        format.js   # For AJAX, create.js.erb
+        format.js
       end
     else
       redirect_back fallback_location: be_reads_path, alert: "Comment can't be blank."
