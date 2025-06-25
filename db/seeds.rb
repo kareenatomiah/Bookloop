@@ -16,6 +16,40 @@ puts "📦 Creating categories..."
   Category.create!(name: cat)
 end
 
+puts "👥 Creating users..."
+
+user1 = User.find_or_create_by!(email: "kareena1508@gmail.com") do |u|
+  u.name = "Kareena"
+  u.username = "kareena1508"
+  u.password = u.password_confirmation = "azerty123"
+end
+
+user2 = User.find_or_create_by!(email: "louann@example.com") do |u|
+  u.name = "Louannsher"
+  u.username = "louanngabillon"
+  u.password = u.password_confirmation = "azerty123"
+end
+
+user3 = User.find_or_create_by!(email: "nina@example.com") do |u|
+  u.name = "Nina"
+  u.username = "ninalove"
+  u.password = u.password_confirmation = "azerty123"
+end
+
+user4 = User.find_or_create_by!(email: "ethan@example.com") do |u|
+  u.name = "Ethan"
+  u.username = "ethan24"
+  u.password = u.password_confirmation = "azerty123"
+end
+
+# puts "📸 Creating BeRead for Kareena..."
+
+# BeRead.find_or_create_by!(user: user1, comment: "Kareena is the best")
+
+puts "✅ Seed completed!"
+
+
+
 puts "🔁 Resetting BookMetadata..."
 BookMetadatum.destroy_all
 

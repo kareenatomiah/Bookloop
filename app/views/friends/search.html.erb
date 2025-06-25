@@ -24,7 +24,7 @@
             <small style="color: #888; font-size: 14px;">@<%= user.username %></small>
           </div>
 
-          <%= render 'friendship/add_friend_button', friend: user %>
+          <%= render 'friends/add_friend_button', friend: user %>
         </div>
       <% end %>
     </div>
@@ -49,11 +49,12 @@
           <small style="color: #888; font-size: 14px;">@<%= user.username %></small>
         </div>
 
-        <%= render 'friendship/add_friend_button', friend: user %>
+        <%= render 'friends/add_friend_button', friend: user %>
       </div>
     <% end %>
   </div>
 <% end %>
+
 
 <style>
 .page-title {
