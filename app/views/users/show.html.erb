@@ -358,7 +358,7 @@
             <p class="beread-caption"><%= truncate(post.caption, length: 100) %></p>
             <time class="beread-date" datetime="<%= post.created_at.iso8601 %>"><%= post.created_at.strftime("%b %d, %Y") %></time>
             <% if current_user == @user %>
-              <button class="delete-button" onclick="deletePost(<%= post.id %>)" aria-label="Delete post">Delete</button>
+              <%= button_to "Delete", be_read_path(post), method: :delete, form: { data: { confirm: "Are you sure you want to delete this post?" }, class: "delete-form" }, class: "delete-button", aria: { label: "Delete post" } %>
             <% end %>
           </article>
         <% end %>
@@ -368,11 +368,11 @@
     <% end %>
   </section>
 
-      <!-- My Friends content -->
-      <section id="content-friends" role="tabpanel" aria-labelledby="tab-friends" hidden>
-        <%= render partial: "friends_list", locals: { friends: @user.friends } %>
-      </section>
-    </div>
+  <!-- My Friends content -->
+  <section id="content-friends" role="tabpanel" aria-labelledby="tab-friends" hidden>
+    <%= render partial: "friends_list", locals: { friends: @user.friends } %>
+  </section>
+</div>
 
 <script>
   function switchTab(tab) {
@@ -394,21 +394,6 @@
         panel.removeAttribute('hidden');
       } else {
         panel.setAttribute('hidden', '');
-      }
-    });
-  }
-
-  function deletePost(postId) {
-    if (!confirm('Are you sure you want to delete this post?')) return;
-
-    fetch(`/posts/${postId}`, {
-      method: 'DELETE',
-      headers: { 'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content }
-    }).then(response => {
-      if (response.ok) {
-        location.reload();
-      } else {
-        alert('Failed to delete post.');
       }
     });
   }
