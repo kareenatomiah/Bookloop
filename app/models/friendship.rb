@@ -13,4 +13,3 @@ class Friendship < ApplicationRecord
     errors.add(:friend_id, "can't be the same as user") if user_id == friend_id
   end
 end
-

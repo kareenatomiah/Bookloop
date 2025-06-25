@@ -43,4 +43,11 @@ Rails.application.routes.draw do
     # Nested comments resource for be_reads
     resources :comments, only: [:create, :destroy]
   end
+
+
+  # resources :friends, only: [:index, :create, :destroy] do
+  #   collection do
+  #     get 'search', to: 'friends#search', as: :search
+  #   end
+  # end
 end
