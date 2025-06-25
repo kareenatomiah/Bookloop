@@ -26,6 +26,12 @@ class WishlistsController < ApplicationController
     end
   end
 
+  def destroy
+    @wishlist = current_user.wishlists.find(params[:id])
+    @wishlist.destroy
+    redirect_to wishlists_path, notice: "Book removed from your wishlist."
+  end
+
   private
 
   def fetch_openlibrary_data(work_key)

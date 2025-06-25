@@ -1,15 +1,21 @@
-<h1 style="text-align: center;">📚 My Wishlist</h1>
+<div class="wishlist-header">
+  <h1>📚 My Wishlist</h1>
+</div>
 
 <% if @my_books.any? %>
-  <% @my_books.each do |wishlist| %>
-    <%= render partial: "books/book_preview", locals: {
-      work_data: @book_data[wishlist.work_key][:work_data],
-      full_author: @book_data[wishlist.work_key][:full_author],
-      reviews: @book_data[wishlist.work_key][:reviews],
-      local_metadata: @book_data[wishlist.work_key][:local_metadata],
-      work_key: wishlist.work_key
-    } %>
-  <% end %>
+  <div class="book-grid">
+    <% @my_books.each do |wishlist| %>
+      <div class="book-card" style="position: relative;">
+        <%= render partial: "books/book_preview", locals: {
+          work_data: @book_data[wishlist.work_key][:work_data],
+          full_author: @book_data[wishlist.work_key][:full_author],
+          reviews: @book_data[wishlist.work_key][:reviews],
+          local_metadata: @book_data[wishlist.work_key][:local_metadata],
+          work_key: wishlist.work_key
+        } %>
+      </div>
+    <% end %>
+  </div>
 <% else %>
-  <p style="text-align: center; color: #888;">Your library is empty.</p>
+  <p class="empty-library">Your wishlist is empty.</p>
 <% end %>

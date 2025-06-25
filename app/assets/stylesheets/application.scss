@@ -14,6 +14,7 @@
 @import "dashboard";
 @import "button";
 @import "user";
+@import "library";
 
 html, body {
   height: 100%;
@@ -32,30 +33,6 @@ html, body {
 
 /* Pour les petits écrans (mobile) */
 @media (max-width: 768px) {
-
-  /* Section My Books / Wishlist : défilement horizontal contrôlé */
-  .books-section {
-    overflow-x: auto;
-    white-space: nowrap;
-    display: flex;
-    gap: 1rem;
-    padding: 1rem 0;
-  }
-
-  .book-card {
-    flex: 0 0 auto;
-    width: 120px;
-    text-align: center;
-  }
-
-  /* Wishlist : images qui reviennent à la ligne automatiquement */
-  .wishlist-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-    gap: 1rem;
-    padding: 1rem 0;
-  }
-
   /* Catégories : wrap automatique */
   .category-buttons {
     display: flex;

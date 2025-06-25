@@ -1,0 +1,133 @@
+/* --- Library Header --- */
+.library-header {
+  text-align: center;
+  margin: 30px 0 20px;
+}
+
+.library-header h1 {
+  font-size: 28px;
+  color: #a63333;
+  font-weight: 700;
+}
+
+/* --- Book Grid Layout --- */
+.book-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 40px; /* ✅ augmenté de 24px → 40px */
+  padding: 0 20px 60px;
+  justify-items: center;
+}
+
+
+.book-cover {
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 6px;
+  background-color: #fdfdfd;
+  margin-bottom: 16px;
+  width: 140px;
+  height: auto;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+}
+
+
+/* --- Book Card --- */
+.book-card {
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+  padding: 30px 24px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 0.25s ease;
+  max-width: 640px; /* ✅ Plus large */
+  width: 100%;
+  margin: 0 auto;
+  text-align: center;
+  font-family: 'Helvetica Neue', sans-serif;
+}
+
+
+.book-card:hover {
+  transform: translateY(-4px);
+}
+
+/* --- Delete Button (top right inside card) --- */
+.book-card-header {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+}
+
+.delete-icon-btn {
+  background: #a63333;
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+  border: none;
+  border-radius: 6px;
+  padding: 4px 8px;
+  line-height: 1;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.delete-icon-btn:hover {
+  background-color: #7f2626;
+}
+
+/* --- Button Link (Details) --- */
+.btn-review {
+  background-color: #a63333;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: bold;
+  margin-top: 10px;
+  transition: background-color 0.3s ease;
+}
+
+.btn-review:hover {
+  background-color: #7f2626;
+}
+
+/* --- Empty State --- */
+.empty-library {
+  text-align: center;
+  color: #777;
+  font-style: italic;
+  font-size: 16px;
+  margin-top: 60px;
+}
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 600px) {
+  .book-card {
+    padding: 16px 14px;
+    max-width: 100%;
+  }
+
+  .book-cover {
+    width: 100px;
+    padding: 4px;
+  }
+
+  .book-card h2 {
+    font-size: 18px;
+    margin: 8px 0;
+  }
+
+  .btn-review {
+    padding: 5px 10px;
+    font-size: 14px;
+  }
+
+  .delete-icon-btn {
+    font-size: 12px;
+    padding: 4px 6px;
+  }
+}
