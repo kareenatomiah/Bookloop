@@ -20,7 +20,7 @@
 
 <div style="text-align: center;">
   <%= form_with url: post_to_feed_be_read_path(@be_read), method: :post, local: true do %>
-    <%= link_to "Yes, post it!", feed_path, class: "btn btn-primary", style: "background: #862221; border-color: #862221; padding: 12px 28px; font-size: 16px; border-radius: 8px;" %>
+    <%= submit_tag "Yes, post it!", class: "btn btn-primary", style: "background: #862221; border-color: #862221; padding: 12px 28px; font-size: 16px; border-radius: 8px;" %>
     <%= link_to "No, thanks", user_path(current_user), class: "btn btn-secondary", style: "margin-left: 15px; padding: 12px 28px; font-size: 16px; border-radius: 8px;" %>
   <% end %>
 </div>
