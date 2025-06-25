@@ -18,6 +18,8 @@ class BeReadsController < ApplicationController
     )
 
     if @be_read.save
+      update_user_streak! # 💥🔥 On gère les flammes ici
+
       redirect_to confirm_post_be_read_path(@be_read), notice: "BeRead successfully created."
     else
       render :new, status: :unprocessable_entity
@@ -59,5 +61,20 @@ class BeReadsController < ApplicationController
 
   def be_read_params
     params.require(:be_read).permit(:caption, :photo_data, :photo)
+  end
+
+  # 🔥🔥🔥 Streak logic
+  def update_user_streak!
+    today = Date.current
+    last = current_user.last_be_read_at
+
+    if last == today - 1
+      current_user.streak_count = current_user.streak_count.to_i + 1
+    elsif last != today
+      current_user.streak_count = 1
+    end
+
+    current_user.last_be_read_at = today
+    current_user.save
   end
 end
