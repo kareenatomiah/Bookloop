@@ -29,3 +29,55 @@ html, body {
 .content {
   flex: 1;
 }
+
+/* Pour les petits écrans (mobile) */
+@media (max-width: 768px) {
+
+  /* Section My Books / Wishlist : défilement horizontal contrôlé */
+  .books-section {
+    overflow-x: auto;
+    white-space: nowrap;
+    display: flex;
+    gap: 1rem;
+    padding: 1rem 0;
+  }
+
+  .book-card {
+    flex: 0 0 auto;
+    width: 120px;
+    text-align: center;
+  }
+
+  /* Wishlist : images qui reviennent à la ligne automatiquement */
+  .wishlist-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 1rem;
+    padding: 1rem 0;
+  }
+
+  /* Catégories : wrap automatique */
+  .category-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    justify-content: center;
+  }
+
+  .category-buttons button {
+    width: 45%;
+    max-width: 180px;
+    min-width: 120px;
+  }
+
+  /* Sections générales : centrage & padding */
+  section {
+    padding: 0 1rem;
+  }
+
+  /* Réduction des marges trop grandes */
+  h2, h3, .section-title {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+  }
+}

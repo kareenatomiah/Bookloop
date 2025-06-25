@@ -1,6 +1,7 @@
 <style>
   .dashboard {
-    padding: 0 20px;
+    /* padding: 0 20px; */
+    width: 100vw;
     font-family: 'Helvetica Neue', sans-serif;
   }
 
@@ -17,6 +18,7 @@
     padding: 50px 0 30px;
     border-bottom-left-radius: 50% 20px;
     border-bottom-right-radius: 50% 20px;
+    width: 100%;
     margin-bottom: 20px;
     position: relative;
   }
@@ -165,6 +167,59 @@
   .arrow-right {
     right: 10px;
   }
+
+  /* 📱 Responsive mobile */
+  @media (max-width: 768px) {
+
+
+    .section-title {
+      font-size: 18px;
+      text-align: center;
+    }
+
+    /* .top-banner {
+      padding: 30px 10px;
+      border-bottom-left-radius: 40% 20px;
+      border-bottom-right-radius: 40% 20px;
+    }
+
+    .horizontal-scroll {
+      gap: 10px;
+      padding: 10px 5px;
+    } */
+
+    .book-card {
+      width: 110px;
+    }
+
+    .book-cover {
+      height: 170px;
+    }
+
+    .book-title {
+      font-size: 13px !important;
+      margin-top: 5px;
+    }
+
+    .book-author {
+      font-size: 11px !important;
+    }
+
+    .arrow-button {
+      font-size: 18px;
+      padding: 6px;
+    }
+
+    /* .category-grid {
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 10px;
+    }
+
+    .category-tile {
+      padding: 20px 10px;
+      font-size: 16px;
+    } */
+  }
 </style>
 
 <div class="dashboard">
@@ -256,4 +311,3 @@
     books[currentIndex].classList.add("center");
   }
 </script>
-
