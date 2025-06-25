@@ -322,3 +322,27 @@
         }
       }
     }
+
+.today-beread-section {
+  margin: 2rem 0;
+  padding: 1rem;
+  background: #f0f8ff;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+
+  .today-beread {
+    text-align: center;
+
+    .today-photo {
+      max-width: 200px;
+      border-radius: 8px;
+      margin-bottom: 0.5rem;
+    }
+
+    .caption {
+      font-style: italic;
+      font-size: 1.1rem;
+      color: #333;
+    }
+  }
+}
