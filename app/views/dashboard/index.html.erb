@@ -1,172 +1,3 @@
-<style>
-  .dashboard {
-    padding: 0 20px;
-    font-family: 'Helvetica Neue', sans-serif;
-  }
-
-  .section-title {
-    font-size: 22px;
-    margin: 20px 0 10px;
-    font-weight: bold;
-    color: #862221;
-  }
-
-  .top-banner {
-    background-color: #862221;
-    color: white;
-    padding: 50px 0 30px;
-    border-bottom-left-radius: 50% 20px;
-    border-bottom-right-radius: 50% 20px;
-    margin-bottom: 20px;
-    position: relative;
-  }
-
-  .horizontal-scroll.my-books {
-    display: flex;
-    overflow: hidden;
-    gap: 15px;
-    padding: 10px;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .horizontal-scroll:not(.my-books) {
-    display: flex;
-    overflow-x: auto;
-    gap: 15px;
-    padding: 10px;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  .horizontal-scroll::-webkit-scrollbar {
-    display: none;
-  }
-
-  .book-card {
-    flex: 0 0 auto;
-    width: 140px;
-    scroll-snap-align: start;
-    text-align: center;
-    background-color: transparent;
-    transition: transform 0.3s ease, opacity 0.3s ease, filter 0.3s ease;
-  }
-
-  .top-banner .book-card .book-cover {
-    height: 190px;
-  }
-
-  .top-banner .book-card.center {
-    transform: scale(1.1);
-    z-index: 2;
-    opacity: 1;
-    filter: none;
-  }
-
-  .top-banner .book-card:not(.center) {
-    transform: scale(0.95);
-    opacity: 0.5;
-    filter: grayscale(40%);
-  }
-
-  .book-cover {
-    width: 100%;
-    height: 210px;
-    object-fit: cover;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-  }
-
-  .top-banner .section-title {
-    color: white !important;
-  }
-
-  .top-banner .book-title {
-    font-size: 15px;
-    font-weight: bold;
-    margin-top: 8px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    color: white;
-  }
-
-  .top-banner .book-author {
-    font-size: 13px;
-    color: #f0f0f0;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  .wishlist-section .book-title,
-  .categories-section .book-title {
-    font-size: 15px;
-    font-weight: bold;
-    margin-top: 8px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    color: #111;
-  }
-
-  .wishlist-section .book-author,
-  .categories-section .book-author {
-    font-size: 13px;
-    color: #444;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  .category-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-    gap: 15px;
-    margin: 10px 0 40px;
-  }
-
-  .category-tile {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #004e64;
-    color: white;
-    padding: 30px 20px;
-    border-radius: 12px;
-    font-size: 18px;
-    font-weight: bold;
-    text-decoration: none;
-    text-align: center;
-    transition: background-color 0.3s;
-  }
-
-  .category-tile:hover {
-    background-color: #003644;
-  }
-
-  .arrow-button {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 24px;
-    background-color: rgba(255,255,255,0.3);
-    color: white;
-    border: none;
-    cursor: pointer;
-    z-index: 3;
-    padding: 10px;
-  }
-
-  .arrow-left {
-    left: 10px;
-  }
-
-  .arrow-right {
-    right: 10px;
-  }
-</style>
-
 <div class="dashboard">
   <!-- 🎯 My Books -->
   <div class="top-banner">
@@ -225,6 +56,27 @@
     </div>
   </section>
 
+<!-- 🔥 Your Streak Redesigned -->
+<section class="streak-section" style="margin: 30px auto; max-width: 600px; padding: 25px 20px; background: #8b0000; border-radius: 18px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); text-align: center; color: white;">
+<h2 class="section-title" style="margin-bottom: 15px; font-weight: bold; font-size: 24px; color: white;">🔥 Your Streak</h2>
+
+  <% if current_user.streak_count && current_user.last_be_read_at %>
+    <p style="font-size: 20px; margin-bottom: 10px;">You're on a <strong><%= current_user.streak_count %>-day streak</strong>! Keep it up!</p>
+    <p style="font-size: 14px; color: #dcdcdc; margin-bottom: 20px;">Last activity: <%= current_user.last_be_read_at.strftime("%B %d, %Y") %></p>
+
+    <% today_be_read = current_user.be_reads.where(created_at: Time.zone.today.all_day).with_attached_photo.first %>
+    <% if today_be_read&.photo&.attached? %>
+      <div style="margin-top: 10px;">
+        <p style="font-size: 16px; margin-bottom: 12px;">Today's BeRead 📸</p>
+        <%= image_tag today_be_read.photo.variant(resize_to_limit: [300, 450]), alt: "Today's BeRead", style: "border-radius: 12px; max-width: 100%; height: auto; box-shadow: 0 2px 10px rgba(0,0,0,0.25);" %>
+      </div>
+    <% end %>
+  <% else %>
+    <p style="font-size: 16px;">No streak yet. Post your first BeRead to start one!</p>
+  <% end %>
+</section>
+
+
   <!-- 🧭 Categories -->
   <section class="categories-section">
     <h2 class="section-title">🧭 Categories</h2>
@@ -256,4 +108,3 @@
     books[currentIndex].classList.add("center");
   }
 </script>
-

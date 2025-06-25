@@ -5,6 +5,7 @@ class User < ApplicationRecord
   has_many :be_reads, dependent: :destroy
   has_many :books
   has_many :my_books, class_name: "Library"
+  has_many :be_reads
 
   # Likes associations
   has_many :likes, dependent: :destroy

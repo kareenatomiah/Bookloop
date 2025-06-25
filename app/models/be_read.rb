@@ -7,9 +7,10 @@ class BeRead < ApplicationRecord
   has_one_attached :photo
   attr_accessor :photo_data
 
-  before_save :decode_photo_data, if: -> { photo_data.present? && !photo.attached? }
-
   validates :user, presence: true
+
+  before_save :decode_photo_data, if: -> { photo_data.present? && !photo.attached? }
+  after_create :update_user_streak
 
   private
 
@@ -34,4 +35,19 @@ class BeRead < ApplicationRecord
   rescue StandardError => e
     Rails.logger.error("Failed to decode photo_data: #{e.message}")
   end
+
+  def update_user_streak
+    today = Date.current
+    last = user.last_be_read_at
+
+    if last == today - 1
+      user.streak_count = user.streak_count.to_i + 1
+    elsif last != today
+      user.streak_count = 1
+    end
+
+    user.last_be_read_at = today
+    user.save
+  end
 end
+
