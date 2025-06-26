@@ -1,13 +1,12 @@
-<div class="book-content">
+<div style="max-width: 500px; margin: 30px auto; font-family: 'Helvetica Neue', sans-serif; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 8px rgba(0,0,0,0.05); text-align: center;">
+
   <% if work_data["covers"]&.any? %>
     <%= image_tag "https://covers.openlibrary.org/b/id/#{work_data["covers"].first}-M.jpg",
                   alt: work_data["title"] || "Book cover",
-                  class: "book-cover" %>
+                  style: "width: 120px; height: auto; border-radius: 10px; margin-bottom: 10px;" %>
   <% end %>
 
-  <h2 style="font-size: 20px; color: #2c2c2c; margin: 10px 0;">
-    <%= work_data["title"] || "Untitled" %>
-  </h2>
+  <h2 style="font-size: 20px; color: #2c2c2c; margin: 10px 0;"><%= work_data["title"] || "Untitled" %></h2>
 
   <p style="color: #555;"><strong>By:</strong> <%= full_author.presence || "Unknown" %></p>
 
@@ -18,4 +17,5 @@
   <% end %>
 
   <%= link_to "Details", book_path(work_key), class: "btn-review", style: "margin-top: 10px; display: inline-block;" %>
+
 </div>

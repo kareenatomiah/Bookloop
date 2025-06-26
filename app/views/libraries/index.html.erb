@@ -1,26 +1,15 @@
-<div class="library-header">
-  <h1>📚 My Book Collection</h1>
-</div>
+<h1 style="text-align: center;">📚 My Books</h1>
 
 <% if @my_books.any? %>
-  <div class="book-grid">
-    <% @my_books.each do |library| %>
-      <div class="book-card" style="position: relative;">
-        <%= button_to "✖", mybook_path(library), method: :delete,
-              data: { confirm: "Remove this book from your library?" },
-              class: "delete-icon-btn",
-              style: "position: absolute; top: 12px; right: 12px; background: #a63333; border: none; color: white; font-size: 14px; cursor: pointer; padding: 4px 8px; border-radius: 6px; font-weight: bold; transition: background-color 0.3s ease;" %>
-
-        <%= render partial: "books/book_preview", locals: {
-          work_data: @book_data[library.work_key][:work_data],
-          full_author: @book_data[library.work_key][:full_author],
-          reviews: @book_data[library.work_key][:reviews],
-          local_metadata: @book_data[library.work_key][:local_metadata],
-          work_key: library.work_key
-        } %>
-      </div>
-    <% end %>
-  </div>
+  <% @my_books.each do |library| %>
+    <%= render partial: "books/book_preview", locals: {
+      work_data: @book_data[library.work_key][:work_data],
+      full_author: @book_data[library.work_key][:full_author],
+      reviews: @book_data[library.work_key][:reviews],
+      local_metadata: @book_data[library.work_key][:local_metadata],
+      work_key: library.work_key
+    } %>
+  <% end %>
 <% else %>
-  <p class="empty-library">Your library is empty. Start adding your favorite reads!</p>
+  <p style="text-align: center; color: #888;">Your library is empty.</p>
 <% end %>
