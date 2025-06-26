@@ -1,5 +1,30 @@
 <div class="container mt-5">
-  <h1 class="mb-4" style="color: #7B2626;">Your BeRead Feed</h1>
+  <h1 style="
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 2rem auto 1rem auto;
+  padding: 8px 16px;
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: #7B1E3A;
+  font-family: 'Merriweather', serif;
+  background-color: #f7e9e9;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(123, 30, 58, 0.15);
+  width: fit-content;
+">
+  <i class="fa-solid fa-feather-pointed" style="
+    color: #7B1E3A;
+    font-size: 1.3rem;
+    margin-right: 8px;
+    background-color: #fff0f2;
+    padding: 4px 6px;
+    border-radius: 4px;
+  "></i>
+  Your BeRead Feed
+</h1>
+
 
   <% @be_reads.each do |be_read| %>
     <div class="card mb-4 shadow-sm border-0 rounded-3">
@@ -67,4 +92,3 @@
     </div>
   <% end %>
 </div>
-
