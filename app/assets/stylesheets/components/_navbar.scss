@@ -5,8 +5,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom-left-radius: 50% 10%;
-  border-bottom-right-radius: 50% 10%;
+  border-radius: 0;
+
   position: sticky;
   top: 0;
   z-index: 1000;
@@ -24,4 +24,3 @@
     text-decoration: none;
   }
 }
-
