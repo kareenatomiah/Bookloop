@@ -303,36 +303,43 @@
   </div>
 
   <!-- User info -->
-  <section class="user-info" aria-label="User information">
-    <h2 class="user-name"><%= @user.name.presence || "Unnamed User" %></h2>
-    <p class="user-bio"><%= @user.bio.presence || "Book lover & explorer" %></p>
+<section class="user-info" aria-label="User information">
+  <h2 class="user-name"><%= @user.name.presence || "Unnamed User" %></h2>
+  <p class="user-bio"><%= @user.bio.presence || "Book lover & explorer" %></p>
 
-    <% if @user.username.present? %>
-      <p style="font-size: 16px; color: #888; font-family: 'Helvetica Neue', Arial, sans-serif; margin-top: -8px; margin-bottom: 10px;">
-        @<%= @user.username %>
-      </p>
-    <% end %>
+  <% if @user.username.present? %>
+    <p style="font-size: 16px; color: #888; font-family: 'Helvetica Neue', Arial, sans-serif; margin-top: -8px; margin-bottom: 2px;">
+      @<%= @user.username %>
+    </p>
+  <% end %>
 
-    <% if @user.location.present? %>
-      <p class="user-location">
-        <i class="fa fa-map-marker" aria-hidden="true"></i>
-        <%= @user.location %>
-      </p>
-    <% end %>
+  <% if current_user == @user %>
+    <p style="font-size: 14px; color: #a63333; font-family: 'Helvetica Neue', Arial, sans-serif; margin-top: -4px; margin-bottom: 10px;">
+      <%= link_to "Sign out", destroy_user_session_path, method: :delete, data: { turbo: false }, style: "color: #a63333; text-decoration: none;" %>
+    </p>
+  <% end %>
 
-    <div class="user-actions">
-      <% if current_user == @user %>
-        <%= link_to "Edit profile", edit_user_registration_path, class: "btn", role: "button" %>
-        <%= link_to "Add Friends", search_friends_path, class: "btn", role: "button" %>
+  <% if @user.location.present? %>
+    <p class="user-location">
+      <i class="fa fa-map-marker" aria-hidden="true"></i>
+      <%= @user.location %>
+    </p>
+  <% end %>
+
+  <div class="user-actions">
+    <% if current_user == @user %>
+      <%= link_to "Edit profile", edit_user_registration_path, class: "btn", role: "button" %>
+      <%= link_to "Add Friends", search_friends_path, class: "btn", role: "button" %>
+    <% else %>
+      <% if @is_friend %>
+        <%= render 'friendship/remove_friend_button', friend: @user %>
       <% else %>
-        <% if @is_friend %>
-          <%= render 'friendship/remove_friend_button', friend: @user %>
-        <% else %>
-          <%= render 'friendship/add_friend_button', friend: @user %>
-        <% end %>
+        <%= render 'friendship/add_friend_button', friend: @user %>
       <% end %>
-      <%= link_to "Go to Feed", feed_path, class: "btn", role: "button" %>
-    </div>
+    <% end %>
+    <%= link_to "Go to Feed", feed_path, class: "btn", role: "button" %>
+  </div>
+</section>
 
   <!-- Tabs -->
   <nav class="tabs" role="tablist" aria-label="Profile content tabs">

@@ -70,8 +70,12 @@ ActiveRecord::Schema[7.1].define(version: 2025_06_25_073529) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "user_id", null: false
+    t.string "work_key"
+    t.string "title"
+    t.string "cover_url"
     t.index ["category_id"], name: "index_books_on_category_id"
     t.index ["user_id"], name: "index_books_on_user_id"
+    t.index ["work_key"], name: "index_books_on_work_key"
   end
 
   create_table "categories", force: :cascade do |t|
@@ -139,17 +143,17 @@ ActiveRecord::Schema[7.1].define(version: 2025_06_25_073529) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "name"
+    t.text "bio"
+    t.string "location"
     t.string "avatar_url"
     t.date "date_of_birth"
     t.string "country"
-    t.text "bio"
-    t.string "location"
+    t.integer "streak_count"
+    t.date "last_be_read_at"
     t.datetime "last_sign_in_at"
     t.datetime "current_sign_in_at"
     t.integer "sign_in_count"
     t.string "username"
-    t.integer "streak_count"
-    t.date "last_be_read_at"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["username"], name: "index_users_on_username", unique: true
