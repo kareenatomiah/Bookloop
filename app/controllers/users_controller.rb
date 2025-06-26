@@ -83,12 +83,15 @@ class UsersController < ApplicationController
 
   private
 
-  def set_user
-    @user = User.find(params[:id] || current_user.id)
+def set_user
+  @user = User.find_by(id: params[:id])
+
+  if @user.nil?
+    redirect_to root_path, alert: "User not found"
   end
+end
 
   def user_params
     params.require(:user).permit(:name, :email, :password, :date_of_birth, :country, :bio, :avatar_upload)
   end
 end
-
