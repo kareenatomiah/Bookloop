@@ -1,7 +1,30 @@
 <div class="dashboard">
   <!-- 🎯 My Books -->
   <div class="top-banner">
-    <h2 class="section-title">📚 My Books (<%= @my_books&.count || 0 %>)</h2>
+    <h2 style="
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 1.5rem auto 0.75rem auto;
+  padding: 6px 16px;
+  font-size: 1.3rem;
+  font-weight: 500;
+  color: #f7e9e9; /* texte clair */
+  font-family: 'Merriweather', serif;
+  background-color: rgba(255, 255, 255, 0.15); /* fond blanc translucide */
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  width: fit-content;
+  gap: 8px;
+">
+  <i class="fa-solid fa-book" style="
+    font-size: 1.3rem;
+    color: #f7e9e9;
+  "></i>
+  My Books (<%= @my_books&.count || 0 %>)
+</h2>
+
+
     <% if @my_books&.any? %>
       <button class="arrow-button arrow-left" onclick="shiftBooks(-1)" aria-label="Scroll left">←</button>
       <button class="arrow-button arrow-right" onclick="shiftBooks(1)" aria-label="Scroll right">→</button>
@@ -32,7 +55,30 @@
 
   <!-- ❤️ Wishlist -->
   <section class="wishlist-section">
-    <h2 class="section-title">❤️ Wishlist (<%= @wishlist&.count || 0 %>)</h2>
+    <h2 style="
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 1.5rem auto 0.75rem auto;
+  padding: 4px 12px;
+  font-size: 1.3rem;
+  font-weight: 500;
+  color: #7B1E3A;
+  font-family: 'Merriweather', serif;
+  background-color: #f7e9e9;
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(123, 30, 58, 0.1);
+  width: fit-content;
+  gap: 6px;
+">
+  <span style="
+    font-size: 1.2rem;
+    line-height: 1;
+  ">❤️</span>
+  My Wishlist (<%= @wishlist&.count || 0 %>)
+</h2>
+
+
     <div class="horizontal-scroll">
       <% @wishlist&.first(12)&.each do |item| %>
         <% if (data = @book_data[item.work_key]).present? %>
@@ -79,7 +125,31 @@
 
   <!-- 🧭 Categories -->
   <section class="categories-section">
-    <h2 class="section-title">🧭 Categories</h2>
+    <h2 style="
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 1.5rem auto 0.75rem auto;
+  padding: 4px 12px;
+  font-size: 1.3rem;
+  font-weight: 500;
+  color: #7B1E3A;
+  font-family: 'Merriweather', serif;
+  background-color: #f7e9e9;
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(123, 30, 58, 0.1);
+  width: fit-content;
+">
+  <span style="
+    background-color: #fff0f2;
+    padding: 3px 6px;
+    border-radius: 4px;
+    font-size: 1rem;
+    margin-right: 6px;
+  ">🧭</span>
+  Categories
+</h2>
+
     <div class="category-grid">
       <% @categories&.each do |category| %>
         <%= link_to category_path(category.name), class: "category-tile" do %>

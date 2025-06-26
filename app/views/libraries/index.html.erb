@@ -1,4 +1,31 @@
-<h1 style="text-align: center;">📚 My Books</h1>
+<h1 style="
+  text-align: center;
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: #7B1E3A;
+  font-family: 'Merriweather', serif;
+  margin: 2rem 0 0.75rem 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f7e9e9; /* fond pâle */
+  padding: 8px 16px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(123, 30, 58, 0.15);
+">
+  <i class="fa-solid fa-book-open" style="
+    color: #7B1E3A;
+    font-size: 1.3rem;
+    margin-right: 8px;
+    background-color: #fff0f2;
+    padding: 4px 6px;
+    border-radius: 4px;
+  "></i>
+  My Books
+</h1>
+
+
+
 
 <% if @my_books.any? %>
   <% @my_books.each do |library| %>
