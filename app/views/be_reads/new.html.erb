@@ -91,3 +91,95 @@
   }
 </style>
 
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const container = document.querySelector("[data-controller='webcam']")
+
+    if (!container) return;
+
+    const video = container.querySelector("[data-webcam-target='video']")
+    const canvas = container.querySelector("[data-webcam-target='canvas']")
+    const preview = container.querySelector("[data-webcam-target='preview']")
+    const photoInput = container.querySelector("[data-webcam-target='photoInput']")
+    const captureButton = container.querySelector("[data-webcam-target='captureButton']")
+    const submitButton = container.querySelector("[data-webcam-target='submitButton']")
+    const notification = container.querySelector("[data-webcam-target='notification']")
+
+    let stream = null
+
+    async function startCamera() {
+      try {
+        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+          alert("Your browser does not support camera access.")
+          return
+        }
+
+        stream = await navigator.mediaDevices.getUserMedia({ video: true })
+        video.srcObject = stream
+        video.style.display = "block"
+        preview.style.display = "none"
+
+        captureButton.disabled = false
+        captureButton.style.cursor = "pointer"
+        submitButton.disabled = true
+        submitButton.style.opacity = "0.6"
+      } catch (error) {
+        alert("🚫 Unable to access camera: " + error.message)
+        console.error(error)
+      }
+    }
+
+    function stopCamera() {
+      if (stream) {
+        stream.getTracks().forEach(track => track.stop())
+        stream = null
+      }
+    }
+
+    function showNotification(message) {
+      notification.textContent = message
+      notification.style.display = "block"
+      notification.style.opacity = "1"
+
+      setTimeout(() => {
+        notification.style.opacity = "0"
+        setTimeout(() => {
+          notification.style.display = "none"
+        }, 600)
+      }, 1800)
+    }
+
+    function capturePhoto() {
+      if (!video.videoWidth || !video.videoHeight) {
+        alert("Camera not ready yet.")
+        return
+      }
+
+      canvas.width = video.videoWidth
+      canvas.height = video.videoHeight
+      const ctx = canvas.getContext("2d")
+      ctx.drawImage(video, 0, 0)
+
+      const dataURL = canvas.toDataURL("image/jpeg")
+      photoInput.value = dataURL
+      preview.src = dataURL
+      preview.style.display = "block"
+
+      showNotification("📸 Photo captured!")
+
+      submitButton.disabled = false
+      submitButton.style.opacity = "1"
+
+      captureButton.disabled = true
+      captureButton.style.cursor = "not-allowed"
+      video.style.display = "none"
+
+      stopCamera()
+    }
+
+    captureButton.addEventListener("click", capturePhoto)
+    startCamera()
+
+    window.addEventListener("beforeunload", stopCamera)
+  })
+</script>
