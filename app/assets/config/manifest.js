@@ -5,3 +5,6 @@
 //= link popper.js
 //= link bootstrap.min.js
 //= link controllers.js
+// app/assets/config/manifest.js
+// ...
+//= link manifest.json
