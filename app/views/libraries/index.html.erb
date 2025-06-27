@@ -1,17 +1,17 @@
 <h1 style="
-  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 1.5rem auto 0.5rem auto;
+  padding: 8px 16px;
   font-size: 1.8rem;
   font-weight: 600;
   color: #7B1E3A;
   font-family: 'Merriweather', serif;
-  margin: 2rem 0 0.75rem 0;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #f7e9e9; /* fond pâle */
-  padding: 8px 16px;
+  background-color: #f7e9e9;
   border-radius: 8px;
   box-shadow: 0 2px 6px rgba(123, 30, 58, 0.15);
+  width: fit-content;
 ">
   <i class="fa-solid fa-book-open" style="
     color: #7B1E3A;
@@ -24,19 +24,20 @@
   My Books
 </h1>
 
-
-
-
-<% if @my_books.any? %>
-  <% @my_books.each do |library| %>
-    <%= render partial: "books/book_preview", locals: {
-      work_data: @book_data[library.work_key][:work_data],
-      full_author: @book_data[library.work_key][:full_author],
-      reviews: @book_data[library.work_key][:reviews],
-      local_metadata: @book_data[library.work_key][:local_metadata],
-      work_key: library.work_key
-    } %>
+<div id="my-books" style="margin-top: 0;">
+  <% if @my_books.any? %>
+    <% @my_books.each do |library| %>
+      <div style="margin-bottom: 12px;">
+        <%= render partial: "books/book_preview", locals: {
+          work_data: @book_data[library.work_key][:work_data],
+          full_author: @book_data[library.work_key][:full_author],
+          reviews: @book_data[library.work_key][:reviews],
+          local_metadata: @book_data[library.work_key][:local_metadata],
+          work_key: library.work_key
+        } %>
+      </div>
+    <% end %>
+  <% else %>
+    <p style="text-align: center; color: #888;">Your library is empty.</p>
   <% end %>
-<% else %>
-  <p style="text-align: center; color: #888;">Your library is empty.</p>
-<% end %>
+</div>
