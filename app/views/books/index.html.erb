@@ -33,9 +33,9 @@
               <div style="width: 80px; height: 120px; background-color: #f2f2f2; margin-right: 20px; display: flex; align-items: center; justify-content: center; border-radius: 4px; color: #999; font-size: 12px; text-align: center; padding: 4px;">
                 No cover
               </div>
-            <% end %>
+          <% end %>
 
-            <div>
+                      <div>
               <h4 style="margin: 0 0 4px 0; font-weight: 500; font-size: 16px; color: #2c2c2c;"><%= book["title"] %></h4>
               <% if book["author_name"] %>
                 <p style="margin: 0; color: #555; font-size: 14px;">By <%= book["author_name"].join(", ") %></p>
@@ -46,12 +46,10 @@
               <% end %>
             </div>
           </div>
-        <% end %>
+            <%  end %>
       <% end %>
 
     <% elsif params[:query].present? %>
       <p style="text-align: center; color: #777; font-style: italic;">No results found for "<%= params[:query] %>".</p>
     <% end %>
-
-  </div>
 </div>
