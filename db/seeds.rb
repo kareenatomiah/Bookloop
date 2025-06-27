@@ -12,7 +12,7 @@ puts "🔁 Resetting categories..."
 Category.destroy_all
 
 puts "📦 Creating categories..."
-["Fantasy", "Romance", "Sci-Fi", "Thriller", "Crime", "Young Adult", "Horror"].each do |cat|
+["Fantasy", "Romance", "Sci-Fi", "Thriller", "Crime", "Young Adult", "Horror", "Self-Help"].each do |cat|
   Category.create!(name: cat)
 end
 
@@ -52,6 +52,24 @@ puts "✅ Seed completed!"
 
 puts "🔁 Resetting BookMetadata..."
 BookMetadatum.destroy_all
+
+puts "📚 Creating Self-Help books..."
+
+BookMetadatum.create!(
+  work_key: "/works/OL1968368W",
+  author: "Robert Greene",
+  category: "Self-Help",
+  description: <<~DESC.strip
+    The 48 Laws of Power is a modern classic that distills 3,000 years of wisdom from philosophers, strategists, and leaders into timeless lessons on influence, manipulation, and self-mastery.
+
+    Drawing on the cunning of Machiavelli, the boldness of Sun Tzu, and the insight of powerful historical figures, Robert Greene presents 48 laws that reveal how power is acquired, defended, and lost. Whether you're navigating the workplace, politics, or personal relationships, each law offers ruthless yet deeply practical guidance.
+
+    From "Law 1: Never outshine the master" to "Law 48: Assume formlessness", this book explores the dark art of strategy in a brutally honest and unapologetically pragmatic tone. Loved and loathed in equal measure, it has become a cult favorite among entrepreneurs, athletes, and creatives alike.
+
+    The 48 Laws of Power is not a moral guide—it’s a survival manual for those who understand that power, like fire, must be handled with respect, clarity, and precision.
+  DESC
+)
+
 
 puts "📚 Creating Fantasy books..."
 
