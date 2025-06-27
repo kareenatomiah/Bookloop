@@ -1,15 +1,15 @@
 <div style="max-width: 500px; margin: 50px auto; font-family: 'Helvetica Neue', sans-serif; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.05); text-align: center;">
 
   <%# 📘 Cover image (medium) %>
-  <% if @work["covers"]&.any? %>
-    <%= image_tag "https://covers.openlibrary.org/b/id/#{@work["covers"].first}-M.jpg",
-                  alt: @work["title"],
-                  style: "width: 160px; height: auto; border-radius: 10px; margin-bottom: 20px;" %>
-  <% else %>
-    <div style="width: 160px; height: 240px; background-color: #eee; margin: 0 auto 20px auto; display: flex; align-items: center; justify-content: center; color: #999; border-radius: 10px;">
-      No cover
-    </div>
-  <% end %>
+    <% if @work["covers"]&.any? %>
+      <%= image_tag "https://covers.openlibrary.org/b/id/#{@work["covers"].first}-M.jpg",
+                    alt: @work["title"],
+                    style: "width: 160px; height: 240px; object-fit: cover; border-radius: 10px; margin-bottom: 20px;" %>
+    <% else %>
+      <div style="width: 160px; height: 240px; background-color: #eee; margin: 0 auto 20px auto; display: flex; align-items: center; justify-content: center; color: #999; border-radius: 10px; font-size: 14px; text-align: center; padding: 6px;">
+        No cover
+      </div>
+    <% end %>
 
   <%# 📕 Title %>
   <h1 style="font-size: 24px; color: #2c2c2c; margin-bottom: 10px;">
@@ -70,25 +70,36 @@
   </div>
 
   <%# ✅ Reviews list %>
-  <% if @reviews.any? %>
-    <hr style="margin: 40px 0 20px 0;">
-    <h2 style="text-align: left; color: #2c2c2c;">Reviews</h2>
-    <% @reviews.each do |review| %>
-      <div style="text-align: left; background: #f9f9f9; border-radius: 8px; padding: 15px; margin-top: 15px;">
-        <p style="margin: 0;"><strong>Rating:</strong> <span style="color: #862221;"><%= "★" * review.rating %><%= "☆" * (5 - review.rating) %></span></p>
-        <p style="margin-top: 8px;"><%= review.content %></p>
-        <% if user_signed_in? && review.user_id == current_user.id %>
-          <div style="margin-top: 10px; display: flex; justify-content: flex-end; gap: 8px;">
-            <%= link_to "✏️ Edit", edit_review_path(review), style: "border: 1px solid #862221; color: #862221; background: white; padding: 5px 10px; font-size: 13px; border-radius: 5px; text-decoration: none;" %>
-            <%= button_to "🗑️ Delete", review_path(review), method: :delete, data: { confirm: "Are you sure?" }, style: "border: none; background: #862221; color: white; padding: 5px 10px; font-size: 13px; border-radius: 5px; cursor: pointer;" %>
-          </div>
-        <% end %>
-      </div>
+    <% if @reviews.any? %>
+      <hr style="margin: 40px 0;">
+      <h2 style="text-align: left; color: #2c2c2c;">Reviews</h2>
+      <% @reviews.each do |review| %>
+        <div style="background: #f9f9f9; border-radius: 8px; padding: 15px; margin-top: 15px; text-align: left;">
+          <p style="margin: 0;">
+            <strong>Rating:</strong>
+            <span style="color: #862221;"><%= "★" * review.rating %><%= "☆" * (5 - review.rating) %></span>
+          </p>
+          <p style="margin-top: 8px;"><%= review.content %></p>
+          <% if user_signed_in? && review.user_id == current_user.id %>
+            <div style="margin-top: 10px; display: flex; justify-content: flex-end; gap: 10px;">
+              <%= link_to edit_review_path(review), title: "Edit review",
+                          style: "border: 1px solid #862221; color: #862221; background: white; width: 36px; height: 36px; border-radius: 5px; display: flex; align-items: center; justify-content: center; font-size: 20px; cursor: pointer; text-decoration: none; transition: background-color 0.3s, color 0.3s;" do %>
+                <i class="fa-solid fa-pen"></i>
+              <% end %>
+
+              <%= button_to review_path(review), method: :delete, data: { confirm: "Are you sure?" }, title: "Delete review",
+                            style: "border: none; background: #862221; color: white; width: 36px; height: 36px; border-radius: 5px; display: flex; align-items: center; justify-content: center; font-size: 20px; cursor: pointer; transition: background-color 0.3s;" do %>
+                <i class="fa-solid fa-trash"></i>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+    <% else %>
+      <p style="margin-top: 30px; color: #888;">No reviews yet. Be the first to write one!</p>
     <% end %>
-  <% else %>
-    <p style="margin-top: 30px; color: #888;">No reviews yet. Be the first to write one!</p>
-  <% end %>
 
   <hr style="margin: 30px 0;">
-  <%= link_to "← Back to Search", books_path, style: "color: #007bff; text-decoration: underline;" %>
+<%= link_to "←  Back to Search", books_path,
+            style: "display: inline-block; padding: 10px 20px; background-color: #862221 ; color: white; border-radius: 5px; text-decoration: none; cursor: pointer; font-size: 14px; margin-top: 20px;" %>
 </div>
