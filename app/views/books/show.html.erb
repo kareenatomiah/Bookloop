@@ -70,7 +70,7 @@
   </div>
 
   <%# ✅ Reviews list %>
-    <% if @reviews.any? %>Add commentMore actions
+    <% if @reviews.any? %>
       <hr style="margin: 40px 0;">
       <h2 style="text-align: left; color: #2c2c2c;">Reviews</h2>
       <% @reviews.each do |review| %>
@@ -101,5 +101,5 @@
     <hr style="margin: 30px 0;">
 
     <%= link_to "←  Back to Search", books_path,
-            style: "display: inline-block; padding: 10px 20px; background-color: #862221 ; color: white; border-radius: 5px; text-decoration: none; cursor: pointer; font-size: 14px; margin-top: 20px;" %>
+             style: "display: inline-block; padding: 10px 20px; background-color: #862221 ; color: white; border-radius: 5px; text-decoration: none; cursor: pointer; font-size: 14px; margin-top: 20px;" %>
 </div>

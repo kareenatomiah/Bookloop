@@ -46,12 +46,10 @@
               <% end %>
             </div>
           </div>
-
+            <%  end %>
       <% end %>
+
+    <% elsif params[:query].present? %>
+      <p style="text-align: center; color: #777; font-style: italic;">No results found for "<%= params[:query] %>".</p>
     <% end %>
-
-  <% elsif params[:query].present? %>
-    <p style="text-align: center; color: #777; font-style: italic;">No results found for "<%= params[:query] %>".</p>
-  <% end %>
-
 </div>
